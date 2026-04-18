@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WildEats Dashboard</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; display: flex; background: #f4f7f6; }
+        .sidebar { width: 250px; background: #2c3e50; color: white; height: 100vh; padding: 20px; position: fixed; }
+        .main { margin-left: 290px; padding: 40px; width: 100%; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+        .btn { background: #1abc9c; color: white; padding: 10px 15px; text-decoration: none; border-radius: 4px; display: inline-block; font-size: 14px; }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>WildEats</h2>
+        <hr>
+        <p>Operations & Reporting</p>
+        <p>User: {{ user.username }}</p>
+        <hr>
+        <a href="{% url 'logout' %}" style="color: #e74c3c; text-decoration: none;">Logout</a>
+    </div>
+    <div class="main">
+        <h1>Operations & Reporting Center</h1>
+
+        <div class="card">
+            <h3>Notifications</h3>
+            {% for note in notifications %}
+            <div style="padding: 10px; margin-bottom: 5px; border-left: 5px solid {% if note.status == 'Unread' %}#1abc9c{% else %}#ccc{% endif %}; background: #f9f9f9;">
+                <strong>{{ note.status }}</strong> - {{ note.date|date:"H:i" }}
+            </div>
+            {% empty %}
+            <p>No new alerts at this time.</p>
+            {% endfor %}
+        </div>
+
+        <div class="card">
+            <h3>Cafeteria Management</h3>
+            <a href="{% url 'add_cafeteria' %}" class="btn" style="margin-bottom: 15px;">+ Add New Cafeteria</a>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Hours</th>
+                        <th>Capacity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cafe in cafeterias %}
+                    <tr>
+                        <td>{{ cafe.name }}</td>
+                        <td>{{ cafe.location }}</td>
+                        <td>{{ cafe.operating_hours }}</td>
+                        <td>{{ cafe.capacity }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>System Reports</h3>
+            <a href="{% url 'add_report' %}" class="btn" style="margin-bottom: 10px;">+ Generate New Report</a>
+            <ul>
+                {% for r in reports %}
+                <li>{{ r.report_type }} - {{ r.date_generated|date:"Y-m-d" }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
