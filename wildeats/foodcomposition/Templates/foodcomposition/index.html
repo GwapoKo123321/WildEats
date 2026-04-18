@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; }
+
+        .stripe { height: 5px; background: #FFD700; }
+
+        .nav {
+            background: #6B0F1A;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            color: #FFD700;
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-links a {
+            color: rgba(255,215,0,0.75);
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .nav-links a:hover {
+            color: #FFD700;
+        }
+
+        .hero {
+            background: #7A0E1E;
+            padding: 8vh 5vw;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: #FFD700;
+            font-size: clamp(24px, 4vw, 36px);
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: rgba(255,215,0,0.70);
+            margin-bottom: 10px;
+        }
+
+        .hero-btn {
+            background: #FFD700;
+            color: #6B0F1A;
+            padding: 11px 30px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        .section {
+            padding: 4vh 5vw;
+            background: #fdfaf4;
+        }
+
+        .section-title {
+            color: #6B0F1A;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border: 1px solid #f0e0a0;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card:hover {
+            border-color: #FFD700;
+        }
+
+        .card-title {
+            color: #6B0F1A;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            color: #888;
+            font-size: 12px;
+        }
+
+        .tag {
+            font-size: 10px;
+            background: #fdf0b2;
+            color: #6B0F1A;
+            padding: 4px 8px;
+            border-radius: 20px;
+            display: inline-block;
+            margin: 2px;
+        }
+
+        .footer {
+            background: #6B0F1A;
+            color: rgba(255,215,0,0.6);
+            text-align: center;
+            padding: 18px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="stripe"></div>
+
+<div class="nav">
+    <div class="nav-logo">WildEats</div>
+
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+
+        <a href="{% url 'home' %}#menu">Menu</a>
+
+        {% if user.is_authenticated %}
+            <a href="#" onclick="openModal()">Logout</a>
+        {% else %}
+            <a href="{% url 'login' %}">Login</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="hero">
+    <h1>Welcome to WildEats</h1>
+    <p>Your all-in-one campus cafeteria management system.</p>
+    <p>Manage food compositions, orders, meal plans, and more.</p>
+
+    {% if not user.is_authenticated %}
+        <a class="hero-btn" href="{% url 'login' %}">Login to Continue</a>
+    {% endif %}
+</div>
+
+{% if user.is_authenticated %}
+<div class="section">
+    <div class="section-title">Navigate to Apps</div>
+
+    <div class="cards">
+        <div class="card">
+            <div class="card-title">Food Composition</div>
+            <div class="card-desc">Food items, nutrition & recipes</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Accounts</div>
+            <div class="card-desc">Users, roles & authentication</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Orders</div>
+            <div class="card-desc">Manage orders & payments</div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Cafeteria</div>
+            <div class="card-desc">Locations & meal plans</div>
+        </div>
+    </div>
+</div>
+
+<!-- ✅ THIS IS THE BLOCK YOU WERE LOOKING FOR -->
+<div class="section">
+    <div class="section-title">Available Food Items</div>
+
+    <div class="cards">
+        {% for food in food_items %}
+        <div class="card">
+
+            <div class="card-title">{{ food.Name }}</div>
+
+            <div class="card-desc">
+                ₱{{ food.Price }} | {{ food.PortionSize }}
+            </div>
+
+            {% if food.nutritioninfo %}
+            <p style="font-size:11px; color:#888; margin-top:10px;">
+                Calories: {{ food.nutritioninfo.Calories }} |
+                Protein: {{ food.nutritioninfo.Protein }}g
+            </p>
+            {% endif %}
+
+            {% if food.recipe %}
+            <p style="font-size:11px; color:#888; margin-top:6px;">
+                Prep Time: {{ food.recipe.PreparationTime }} mins
+            </p>
+
+            <div style="margin-top:8px;">
+                {% for ingredient in food.recipe.Ingredients.all %}
+                    <span class="tag">{{ ingredient.Name }}</span>
+                {% empty %}
+                    <span style="font-size:10px; color:#aaa;">No ingredients</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+        {% empty %}
+            <p>No food items available.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<div class="footer">
+    WildEats &copy; 2026 — Campus Cafeteria System
+</div>
+
+<div class="stripe"></div>
+
+<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
+
+    <div style="background:white; padding:30px; border-radius:12px; text-align:center; width:90%; max-width:360px;">
+
+        <h3 style="color:#6B0F1A;">Logging Out</h3>
+        <p style="color:#888; margin:15px 0;">Are you sure you want to log out?</p>
+
+        <button onclick="closeModal()">Cancel</button>
+        <a href="{% url 'logout' %}">Yes, Logout</a>
+
+    </div>
+</div>
+
+<script>
+function openModal() {
+    document.getElementById("logout-modal").style.display = "flex";
+}
+
+function closeModal() {
+    document.getElementById("logout-modal").style.display = "none";
+}
+</script>
+
+</body>
+</html>

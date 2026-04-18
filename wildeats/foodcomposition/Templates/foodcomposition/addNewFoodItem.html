@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Food Item - WildEats</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #fdfaf4;
+            margin: 0;
+        }
+
+        .nav {
+            background: #6B0F1A;
+            padding: 16px 32px;
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #f0e0a0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            text-align: center;
+            color: #6B0F1A;
+            margin-bottom: 25px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 13px;
+            color: #6B0F1A;
+            font-weight: 500;
+        }
+
+        input, select, textarea {
+            padding: 10px;
+            border: 1px solid #f0e0a0;
+            border-radius: 6px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 13px;
+            outline: none;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #FFD700;
+        }
+
+        button {
+            background: #FFD700;
+            color: #6B0F1A;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #e6c200;
+        }
+
+        .back {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .back a {
+            color: #6B0F1A;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .errorlist {
+            color: red;
+            font-size: 12px;
+            list-style: none;
+            padding: 0;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: #6B0F1A;
+            font-weight: 500;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #f0e0a0;
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: 'Poppins', sans-serif;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #FFD700;
+        }
+
+        .error {
+            color: red;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="nav">
+    WildEats — Add Food Item
+</div>
+
+<div class="container">
+
+    <h2>Add New Food Item</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        {% for field in form %}
+            <div class="form-group">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+        <button type="submit">Save Food Item</button>
+    </form>
+
+    <div class="back">
+        <a href="/">← Back to Home</a>
+    </div>
+
+</div>
+
+</body>
+</html>
