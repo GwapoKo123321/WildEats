@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | Login{% endblock %}
+
+{% block content %}
+    <section class="login-layout">
+        <aside class="shape-panel" aria-hidden="true">
+            <div class="shape-three"></div>
+        </aside>
+
+        <section class="panel">
+            <span class="eyebrow">Login</span>
+            <h2 style="margin-top: 1rem; margin-bottom: 1.2rem;">Sign in</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit">Login</button>
+            </form>
+        </section>
+    </section>
+{% endblock %}

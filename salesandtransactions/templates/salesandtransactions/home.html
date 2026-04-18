@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | Sales{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <div class="hero-copy">
+            <span class="eyebrow">Sales</span>
+            <h1>Orders</h1>
+            <div class="grid stats">
+                <article class="card">
+                    <div class="stat-value">{{ orders|length }}</div>
+                    <p class="stat-label">Orders</p>
+                </article>
+                <article class="card">
+                    <div class="stat-value">Items</div>
+                    <p class="stat-label">List</p>
+                </article>
+            </div>
+        </div>
+        <div class="hero-art" aria-hidden="true"></div>
+    </section>
+
+    <section class="section-head">
+        <div>
+            <span class="eyebrow">List</span>
+            <h2 style="margin-top: 0.8rem;">Orders</h2>
+
+            <!-- ADD ORDER BUTTON -->
+            <a href="/sales/addNewOrder/" class="chip" style="margin-top: 1rem; display: inline-block;">
+                ➕ Add Order
+            </a>
+        </div>
+    </section>
+
+    {% if orders %}
+        <section class="order-list">
+            {% for order in orders %}
+                <article class="order-card">
+
+                    <div class="stack">
+                        <span class="chip">Order #{{ order.OrderID }}</span>
+                    </div>
+
+                    <div>
+                        <h3>{{ order.CustomerName }}</h3>
+
+                        <div class="order-meta">
+                            <span>Placed {{ order.OrderDate|date:"M d, Y" }}</span>
+                            <span>{{ order.items.count }} item{{ order.items.count|pluralize }}</span>
+                        </div>
+
+                        <!-- ADD ITEM BUTTON -->
+                        <div style="margin-top: 0.5rem;">
+                            <a href="/sales/addOrderItem/{{ order.OrderID }}/" class="chip">
+                                ➕ Add Item
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="split">
+                        <section>
+                            <h3 style="font-size: 1.15rem; margin-bottom: 0.8rem;">Items</h3>
+                            <ul class="mini-list">
+                                {% for item in order.items.all %}
+                                    <li>
+                                        {{ item.ProductName }} x{{ item.Quantity }}
+                                        at ₱{{ item.Price }}
+                                    </li>
+                                {% empty %}
+                                    <li>No items</li>
+                                {% endfor %}
+                            </ul>
+                        </section>
+                    </div>
+
+                </article>
+            {% endfor %}
+        </section>
+    {% else %}
+        <section class="empty-state">
+            <h3>No orders yet.</h3>
+        </section>
+    {% endif %}
+{% endblock %}

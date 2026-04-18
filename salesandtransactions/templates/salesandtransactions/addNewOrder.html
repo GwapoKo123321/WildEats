@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | Add Order{% endblock %}
+
+{% block content %}
+<section class="section-head">
+    <div>
+        <span class="eyebrow">Create</span>
+        <h2 style="margin-top: 0.8rem;">Add New Order</h2>
+        <p style="max-width: 500px;">
+            Enter customer details to create a new order.
+        </p>
+    </div>
+</section>
+
+<section class="form-card">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ form.CustomerName.label_tag }}
+            {{ form.CustomerName }}
+        </div>
+
+        <div style="margin-top: 1.5rem;">
+            <button class="button" type="submit">
+                💾 Save Order
+            </button>
+
+            <a href="/sales/" class="button secondary" style="margin-left: 0.5rem;">
+                ← Back
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}

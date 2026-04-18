@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | Welcome{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-copy">
+        <span class="eyebrow">WildEats System</span>
+        <h1>Cafeteria Operations Dashboard</h1>
+
+        <p style="max-width: 500px;">
+            Manage orders efficiently and keep your cafeteria running smoothly.
+        </p>
+
+        <div class="hero-actions" style="margin-top: 1.5rem;">
+            {% if user.is_authenticated %}
+                <a class="button" href="/sales/">
+                    📊 Go to Sales
+                </a>
+            {% else %}
+                <a class="button" href="/login/">
+                    🔐 Login to Continue
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="hero-art" aria-hidden="true"></div>
+</section>
+{% endblock %}
