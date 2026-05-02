@@ -18,12 +18,22 @@ from django.contrib import admin
 from django.urls import path, include
 from foodcomposition.views import HomePageView
 
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#
+#     # homepage route
+#     # path('', HomePageView.as_view(), name='home'),
+#
+#     # app routes
+#     path('', include('foodcomposition.urls')),
+#
+#
+# ]
+
+from django.contrib import admin
+from django.urls import path, include
+    
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-    # homepage route
-    path('', HomePageView.as_view(), name='home'),
-
-    # app routes
-    path('foodcomposition/', include('foodcomposition.urls')),
+    path('', include('foodcomposition.urls')),
 ]

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile - WildEats</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fdfaf4; }
+
+        .stripe { height: 5px; background: #FFD700; }
+
+        .nav {
+            background: #6B0F1A;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .nav-links a {
+            color: rgba(255,215,0,0.75);
+            text-decoration: none;
+            margin-left: 16px;
+            font-size: 13px;
+        }
+
+        .nav-links a:hover {
+            color: #FFD700;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 60px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #f0e0a0;
+        }
+
+        h2 {
+            color: #6B0F1A;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        label {
+            font-size: 12px;
+            color: #6B0F1A;
+            display: block;
+            margin-top: 12px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: #FFD700;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #6B0F1A;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #f2c200;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 18px;
+            font-size: 12px;
+            color: rgba(255,215,0,0.6);
+            background: #6B0F1A;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="stripe"></div>
+
+<div class="nav">
+    <div class="nav-logo">WildEats</div>
+
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Edit Profile</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Username</label>
+        <input type="text" name="username" value="{{ user.username }}">
+
+        <label>Email</label>
+        <input type="email" name="email" value="{{ user.email }}">
+
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+<div class="footer">
+    WildEats © 2026
+</div>
+
+</body>
+</html>

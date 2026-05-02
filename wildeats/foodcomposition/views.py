@@ -2,9 +2,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
 from django.views import View
 from .forms import FoodItemForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class HomePageView(View):
+class HomePageView(LoginRequiredMixin, View):
     template_name = 'foodcomposition/index.html'
 
     def get(self, request):
@@ -42,7 +43,7 @@ class LogoutView(View):
         return redirect('/login/')
 
 
-class AddFoodItemView(View):
+class AddFoodItemView(LoginRequiredMixin, View):
     template_name = 'foodcomposition/addNewFoodItem.html'
 
     def get(self, request):
@@ -57,3 +58,20 @@ class AddFoodItemView(View):
             return redirect('/')
 
         return render(request, self.template_name, {'form': form})
+
+class EditProfileView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    template_name = 'foodcomposition/editProfile.html'
+
+    def get(self, request):
+        return render(request, self.template_name, {
+            'user': request.user
+        })
+
+    def post(self, request):
+        user = request.user
+        user.username = request.POST.get('username')
+        user.email = request.POST.get('email')
+        user.save()
+
+        return redirect('/')

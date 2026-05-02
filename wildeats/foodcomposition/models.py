@@ -10,13 +10,15 @@ class Cafeteria(models.Model):
 
 
 class FoodItem(models.Model):
-    Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE)
+    Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE, null=True, blank=True)
     Name = models.CharField(max_length=100)
     Price = models.DecimalField(max_digits=10, decimal_places=2)
     PortionSize = models.CharField(max_length=50)
 
     class Meta:
-        unique_together = ('Cafeteria', 'Name')
+        constraints = [
+            models.UniqueConstraint(fields=['Cafeteria', 'Name'], name='unique_food_per_cafeteria')
+        ]
 
     def __str__(self):
         return self.Name
