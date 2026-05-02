@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | Edit Profile{% endblock %}
+
+{% block content %}
+<section class="section-head">
+    <div>
+        <span class="eyebrow">Account</span>
+        <h2 style="margin-top: 0.8rem;">Edit Profile</h2>
+        <p style="max-width: 500px;">Update your basic account details.</p>
+    </div>
+</section>
+
+<section class="panel">
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            <label for="id_username">Username</label>
+            <input id="id_username" name="username" type="text" value="{{ user.username }}" required>
+        </p>
+
+        <p>
+            <label for="id_email">Email</label>
+            <input id="id_email" name="email" type="email" value="{{ user.email }}">
+        </p>
+        <div class="stack">
+            <button type="submit">Save Profile</button>
+            <a class="button secondary" href="{% url 'index' %}">Back Home</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
