@@ -1,27 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}WildEats | Welcome{% endblock %}
+{% block title %}WildEats | Home{% endblock %}
 
 {% block content %}
 <section class="hero">
     <div class="hero-copy">
         <span class="eyebrow">WildEats System</span>
-        <h1>Cafeteria Operations Dashboard</h1>
+        <h1>Home Page</h1>
 
         <p style="max-width: 500px;">
-            Manage orders efficiently and keep your cafeteria running smoothly.
+            Welcome, {{ request.session.username|default:user.username }}. Choose an option below to manage your account
+            and cafeteria records.
         </p>
 
         <div class="hero-actions" style="margin-top: 1.5rem;">
-            {% if user.is_authenticated %}
-                <a class="button" href="/sales/">
-                    📊 Go to Sales
-                </a>
-            {% else %}
-                <a class="button" href="/login/">
-                    🔐 Login to Continue
-                </a>
-            {% endif %}
+            <a class="button" href="{% url 'edit_profile' %}">Edit Profile</a>
+            <a class="button" href="{% url 'add_new_record' %}">Add New Record</a>
+            <a class="button secondary" href="{% url 'logout' %}">Log Off</a>
         </div>
     </div>
 

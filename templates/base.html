@@ -383,11 +383,23 @@
                 <span>WildEats</span>
             </a>
             <div class="nav-links">
-                <a href="/">Home</a>
-                <a href="/sales/">Sales</a>
-                <a href="/login/">Login</a>
+                {% if user.is_authenticated %}
+                    <a href="/">Home</a>
+                    <a href="{% url 'edit_profile' %}">Edit Profile</a>
+                    <a href="{% url 'add_new_record' %}">Add New Record</a>
+                    <a href="{% url 'logout' %}">Log Off</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
             </div>
         </nav>
+        {% if messages %}
+            <section class="stack" style="margin-bottom: 1rem;">
+                {% for message in messages %}
+                    <p class="chip">{{ message }}</p>
+                {% endfor %}
+            </section>
+        {% endif %}
         {% block content %}{% endblock %}
     </div>
 </body>
