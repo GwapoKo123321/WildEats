@@ -65,15 +65,20 @@
             border-radius: 18px;
             background: rgba(253, 247, 234, 0.08);
         }
-        .btn-logout {
-            display: inline-block;
+        .nav-links {
             margin-top: 28px;
+            display: grid;
+            gap: 12px;
+        }
+        .nav-links a {
+            display: block;
             padding: 12px 18px;
             border-radius: 999px;
             background: var(--gold);
             color: #fffaf3;
             text-decoration: none;
             font-weight: bold;
+            text-align: center;
         }
         .content {
             padding: 42px;
@@ -185,7 +190,11 @@
             <p class="brand">WILDEATS</p>
             <span class="tag">Supply Hub</span>
             <div class="user-chip">Signed in as {{ user.username|default:"guest" }}</div>
-            <a href="{% url 'logout' %}" class="btn-logout">Log Out</a>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="{% url 'edit_profile' %}">Edit Profile</a>
+                <a href="{% url 'add_new_record' %}">Add New Record</a>
+                <a href="{% url 'logout' %}">Log Off</a>
+            </nav>
         </aside>
 
         <main class="content">
@@ -199,6 +208,8 @@
                 <h1>WildEats Ingredient and Supply Control</h1>
                 <p>Use the links below to jump to the core functions included in this assigned supply module.</p>
                 <div class="quick-nav">
+                    <a href="{% url 'edit_profile' %}">Edit Profile</a>
+                    <a href="{% url 'add_new_record' %}">Add New Record</a>
                     <a href="#ingredients">View Ingredients</a>
                     <a href="#inventory">View Inventory</a>
                     <a href="#suppliers">View Suppliers</a>
