@@ -7,15 +7,23 @@ class UserUpdateForm(forms.ModelForm):
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
 
+
 class CafeteriaForm(forms.ModelForm):
     class Meta:
         model = Cafeteria
         fields = ['name', 'location', 'operating_hours', 'capacity']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Cafeteria Name'}),
-            'location': forms.TextInput(attrs={'placeholder': 'Location'}),
-            'operating_hours': forms.TextInput(attrs={'placeholder': '00:00-00:00'}),
-            'capacity': forms.NumberInput(attrs={'min': '1'}),
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'e.g., Main Canteen'}),
+            'location': forms.TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'e.g., 2nd Floor, Science Bldg'}),
+
+            # This fixes the operating hours input field visual style and placeholder
+            'operating_hours': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'e.g., 7:00 AM - 5:00 PM (or 07:00-17:00)'
+            }),
+
+            'capacity': forms.NumberInput(attrs={'class': 'form-control', 'min': '1'}),
         }
 
 class ReportForm(forms.ModelForm):

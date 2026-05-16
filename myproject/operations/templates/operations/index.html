@@ -1,30 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>WildEats | Home</title>
     <style>
         body { font-family: sans-serif; margin: 0; background: #f4f7f6; }
-        nav { background: #2c3e50; padding: 15px; color: white; display: flex; gap: 20px; }
-        nav a { color: white; text-decoration: none; font-weight: bold; }
+        nav { background: #2c3e50; padding: 15px; color: white; display: flex; gap: 20px; align-items: center; }
+        nav a { color: white; text-decoration: none; font-weight: bold; font-size: 14px; }
+        .logo { font-weight: bold; margin-right: 10px; }
+        .logout-btn { margin-left: auto; color: #e74c3c; }
         .container { padding: 30px; }
         .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+        th { background-color: #f8f9fa; color: #333; }
+        ul { padding-left: 20px; margin-top: 15px; }
+        li { margin-bottom: 12px; line-height: 1.5; }
     </style>
 </head>
 <body>
     <nav>
-        <span>WildEats Operations</span>
-        <!-- Required Navigation Links -->
+        <span class="logo">WildEats Operations</span>
         <a href="{% url 'edit_profile' %}">Edit Profile</a>
         <a href="{% url 'add_cafeteria' %}">Add New Record (Cafeteria)</a>
         <a href="{% url 'add_report' %}">Add New Record (Report)</a>
-        <a href="{% url 'logout' %}" style="margin-left: auto; color: #e74c3c;">Log Off</a>
+        <a href="{% url 'logout' %}" class="logout-btn">Log Off</a>
     </nav>
 
     <div class="container">
         <h1>Welcome, {{ user.username }}</h1>
+
         <div class="card">
             <h3>Recent Activities</h3>
             <p>Your session is active. You are managed under the Operations Functional Area.</p>
+        </div>
+
+        <div class="card">
+            <h3>Saved Cafeteria Records</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Operating Hours</th>
+                        <th>Capacity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cafe in cafeterias %}
+                    <tr>
+                        <td>{{ cafe.name }}</td>
+                        <td>{{ cafe.location }}</td>
+                        <td>{{ cafe.operating_hours }}</td>
+                        <td>{{ cafe.capacity }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4">No cafeteria records found. Try adding a record from the navigation bar.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h3>Saved System Reports</h3>
+            <ul>
+                {% for r in reports %}
+                <li>
+                    <strong>{{ r.report_type }} Report</strong> — Generated on {{ r.date_generated|date:"Y-m-d H:i" }}<br>
+                    <span style="color: #555;">{{ r.report_summary }}</span>
+                </li>
+                {% empty %}
+                <li>No system reports generated yet. Try generating a report from the navigation bar.</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 </body>
