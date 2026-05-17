@@ -1,8 +1,0 @@
-Watching for file changes with StatReloader
-[02/May/2026 22:47:30] "GET / HTTP/1.1" 302 0
-[02/May/2026 22:47:30] "GET /login/ HTTP/1.1" 200 10118
-[02/May/2026 22:47:30,320] - Broken pipe from ('127.0.0.1', 52892)
-[02/May/2026 22:47:30,334] - Broken pipe from ('127.0.0.1', 52893)
-C:\Users\Marishka\Desktop\PyCharm\WildEats\main\views.py changed, reloading.
-Watching for file changes with StatReloader
-[02/May/2026 23:00:47] "GET / HTTP/1.1" 200 9937

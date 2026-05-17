@@ -1,48 +1,74 @@
 {% extends "base.html" %}
 
-{% block title %}WildEats | Add Item{% endblock %}
+{% block title %}WildEats | Add Items{% endblock %}
 
 {% block content %}
 <section class="section-head">
     <div>
-        <span class="eyebrow">Order Item</span>
+        <span class="eyebrow">Step 2</span>
         <h2 style="margin-top: 0.8rem;">
-            Add Item to Order #{{ order.OrderID }}
+            Add Items to Order #{{ order.OrderID }}
         </h2>
         <p style="max-width: 500px;">
-            Enter product details to add an item to this order.
+            Add one item. You will return to Order Details after saving.
+        </p>
+    </div>
+
+    <div>
+        <span class="eyebrow">Step 2</span>
+        <h2 style="margin-top: 0.8rem;">
+            Add Items to Order #{{ order.OrderID }}
+        </h2>
+        <p style="max-width: 500px;">
+            Add one item. You will return to Order Details after saving.
         </p>
     </div>
 </section>
 
-<section class="form-card">
-    <form method="post">
-        {% csrf_token %}
+<section class="split">
+    <section class="form-card panel">
+        <form method="post">
+            {% csrf_token %}
 
-        <div class="form-group">
-            {{ form.ProductName.label_tag }}
-            {{ form.ProductName }}
-        </div>
+            <div class="form-group">
+                {{ form.ProductName.label_tag }}
+                {{ form.ProductName }}
+                {{ form.ProductName.errors }}
+            </div>
 
-        <div class="form-group">
-            {{ form.Quantity.label_tag }}
-            {{ form.Quantity }}
-        </div>
+            <div class="form-group">
+                {{ form.Quantity.label_tag }}
+                {{ form.Quantity }}
+                {{ form.Quantity.errors }}
+            </div>
 
-        <div class="form-group">
-            {{ form.Price.label_tag }}
-            {{ form.Price }}
-        </div>
+            <div class="form-group">
+                {{ form.Price.label_tag }}
+                {{ form.Price }}
+                {{ form.Price.errors }}
+            </div>
 
-        <div style="margin-top: 1.5rem;">
-            <button class="button" type="submit">
-                ➕ Add Item
-            </button>
+            <div class="stack" style="margin-top: 0.5rem;">
+                <button class="button" type="submit">Add Order Item</button>
+                <a href="{% url 'order_summary' order.OrderID %}" class="button secondary">Back to Order Details</a>
+            </div>
+        </form>
+    </section>
 
-            <a href="/sales/" class="button secondary" style="margin-left: 0.5rem;">
-                ← Back
-            </a>
-        </div>
-    </form>
+    <section class="panel">
+        <span class="eyebrow">Current Order</span>
+        <h3 style="margin-top: 0.8rem; margin-bottom: 0.8rem;">{{ order.CustomerName }}</h3>
+        <ul class="mini-list">
+            {% for item in order.items.all %}
+                <li>
+                    {{ item.ProductName }} x{{ item.Quantity }}
+                    - ₱{{ item.line_total|floatformat:2 }}
+                </li>
+            {% empty %}
+                <li>No items yet</li>
+            {% endfor %}
+        </ul>
+        <p style="margin-top: 1rem;">Total: ₱{{ order.total_amount|floatformat:2 }}</p>
+    </section>
 </section>
 {% endblock %}

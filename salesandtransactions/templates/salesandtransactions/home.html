@@ -1,85 +1,143 @@
 {% extends "base.html" %}
 
-{% block title %}WildEats | Sales{% endblock %}
+{% block title %}WildEats | Dashboard{% endblock %}
 
 {% block content %}
-    <section class="hero">
-        <div class="hero-copy">
-            <span class="eyebrow">Sales</span>
-            <h1>Orders</h1>
-            <div class="grid stats">
-                <article class="card">
-                    <div class="stat-value">{{ orders|length }}</div>
-                    <p class="stat-label">Orders</p>
-                </article>
-                <article class="card">
-                    <div class="stat-value">Items</div>
-                    <p class="stat-label">List</p>
-                </article>
-            </div>
-        </div>
-        <div class="hero-art" aria-hidden="true"></div>
-    </section>
+<section class="section-head">
+    <div>
+        {% if is_student %}
+            <span class="eyebrow">Student Dashboard</span>
+            <h2 style="margin-top: 0.8rem;">My Orders</h2>
+            <p style="max-width: 560px;">Review orders, submit payments, and track vendor verification.</p>
+        {% elif is_vendor %}
+            <span class="eyebrow">Vendor Dashboard</span>
+            <h2 style="margin-top: 0.8rem;">Orders for Verification</h2>
+            <p style="max-width: 560px;">Review submitted payments, verify or reject them, then update order progress.</p>
+        {% else %}
+            <span class="eyebrow">Admin Dashboard</span>
+            <h2 style="margin-top: 0.8rem;">All Transactions</h2>
+            <p style="max-width: 560px;">Monitor orders, users, vendors, payments, and transaction statuses.</p>
+        {% endif %}
+    </div>
+    {% if is_student %}
+        <a href="{% url 'add_new_order' %}" class="button">Add Order</a>
+    {% endif %}
+</section>
 
+<section class="grid stats" style="margin-bottom: 1rem;">
+    <article class="card">
+        <div class="stat-value">{{ orders|length }}</div>
+        <p class="stat-label">Visible Orders</p>
+    </article>
+    {% if is_admin %}
+        <article class="card">
+            <div class="stat-value">{{ payments|length }}</div>
+            <p class="stat-label">Payment Records</p>
+        </article>
+        <article class="card">
+            <div class="stat-value">{{ users|length }}</div>
+            <p class="stat-label">Students</p>
+        </article>
+        <article class="card">
+            <div class="stat-value">{{ vendors|length }}</div>
+            <p class="stat-label">Vendors</p>
+        </article>
+    {% endif %}
+</section>
+
+{% if orders %}
+    <section class="order-list">
+        {% for order in orders %}
+            <article class="order-card">
+                <div class="stack">
+                    <span class="chip">Order #{{ order.OrderID }}</span>
+                    <span class="chip">{{ order.OrderStatus }}</span>
+                </div>
+
+                <div>
+                    <h3>{{ order.CustomerName }}</h3>
+                    <div class="order-meta">
+                        <span>Placed {{ order.OrderDate|date:"M d, Y" }}</span>
+                        <span>{{ order.items.count }} item{{ order.items.count|pluralize }}</span>
+                        <span>Total: &#8369;{{ order.TotalCost|floatformat:2 }}</span>
+                        <span>Status: {{ order.OrderStatus }}</span>
+                    </div>
+                </div>
+
+                <div class="stack">
+                    <a href="{% url 'order_summary' order.OrderID %}" class="button">Order Details</a>
+                    {% if is_student or is_admin %}
+                        <form method="post" action="{% url 'delete_order' order.OrderID %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button
+                                type="submit"
+                                class="button secondary"
+                                onclick="return confirm('Delete Order #{{ order.OrderID }}?');"
+                            >
+                                Delete
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </article>
+        {% endfor %}
+    </section>
+{% else %}
+    <section class="empty-state">
+        <h3>No orders to show.</h3>
+        {% if is_student %}
+            <p style="margin-top: 0.5rem;">Create an order, add items, then submit payment for vendor verification.</p>
+            <div class="stack" style="justify-content: center; margin-top: 1rem;">
+                <a href="{% url 'add_new_order' %}" class="button">Add Order</a>
+            </div>
+        {% endif %}
+    </section>
+{% endif %}
+
+{% if is_admin %}
     <section class="section-head">
         <div>
-            <span class="eyebrow">List</span>
-            <h2 style="margin-top: 0.8rem;">Orders</h2>
-
-            <!-- ADD ORDER BUTTON -->
-            <a href="/sales/addNewOrder/" class="chip" style="margin-top: 1rem; display: inline-block;">
-                ➕ Add Order
-            </a>
+            <span class="eyebrow">All Payments</span>
+            <h2 style="margin-top: 0.8rem;">Payment Records</h2>
         </div>
     </section>
-
-    {% if orders %}
-        <section class="order-list">
-            {% for order in orders %}
-                <article class="order-card">
-
-                    <div class="stack">
-                        <span class="chip">Order #{{ order.OrderID }}</span>
-                    </div>
-
-                    <div>
-                        <h3>{{ order.CustomerName }}</h3>
-
-                        <div class="order-meta">
-                            <span>Placed {{ order.OrderDate|date:"M d, Y" }}</span>
-                            <span>{{ order.items.count }} item{{ order.items.count|pluralize }}</span>
-                        </div>
-
-                        <!-- ADD ITEM BUTTON -->
-                        <div style="margin-top: 0.5rem;">
-                            <a href="/sales/addOrderItem/{{ order.OrderID }}/" class="chip">
-                                ➕ Add Item
-                            </a>
-                        </div>
-                    </div>
-
-                    <div class="split">
-                        <section>
-                            <h3 style="font-size: 1.15rem; margin-bottom: 0.8rem;">Items</h3>
-                            <ul class="mini-list">
-                                {% for item in order.items.all %}
-                                    <li>
-                                        {{ item.ProductName }} x{{ item.Quantity }}
-                                        at ₱{{ item.Price }}
-                                    </li>
-                                {% empty %}
-                                    <li>No items</li>
-                                {% endfor %}
-                            </ul>
-                        </section>
-                    </div>
-
-                </article>
+    <section class="panel">
+        <ul class="mini-list">
+            {% for payment in payments %}
+                <li>
+                    Order #{{ payment.Order.OrderID }} -
+                    {{ payment.Order.Student.username|default:"No student" }} -
+                    &#8369;{{ payment.Amount|floatformat:2 }} -
+                    {{ payment.PaymentStatus }}
+                </li>
+            {% empty %}
+                <li>No payment records.</li>
             {% endfor %}
+        </ul>
+    </section>
+
+    <section class="split" style="margin-top: 1rem;">
+        <section class="panel">
+            <span class="eyebrow">Students</span>
+            <ul class="mini-list" style="margin-top: 1rem;">
+                {% for student in users %}
+                    <li>{{ student.username }} - {{ student.email|default:"No email" }}</li>
+                {% empty %}
+                    <li>No student accounts.</li>
+                {% endfor %}
+            </ul>
         </section>
-    {% else %}
-        <section class="empty-state">
-            <h3>No orders yet.</h3>
+
+        <section class="panel">
+            <span class="eyebrow">Vendors</span>
+            <ul class="mini-list" style="margin-top: 1rem;">
+                {% for vendor in vendors %}
+                    <li>{{ vendor.username }} - {{ vendor.email|default:"No email" }}</li>
+                {% empty %}
+                    <li>No vendor accounts.</li>
+                {% endfor %}
+            </ul>
         </section>
-    {% endif %}
+    </section>
+{% endif %}
 {% endblock %}

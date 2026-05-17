@@ -1,32 +1,183 @@
-{% extends "base.html" %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WildEats - Edit Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #65101d;
+            --maroon-2: #83182a;
+            --gold: #f5c84b;
+            --cream: #fff9ec;
+            --paper: #ffffff;
+            --ink: #251a1c;
+            --muted: #7b6d70;
+            --line: #eadfcb;
+            --teal: #197278;
+            --danger: #b3261e;
+            --success: #276749;
+            --shadow: 0 22px 60px rgba(101, 16, 29, 0.14);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: "Poppins", Arial, sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(90deg, rgba(255, 249, 236, 0.97), rgba(255, 255, 255, 0.88) 52%, rgba(255, 255, 255, 0.54)),
+                url("{% static 'foodcomposition/bg.jpg' %}") right center / min(58vw, 820px) auto no-repeat fixed,
+                linear-gradient(135deg, var(--cream), #fff);
+            animation: page-in 280ms ease-out;
+        }
+        @keyframes page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px clamp(18px, 5vw, 64px);
+        }
+        .brand { color: var(--maroon); font-size: 22px; font-weight: 700; text-decoration: none; }
+        .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .nav-link {
+            color: var(--maroon);
+            border-radius: 999px;
+            padding: 9px 18px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+        }
+        .nav-link:hover { background: var(--maroon); color: var(--gold); transform: translateY(-1px); }
+        main { flex: 1; display: grid; place-items: center; padding: 28px clamp(16px, 4vw, 48px) 56px; }
+        .card {
+            width: min(680px, 100%);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: var(--shadow);
+            padding: clamp(28px, 5vw, 48px);
+            backdrop-filter: blur(8px);
+        }
+        h1, p { margin: 0; }
+        .eyebrow { color: var(--teal); font-size: 13px; font-weight: 700; text-transform: uppercase; }
+        .form-title { color: var(--maroon); font-size: 28px; line-height: 1.15; margin: 8px 0; }
+        .form-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; line-height: 1.7; }
+        .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; color: var(--maroon); font-size: 12px; font-weight: 700; margin-bottom: 7px; text-transform: uppercase; }
+        input {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #fffcf6;
+            color: var(--ink);
+            font: inherit;
+            font-size: 14px;
+            padding: 12px 14px;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+        }
+        input:focus { background: #fff; border-color: var(--teal); box-shadow: 0 0 0 4px rgba(25, 114, 120, 0.12); }
+        .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            border: 0;
+            border-radius: 999px;
+            cursor: pointer;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 12px 22px;
+            text-decoration: none;
+            transition: background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+        }
+        .btn.main { background: var(--maroon); color: var(--gold); }
+        .btn.main:hover { background: var(--maroon-2); transform: translateY(-1px); box-shadow: 0 12px 28px rgba(101, 16, 29, 0.20); }
+        .btn.secondary { border: 1px solid var(--line); background: #fff; color: var(--maroon); }
+        .btn.secondary:hover { border-color: var(--teal); color: var(--teal); transform: translateY(-1px); }
+        .alert {
+            border-radius: 10px;
+            padding: 11px 13px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .alert.error { background: #fff0ed; color: var(--danger); }
+        .alert.success { background: #edf8f1; color: var(--success); }
+        @media (max-width: 640px) {
+            .topbar { align-items: flex-start; flex-direction: column; }
+            .form-row { grid-template-columns: 1fr; }
+            .actions { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="{% url 'home' %}">WildEats</a>
+    <nav class="nav-links" aria-label="Primary navigation">
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+        <a class="nav-link" href="{% url 'sales_home' %}">Orders</a>
+        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+    </nav>
+</header>
 
-{% block title %}WildEats | Edit Profile{% endblock %}
-
-{% block content %}
-<section class="section-head">
-    <div>
+<main>
+    <section class="card">
         <span class="eyebrow">Account</span>
-        <h2 style="margin-top: 0.8rem;">Edit Profile</h2>
-        <p style="max-width: 500px;">Update your basic account details.</p>
-    </div>
-</section>
+        <h1 class="form-title">Edit Profile</h1>
+        <p class="form-sub">Update your basic account details. Changes are saved immediately after submission.</p>
 
-<section class="panel">
-    <form method="post">
-        {% csrf_token %}
-        <p>
-            <label for="id_username">Username</label>
-            <input id="id_username" name="username" type="text" value="{{ user.username }}" required>
-        </p>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
 
-        <p>
-            <label for="id_email">Email</label>
-            <input id="id_email" name="email" type="email" value="{{ user.email }}">
-        </p>
-        <div class="stack">
-            <button type="submit">Save Profile</button>
-            <a class="button secondary" href="{% url 'index' %}">Back Home</a>
-        </div>
-    </form>
-</section>
-{% endblock %}
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_username">Username</label>
+                <input id="id_username" name="username" type="text" value="{{ user.username }}" autocomplete="username" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_first_name">First Name</label>
+                    <input id="id_first_name" name="first_name" type="text" value="{{ user.first_name }}" autocomplete="given-name">
+                </div>
+                <div class="form-group">
+                    <label for="id_last_name">Last Name</label>
+                    <input id="id_last_name" name="last_name" type="text" value="{{ user.last_name }}" autocomplete="family-name">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_email">Email</label>
+                <input id="id_email" name="email" type="email" value="{{ user.email }}" autocomplete="email">
+            </div>
+
+            <div class="actions">
+                <button class="btn main" type="submit">Save Profile</button>
+                <a class="btn secondary" href="{% url 'home' %}">Back Home</a>
+            </div>
+        </form>
+    </section>
+</main>
+</body>
+</html>

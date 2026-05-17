@@ -1,35 +1,31 @@
 {% extends "base.html" %}
 
-{% block title %}WildEats | Add Order{% endblock %}
+{% block title %}WildEats | Create Order{% endblock %}
 
 {% block content %}
 <section class="section-head">
     <div>
-        <span class="eyebrow">Create</span>
-        <h2 style="margin-top: 0.8rem;">Add New Order</h2>
+        <span class="eyebrow">Create Order</span>
+        <h2 style="margin-top: 0.8rem;">Create Order</h2>
         <p style="max-width: 500px;">
-            Enter customer details to create a new order.
+            Enter the customer name to start a new order. Total cost starts at ₱0.00 and status starts as Unpaid.
         </p>
     </div>
 </section>
 
-<section class="form-card">
+<section class="form-card panel">
     <form method="post">
         {% csrf_token %}
 
         <div class="form-group">
             {{ form.CustomerName.label_tag }}
             {{ form.CustomerName }}
+            {{ form.CustomerName.errors }}
         </div>
 
-        <div style="margin-top: 1.5rem;">
-            <button class="button" type="submit">
-                💾 Save Order
-            </button>
-
-            <a href="/sales/" class="button secondary" style="margin-left: 0.5rem;">
-                ← Back
-            </a>
+        <div class="stack" style="margin-top: 0.5rem;">
+            <button class="button" type="submit">Create Order</button>
+            <a href="{% url 'sales_home' %}" class="button secondary">Back to Orders</a>
         </div>
     </form>
 </section>
