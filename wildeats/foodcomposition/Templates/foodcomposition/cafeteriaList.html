@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cafeterias - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        .stripe { height: 10px; }
+        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+        .btn-home { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-home:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-addcafeteria { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-addcafeteria:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-maroon { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: border-color 0.2s; text-decoration: none; display: inline-block; }
+        .btn-maroon:hover { background: #8a1020 !important; }
+        /*.nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; transition: border-color 0.2s; }*/
+        /*.nav-links a:hover { border-color: #FFD700; }*/
+
+        /*.btn-maroon { background: #6B0F1A; color: #FFD700 !important; padding: 7px 18px !important; border-radius: 6px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 13px; font-family: 'Poppins', sans-serif; transition: background 0.2s; text-decoration: none; display: inline-block; }*/
+        /*.btn-maroon:hover { background: #8a1020 !important; }*/
+        /*Background for Search*/
+        /*.search-bar { background: #ffffff; padding: 20px 5vw; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }*/
+        /*.search-bar input { flex: 1; min-width: 200px; padding: 10px 16px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; background: #fff; }*/
+        /*.search-bar input:focus { border -color: #6B0F1A; }*/
+        /*.search-bar select { padding: 10px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fff; color: #6B0F1A; }*/
+        .search-bar { background: #ffffff; padding: 20px 5vw; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+        .search-bar input { flex: 1; min-width: 200px; padding: 10px 16px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; background: #fff; }
+        .search-bar input:focus { border-color: #6B0F1A; }
+        .search-bar select { padding: 10px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fff; color: #6B0F1A; }
+        .search-bar select:focus { border-color: #6B0F1A; }
+        .content { flex: 1; padding: 32px 5vw; }
+        .section-title { color: #6B0F1A; font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+        .caf-card { background: #6B0F1A; color: #FFD700; border-radius: 12px; padding: 24px 20px; transition: all 0.2s; }
+        .caf-card:hover { background: #8a1020; color: #FFD700; transform: translateY(-2px); }
+        .caf-icon { font-size: 28px; margin-bottom: 10px; }
+        .caf-name { color: #ffffff; font-size: 15px; font-weight: 600; }
+        .empty { text-align: center; padding: 60px; color: #aaa; font-size: 14px; grid-column: 1/-1; }
+        .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
+
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); z-index: 999; align-items: center; justify-content: center; }
+        .modal-overlay.active { display: flex; }
+        .modal { background: #fff; border-radius: 16px; padding: 36px; width: 90%; max-width: 400px; }
+        .modal-title { color: #6B0F1A; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .modal-sub { color: #aaa; font-size: 12px; margin-bottom: 20px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 11px; font-weight: 600; color: #6B0F1A; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        input[type="text"] { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; }
+        input[type="text"]:focus { border-color: #6B0F1A; background: #fff; }
+        .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-cancel { flex: 1; background: #fff; color: #6B0F1A; padding: 11px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; }
+        .btn-cancel:hover { border-color: #6B0F1A; }
+        .btn-save { flex: 2; background: #6B0F1A; color: #FFD700; padding: 11px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; }
+        .btn-save:hover { background: #8a1020; }
+        .error-msg { color: #c0392b; font-size: 11px; margin-top: 4px; }
+    </style>
+</head>
+<body>
+<div class="stripe"></div>
+<div class="nav">
+    <div class="nav-logo">WildEats</div>
+    <div class="nav-links">
+        <a class="btn-home" href="{% url 'home' %}">Home</a>
+        {% if user.role == 'vendor' or user.role == 'admin' %}
+<!--            <a class="btn-maroon" href="#" onclick="openAddModal()">+ Add Cafeteria</a>-->
+        <a class="btn-addcafeteria" href="{% url 'add-cafeteria' %}">+ Add Cafeteria</a>
+        {% endif %}
+        <button class="btn-maroon" onclick="openLogout()">Logout</button>
+    </div>
+</div>
+
+<div class="search-bar">
+    <input type="text" id="searchInput" value="{{ query }}" placeholder="🔍  Search cafeterias...">
+    <select id="sortFilter">
+        <option value="">Sort By</option>
+        <option value="az" {% if sort == 'az' %}selected{% endif %}>A → Z</option>
+        <option value="za" {% if sort == 'za' %}selected{% endif %}>Z → A</option>
+    </select>
+</div>
+
+<div class="content">
+    <div class="section-title">All Cafeteria Locations</div>
+    <div class="grid">
+        {% for caf in cafeterias %}
+        <div class="caf-card">
+            <div class="caf-icon">🏪</div>
+            <div class="caf-name">{{ caf.Name }}</div>
+        </div>
+        {% empty %}
+        <div class="empty">No cafeterias found. Add one!</div>
+        {% endfor %}
+    </div>
+</div>
+
+<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
+<div class="stripe"></div>
+
+{% if user.role == 'vendor' or user.role == 'admin' %}
+<div class="modal-overlay {% if show_modal %}active{% endif %}" id="addModal">
+    <div class="modal">
+        <div class="modal-title">Add New Cafeteria</div>
+        <div class="modal-sub">Add a cafeteria location to the system</div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Cafeteria Name</label>
+                <input type="text" name="Name" placeholder="e.g. Main Cafeteria" value="{{ form.Name.value|default:'' }}">
+                <div class="error-msg">{% if form.Name.errors %}{{ form.Name.errors.0 }}{% endif %}</div>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-cancel" onclick="closeAddModal()">Cancel</button>
+                <button type="submit" class="btn-save">Save Cafeteria</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endif %}
+
+<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:1000; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">
+        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>
+        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>
+        <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="closeLogout()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
+            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function applyFilters() {
+    const q = document.getElementById('searchInput').value;
+    const sort = document.getElementById('sortFilter').value;
+    window.location.href = `?q=${q}&sort=${sort}`;
+}
+document.getElementById('searchInput').addEventListener('input', function() {
+    clearTimeout(this._timer);
+    this._timer = setTimeout(applyFilters, 400);
+});
+document.getElementById('sortFilter').addEventListener('change', applyFilters);
+
+function openAddModal() { document.getElementById('addModal').classList.add('active'); }
+function closeAddModal() { document.getElementById('addModal').classList.remove('active'); }
+function openLogout() { document.getElementById('logout-modal').style.display = 'flex'; }
+function closeLogout() { document.getElementById('logout-modal').style.display = 'none'; }
+</script>
+</body>
+</html>

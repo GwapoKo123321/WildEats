@@ -2,7 +2,7 @@
 <!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
 <!--&lt;!&ndash;<head>&ndash;&gt;-->
 <!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
-<!--&lt;!&ndash;    <title>WildEats - Login</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>WildEats - Register</title>&ndash;&gt;-->
 <!--&lt;!&ndash;    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">&ndash;&gt;-->
 <!--&lt;!&ndash;    <style>&ndash;&gt;-->
 <!--&lt;!&ndash;        * { margin: 0; padding: 0; box-sizing: border-box; }&ndash;&gt;-->
@@ -22,9 +22,9 @@
 <!--&lt;!&ndash;        input:focus { border-color: #FFD700; }&ndash;&gt;-->
 <!--&lt;!&ndash;        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; }&ndash;&gt;-->
 <!--&lt;!&ndash;        .btn:hover { background: #7A0E1E; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .error { color: #c0392b; font-size: 13px; text-align: center; margin-top: 12px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .register-link { text-align: center; margin-top: 16px; font-size: 13px; color: #aaa; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .register-link a { color: #6B0F1A; font-weight: 600; text-decoration: none; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .error { color: #c0392b; font-size: 12px; margin-top: 4px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .login-link { text-align: center; margin-top: 16px; font-size: 13px; color: #aaa; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .login-link a { color: #6B0F1A; font-weight: 600; text-decoration: none; }&ndash;&gt;-->
 <!--&lt;!&ndash;        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; }&ndash;&gt;-->
 <!--&lt;!&ndash;    </style>&ndash;&gt;-->
 <!--&lt;!&ndash;</head>&ndash;&gt;-->
@@ -38,23 +38,23 @@
 <!--&lt;!&ndash;</div>&ndash;&gt;-->
 <!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
 <!--&lt;!&ndash;    <div class="card">&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="card-title">Welcome Back</div>&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="card-sub">Login to access WildEats</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card-title">Create Account</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card-sub">Join WildEats today</div>&ndash;&gt;-->
 <!--&lt;!&ndash;        <form method="POST">&ndash;&gt;-->
 <!--&lt;!&ndash;            {% csrf_token %}&ndash;&gt;-->
+<!--&lt;!&ndash;            {% for field in form %}&ndash;&gt;-->
 <!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label>Username</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input type="text" name="username" placeholder="Enter your username">&ndash;&gt;-->
+<!--&lt;!&ndash;                <label>{{ field.label }}</label>&ndash;&gt;-->
+<!--&lt;!&ndash;                {{ field }}&ndash;&gt;-->
+<!--&lt;!&ndash;                {% if field.errors %}&ndash;&gt;-->
+<!--&lt;!&ndash;                <div class="error">{{ field.errors }}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;                {% endif %}&ndash;&gt;-->
 <!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label>Password</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input type="password" name="password" placeholder="Enter your password">&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <button class="btn" type="submit">Login</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            {% endfor %}&ndash;&gt;-->
+<!--&lt;!&ndash;            <button class="btn" type="submit">Register</button>&ndash;&gt;-->
 <!--&lt;!&ndash;        </form>&ndash;&gt;-->
-<!--&lt;!&ndash;        {% if error %}<p class="error">{{ error }}</p>{% endif %}&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="register-link">&ndash;&gt;-->
-<!--&lt;!&ndash;            Don't have an account? <a href="{% url 'register' %}">Register here</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="login-link">&ndash;&gt;-->
+<!--&lt;!&ndash;            Already have an account? <a href="{% url 'login' %}">Login here</a>&ndash;&gt;-->
 <!--&lt;!&ndash;        </div>&ndash;&gt;-->
 <!--&lt;!&ndash;    </div>&ndash;&gt;-->
 <!--&lt;!&ndash;</div>&ndash;&gt;-->
@@ -67,7 +67,7 @@
 <!--<html lang="en">-->
 <!--<head>-->
 <!--    <meta charset="UTF-8">-->
-<!--    <title>WildEats - Login</title>-->
+<!--    <title>WildEats - Register</title>-->
 <!--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">-->
 <!--    <style>-->
 <!--        * { margin: 0; padding: 0; box-sizing: border-box; }-->
@@ -87,9 +87,9 @@
 <!--        input:focus { border-color: #FFD700; }-->
 <!--        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; }-->
 <!--        .btn:hover { background: #7A0E1E; }-->
-<!--        .error { color: #c0392b; font-size: 13px; text-align: center; margin-top: 12px; }-->
-<!--        .register-link { text-align: center; margin-top: 16px; font-size: 13px; color: #aaa; }-->
-<!--        .register-link a { color: #6B0F1A; font-weight: 600; text-decoration: none; }-->
+<!--        .error { color: #c0392b; font-size: 12px; margin-top: 4px; }-->
+<!--        .login-link { text-align: center; margin-top: 16px; font-size: 13px; color: #aaa; }-->
+<!--        .login-link a { color: #6B0F1A; font-weight: 600; text-decoration: none; }-->
 <!--        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; }-->
 <!--    </style>-->
 <!--</head>-->
@@ -103,23 +103,23 @@
 <!--</div>-->
 <!--<div class="container">-->
 <!--    <div class="card">-->
-<!--        <div class="card-title">Welcome Back</div>-->
-<!--        <div class="card-sub">Login to access WildEats</div>-->
+<!--        <div class="card-title">Create Account</div>-->
+<!--        <div class="card-sub">Join WildEats today</div>-->
 <!--        <form method="POST">-->
 <!--            {% csrf_token %}-->
+<!--            {% for field in form %}-->
 <!--            <div class="form-group">-->
-<!--                <label>Username</label>-->
-<!--                <input type="text" name="username" placeholder="Enter your username">-->
+<!--                <label>{{ field.label }}</label>-->
+<!--                {{ field }}-->
+<!--                {% if field.errors %}-->
+<!--                <div class="error">{{ field.errors }}</div>-->
+<!--                {% endif %}-->
 <!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label>Password</label>-->
-<!--                <input type="password" name="password" placeholder="Enter your password">-->
-<!--            </div>-->
-<!--            <button class="btn" type="submit">Login</button>-->
+<!--            {% endfor %}-->
+<!--            <button class="btn" type="submit">Register</button>-->
 <!--        </form>-->
-<!--        {% if error %}<p class="error">{{ error }}</p>{% endif %}-->
-<!--        <div class="register-link">-->
-<!--            Don't have an account? <a href="{% url 'register' %}">Register here</a>-->
+<!--        <div class="login-link">-->
+<!--            Already have an account? <a href="{% url 'login' %}">Login here</a>-->
 <!--        </div>-->
 <!--    </div>-->
 <!--</div>-->
@@ -132,7 +132,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WildEats - Login</title>
+    <title>WildEats - Register</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -144,26 +144,26 @@
         /*.nav-links a:hover { border-color: #FFD700; }*/
         .btn-home { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
         .btn-home:hover { background: #6B0F1A; color: #FFD700; }
-        .container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; background: #fff; }
-        .split { display: flex; width: 100%; max-width: 900px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 40px rgba(107,15,26,0.10); border: 1px solid #f0e0a0; }
-        .split-left { background: #6B0F1A; padding: 48px 36px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 40%; text-align: center; }
-        .split-left h2 { color: #FFD700; font-size: 26px; font-weight: 700; margin-bottom: 12px; }
-        .split-left p { color: rgba(255,215,0,0.7); font-size: 13px; line-height: 1.8; }
-        .split-left .logo { font-size: 48px; margin-bottom: 16px; }
-        .split-right { background: #fff; padding: 48px 40px; flex: 1; }
-        .form-title { color: #6B0F1A; font-size: 22px; font-weight: 700; margin-bottom: 6px; }
-        .form-sub { color: #aaa; font-size: 13px; margin-bottom: 28px; }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; font-size: 13px; font-weight: 500; color: #6B0F1A; margin-bottom: 6px; }
-        input { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; transition: border-color 0.2s; }
-        input:focus { border-color: #6B0F1A; background: #fff; }
-        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+        .container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; background: #fff; }
+        .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 16px; padding: 40px; width: 100%; max-width: 520px; box-shadow: 0 8px 40px rgba(107,15,26,0.08); }
+        .role-selector { display: flex; gap: 10px; margin-bottom: 28px; }
+        .role-btn { flex: 1; padding: 12px; border: 2px solid #f0e0a0; border-radius: 30px; background: #fff; color: #6B0F1A; font-size: 13px; font-family: 'Poppins', sans-serif; font-weight: 500; cursor: pointer; text-align: center; text-decoration: none; transition: all 0.2s; display: block; }
+        .role-btn:hover, .role-btn.active { border-color: #6B0F1A; background: #6B0F1A; color: #FFD700; }
+        .form-title { color: #6B0F1A; font-size: 22px; font-weight: 700; margin-bottom: 6px; text-align: center; }
+        .form-sub { color: #000; font-size: 13px; text-align: center; margin-bottom: 24px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; font-size: 12px; font-weight: 600; color: #6B0F1A; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, select { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; transition: border-color 0.2s; box-sizing: border-box; }
+        input:focus, select:focus { border-color: #6B0F1A; background: #fff; }
+        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 13px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
         .btn:hover { background: #8a1020; }
-        .error { color: #c0392b; font-size: 13px; text-align: center; margin-top: 12px; background: #ffeaea; padding: 10px; border-radius: 8px; }
-        .bottom-link { text-align: center; margin-top: 20px; font-size: 13px; color: #aaa; }
+        .error { color: #c0392b; font-size: 11px; margin-top: 4px; }
+        .bottom-link { text-align: center; margin-top: 16px; font-size: 13px; color: #aaa; }
         .bottom-link a { color: #6B0F1A; font-weight: 600; text-decoration: none; }
         .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
-        @media (max-width: 600px) { .split { flex-direction: column; } .split-left { width: 100%; padding: 28px; } }
+        .pick-role { text-align: center; padding: 20px 0; }
+        .pick-role p { color: #000; font-size: 14px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -173,30 +173,99 @@
     <div class="nav-links"><a class="btn-home" href="{% url 'home' %}">Home</a></div>
 </div>
 <div class="container">
-    <div class="split">
-        <div class="split-left">
-            <div class="logo"></div>
-            <h2>WildEats</h2>
-            <p>Your campus cafeteria management system. Login to continue.</p>
+    <div class="card">
+        <div class="form-title">Create Account</div>
+        <div class="form-sub">Join WildEats today</div>
+
+        {% if not role %}
+        <div class="pick-role">
+            <p>Who are you registering as?</p>
+            <div class="role-selector">
+                <a class="role-btn" href="?role=student">Student</a>
+                <a class="role-btn" href="?role=vendor">Vendor</a>
+                <a class="role-btn" href="?role=admin">Admin</a>
+            </div>
         </div>
-        <div class="split-right">
-            <div class="form-title">Welcome Back</div>
-            <div class="form-sub">Login to access your account</div>
-            <form method="POST">
-                {% csrf_token %}
+        {% else %}
+        <div class="role-selector">
+            <a class="role-btn {% if role == 'student' %}active{% endif %}" href="?role=student">Student</a>
+            <a class="role-btn {% if role == 'vendor' %}active{% endif %}" href="?role=vendor">Vendor</a>
+            <a class="role-btn {% if role == 'admin' %}active{% endif %}" href="?role=admin">Admin</a>
+        </div>
+
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="role" value="{{ role }}">
+
+            <div class="form-row">
                 <div class="form-group">
-                    <label>Username</label>
-                    <input type="text" name="username" placeholder="Enter your username" autofocus>
+                    <label>First Name</label>
+                    <input type="text" name="Fname" placeholder="Juan" required>
                 </div>
+                <div class="form-group">
+                    <label>Last Name</label>
+                    <input type="text" name="Lname" placeholder="Dela Cruz" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" name="username" placeholder="Choose a username" required>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" placeholder="your@email.com" required>
+            </div>
+
+            <div class="form-row">
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" name="password" placeholder="Enter your password">
+                    <input type="password" name="password1" placeholder="Password" required>
                 </div>
-                <button class="btn" type="submit">Login</button>
-            </form>
-            {% if error %}<p class="error">{{ error }}</p>{% endif %}
-            <div class="bottom-link">Don't have an account? <a href="{% url 'register' %}">Register here</a></div>
-        </div>
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <input type="password" name="password2" placeholder="Repeat password" required>
+                </div>
+            </div>
+
+            {% if role == 'admin' %}
+            <div class="form-group">
+                <label>Admin Level</label>
+                <input type="text" name="AdminLevel" placeholder="e.g. Supervisor" required>
+            </div>
+            <div class="form-group">
+                <label>Cafeteria Type</label>
+                <select name="CafeteriaType">
+                    <option value="college">College</option>
+                    <option value="highschool">High School</option>
+                </select>
+            </div>
+            {% endif %}
+
+            {% if role == 'vendor' %}
+            <div class="form-group">
+                <label>Contact Number</label>
+                <input type="text" name="ContactNumber" placeholder="09XXXXXXXXX" required>
+            </div>
+            <div class="form-group">
+                <label>Business License Number</label>
+                <input type="text" name="BusinessLicenseNumber" placeholder="License number" required>
+            </div>
+            {% endif %}
+
+            {% if form.errors %}
+            <div style="color:#c0392b; font-size:12px; margin-bottom:12px; background:#ffeaea; padding:10px; border-radius:8px;">
+                {% for field in form %}{% for error in field.errors %}<p>{{ error }}</p>{% endfor %}{% endfor %}
+                {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+            </div>
+            {% endif %}
+
+            <button class="btn" type="submit">Create Account</button>
+        </form>
+        {% endif %}
+
+        <div class="bottom-link">Already have an account? <a href="{% url 'login' %}">Login here</a></div>
     </div>
 </div>
 <!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ food.Name }} - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        .stripe { height: 10px; }
+        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+        /*.nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; }*/
+        /*.nav-links a:hover { border-color: #FFD700; }*/
+        /*.btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 7px 18px !important; border-radius: 6px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 13px; font-family: 'Poppins', sans-serif; }*/
+        /*.btn-logout:hover { background: #8a1020 !important; }*/
+        .btn-fooditem { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-fooditem:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-addfood { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-addfood:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: border-color 0.2s; text-decoration: none; display: inline-block; }
+        .btn-logout:hover { background: #8a1020 !important; }
+
+        .container { flex: 1; max-width: 700px; margin: 40px auto; padding: 0 16px; width: 100%; }
+        .food-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .food-info .food-category { font-size: 11px; background: #FFD700; color: #6B0F1A; padding: 4px 12px; border-radius: 20px; display: inline-block; margin-bottom: 10px; font-weight: 600; text-transform: uppercase; }
+        .food-name { color: #6B0F1A; font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+        .food-price { color: #8a1020; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .food-portion { color: #000; font-size: 13px; }
+        .btn-edit { background: #6B0F1A; color: #FFD700; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap; }
+        .btn-edit:hover { background: #8a1020; }
+        .section { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+        .section h3 { color: #6B0F1A; font-size: 15px; font-weight: 700; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0e0a0; }
+        .nutrition-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+        .nutrition-item { text-align: center; background: #fdfaf4; border-radius: 10px; padding: 14px 10px; }
+        .nutrition-value { color: #6B0F1A; font-size: 20px; font-weight: 700; }
+        .nutrition-unit { color: #000; font-size: 10px; }
+        .nutrition-label { color: #000; font-size: 11px; margin-top: 2px; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f0d0; font-size: 13px; }
+        .info-label { color: #000; }
+        .info-value { color: #6B0F1A; font-weight: 500; }
+        .ingredient-list { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { font-size: 12px; background: #fdfaf4; color: #6B0F1A; padding: 5px 12px; border-radius: 20px; border: 1px solid #f0e0a0; }
+        .tag.allergen { background: #fff3cd; border-color: #FFD700; }
+        .recipe-instructions { color: #555; font-size: 13px; line-height: 1.8; background: #fdfaf4; padding: 14px; border-radius: 8px; }
+        .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
+    </style>
+</head>
+<body>
+<div class="stripe"></div>
+<div class="nav">
+    <div class="nav-logo">WildEats</div>
+    <div class="nav-links">
+        <a class="btn-fooditem" href="{% url 'food-list' %}">Food Items</a>
+        <a class="btn-addfood" href="{% url 'add-food' %}">+ Add Food</a>
+        <button class="btn-logout" onclick="openModal()">Logout</button>
+    </div>
+</div>
+<div class="container">
+    <div class="food-header">
+        <div class="food-info">
+            <div class="food-category">{{ food.get_Category_display }}</div>
+            <div class="food-name">{{ food.Name }}</div>
+            <div class="food-price">₱{{ food.Price }}</div>
+            <div class="food-portion">Portion: {{ food.PortionSize }}</div>
+        </div>
+        <a class="btn-edit" href="{% url 'edit-food' food.pk %}">Edit Food Item</a>
+    </div>
+
+    <div class="section">
+        <h3>Food Item Details</h3>
+        <div class="info-row"><span class="info-label">Cafeteria</span><span class="info-value">{{ food.Cafeteria }}</span></div>
+        <div class="info-row"><span class="info-label">Category</span><span class="info-value">{{ food.get_Category_display }}</span></div>
+        <div class="info-row"><span class="info-label">Price</span><span class="info-value">₱{{ food.Price }}</span></div>
+        <div class="info-row"><span class="info-label">Portion Size</span><span class="info-value">{{ food.PortionSize }}</span></div>
+    </div>
+
+    {% if nutrition %}
+    <div class="section">
+        <h3>Nutrition Facts</h3>
+        <div class="nutrition-grid">
+            <div class="nutrition-item"><div class="nutrition-value">{{ nutrition.Calories }}</div><div class="nutrition-unit">kcal</div><div class="nutrition-label">Calories</div></div>
+            <div class="nutrition-item"><div class="nutrition-value">{{ nutrition.Protein }}</div><div class="nutrition-unit">g</div><div class="nutrition-label">Protein</div></div>
+            <div class="nutrition-item"><div class="nutrition-value">{{ nutrition.Fat }}</div><div class="nutrition-unit">g</div><div class="nutrition-label">Fat</div></div>
+            <div class="nutrition-item"><div class="nutrition-value">{{ nutrition.Carbs }}</div><div class="nutrition-unit">g</div><div class="nutrition-label">Carbohydrates</div></div>
+            <div class="nutrition-item"><div class="nutrition-value">{{ nutrition.Sodium }}</div><div class="nutrition-unit">mg</div><div class="nutrition-label">Sodium</div></div>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if recipe %}
+    <div class="section">
+        <h3>Recipe</h3>
+        <div class="info-row"><span class="info-label">Preparation Time</span><span class="info-value">{{ recipe.PreparationTime }} minutes</span></div>
+        <div style="margin-top:14px;">
+            <div style="color:#888; font-size:12px; margin-bottom:6px; font-weight:600; text-transform:uppercase;">Instructions</div>
+            <div class="recipe-instructions">{{ recipe.Instructions }}</div>
+        </div>
+        <div style="margin-top:16px;">
+            <div style="color:#888; font-size:12px; margin-bottom:10px; font-weight:600; text-transform:uppercase;">Ingredients</div>
+            <div class="ingredient-list">
+                {% for ingredient in recipe.Ingredients.all %}
+                    <span class="tag {% if ingredient.IsAllergen %}allergen{% endif %}">{{ ingredient.Name }}{% if ingredient.IsAllergen %} ⚠️{% endif %}</span>
+                {% empty %}
+                    <p style="color:#aaa; font-size:13px;">No ingredients listed.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>
+<div class="stripe"></div>
+
+<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">
+        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>
+        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>
+        <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="closeModal()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
+            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
+        </div>
+    </div>
+</div>
+<script>
+function openModal() { document.getElementById('logout-modal').style.display = 'flex'; }
+function closeModal() { document.getElementById('logout-modal').style.display = 'none'; }
+</script>
+</body>
+</html>

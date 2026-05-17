@@ -1,267 +1,566 @@
+<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
+<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
+<!--&lt;!&ndash;<head>&ndash;&gt;-->
+<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
+<!--&lt;!&ndash;    <title>WildEats</title>&ndash;&gt;-->
+<!--&lt;!&ndash;    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">&ndash;&gt;-->
+<!--&lt;!&ndash;    <style>&ndash;&gt;-->
+<!--&lt;!&ndash;        * { margin: 0; padding: 0; box-sizing: border-box; }&ndash;&gt;-->
+<!--&lt;!&ndash;        body { font-family: 'Poppins', sans-serif; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .stripe { height: 5px; background: #FFD700; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .nav { background: #6B0F1A; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .nav-logo { color: #FFD700; font-size: clamp(16px, 2vw, 20px); font-weight: 600; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .nav-links { display: flex; gap: 24px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .nav-links a { color: rgba(255,215,0,0.75); font-size: 13px; text-decoration: none; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .nav-links a:hover { color: #FFD700; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .hero { background: #7A0E1E; padding: 8vh 5vw; text-align: center; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .hero h1 { color: #FFD700; font-size: clamp(24px, 4vw, 36px); font-weight: 600; margin-bottom: 10px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .hero p { color: rgba(255,215,0,0.70); margin-bottom: 10px; font-size: 14px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .hero-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .btn-gold { background: #FFD700; color: #6B0F1A; padding: 11px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .btn-outline { background: transparent; color: #FFD700; padding: 11px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1px solid #FFD700; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .section { padding: 4vh 5vw; background: #fdfaf4; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .section-title { color: #6B0F1A; font-size: 16px; font-weight: 600; margin-bottom: 24px; text-align: center; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; max-width: 900px; margin: 0 auto; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 10px; padding: 24px 16px; text-align: center; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .card:hover { border-color: #FFD700; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .card-icon svg { width: 32px; height: 32px; stroke: #6B0F1A; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .card-title { color: #6B0F1A; font-size: 14px; font-weight: 600; margin-bottom: 5px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .card-desc { color: #aaa; font-size: 12px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .food-card { background: #fff; border: 1px solid #f0e0a0; border-radius: 10px; padding: 20px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .food-card:hover { border-color: #FFD700; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .food-name { color: #6B0F1A; font-weight: 600; font-size: 14px; margin-bottom: 4px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .food-meta { color: #888; font-size: 12px; margin-bottom: 6px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .food-nutrition { font-size: 11px; color: #aaa; margin-top: 8px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .tag { font-size: 10px; background: #fdf0b2; color: #6B0F1A; padding: 3px 8px; border-radius: 20px; display: inline-block; margin: 2px; }&ndash;&gt;-->
+<!--&lt;!&ndash;        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; }&ndash;&gt;-->
+<!--&lt;!&ndash;    </style>&ndash;&gt;-->
+<!--&lt;!&ndash;</head>&ndash;&gt;-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="stripe"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="nav">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="nav-logo">WildEats</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="nav-links">&ndash;&gt;-->
+<!--&lt;!&ndash;        <a href="{% url 'home' %}">Home</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        {% if user.is_authenticated %}&ndash;&gt;-->
+<!--&lt;!&ndash;            <a href="{% url 'add-food' %}">Add Food</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            <a href="{% url 'edit-profile' %}">Edit Profile</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            <a href="#" onclick="openModal()">Logout</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        {% else %}&ndash;&gt;-->
+<!--&lt;!&ndash;            <a href="{% url 'login' %}">Login</a>&ndash;&gt;-->
+<!--&lt;!&ndash;            <a href="{% url 'register' %}">Register</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        {% endif %}&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="hero">&ndash;&gt;-->
+<!--&lt;!&ndash;    <h1>Welcome to WildEats</h1>&ndash;&gt;-->
+<!--&lt;!&ndash;    <p>Your all-in-one campus cafeteria management system.</p>&ndash;&gt;-->
+<!--&lt;!&ndash;    <p>Manage food compositions, orders, meal plans, and more.</p>&ndash;&gt;-->
+<!--&lt;!&ndash;    {% if not user.is_authenticated %}&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="hero-actions">&ndash;&gt;-->
+<!--&lt;!&ndash;        <a class="btn-gold" href="{% url 'login' %}">Login</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        <a class="btn-outline" href="{% url 'register' %}">Register</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    {% else %}&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="hero-actions">&ndash;&gt;-->
+<!--&lt;!&ndash;        <a class="btn-gold" href="{% url 'add-food' %}">+ Add New Food Item</a>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    {% endif %}&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;{% if user.is_authenticated %}&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="section">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="section-title">Navigate to Apps</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="cards">&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-icon">&ndash;&gt;-->
+<!--&lt;!&ndash;                <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 8c0 4 7 13 7 13s7-9 7-13c0-3-3-6-7-6z"/><circle cx="12" cy="8" r="2"/></svg>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-title">Food Composition</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-desc">Food items, nutrition & recipes</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-icon">&ndash;&gt;-->
+<!--&lt;!&ndash;                <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-title">Accounts</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-desc">Users, roles & authentication</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-icon">&ndash;&gt;-->
+<!--&lt;!&ndash;                <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-title">Orders</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-desc">Manage orders & payments</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="card">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-icon">&ndash;&gt;-->
+<!--&lt;!&ndash;                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-title">Cafeteria</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="card-desc">Locations & meal plans</div>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="section" style="background: #fff;">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="section-title">Available Food Items</div>&ndash;&gt;-->
+<!--&lt;!&ndash;    <div class="cards">&ndash;&gt;-->
+<!--&lt;!&ndash;        {% for food in food_items %}&ndash;&gt;-->
+<!--&lt;!&ndash;        <div class="food-card">&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="food-name">{{ food.Name }}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="food-meta">₱{{ food.Price }} | {{ food.PortionSize }}</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            {% if food.nutritioninfo %}&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="food-nutrition">&ndash;&gt;-->
+<!--&lt;!&ndash;                Calories: {{ food.nutritioninfo.Calories }} | Protein: {{ food.nutritioninfo.Protein }}g |&ndash;&gt;-->
+<!--&lt;!&ndash;                Fat: {{ food.nutritioninfo.Fat }}g | Carbs: {{ food.nutritioninfo.Carbs }}g&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            {% endif %}&ndash;&gt;-->
+<!--&lt;!&ndash;            {% if food.recipe %}&ndash;&gt;-->
+<!--&lt;!&ndash;            <div class="food-nutrition">Prep Time: {{ food.recipe.PreparationTime }} mins</div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div style="margin-top:8px;">&ndash;&gt;-->
+<!--&lt;!&ndash;                {% for ingredient in food.recipe.Ingredients.all %}&ndash;&gt;-->
+<!--&lt;!&ndash;                    <span class="tag">{{ ingredient.Name }}</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                {% empty %}&ndash;&gt;-->
+<!--&lt;!&ndash;                    <span style="font-size:10px; color:#aaa;">No ingredients listed</span>&ndash;&gt;-->
+<!--&lt;!&ndash;                {% endfor %}&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            {% endif %}&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;        {% empty %}&ndash;&gt;-->
+<!--&lt;!&ndash;        <p style="color:#aaa; font-size:13px; text-align:center;">No food items yet. Add one!</p>&ndash;&gt;-->
+<!--&lt;!&ndash;        {% endfor %}&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+<!--&lt;!&ndash;{% endif %}&ndash;&gt;-->
+
+<!--&lt;!&ndash;<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>&ndash;&gt;-->
+<!--&lt;!&ndash;<div class="stripe"></div>&ndash;&gt;-->
+
+
+<!--&lt;!&ndash;<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center;">&ndash;&gt;-->
+<!--&lt;!&ndash;    <div style="background:#fff; border-radius:12px; padding:32px; max-width:360px; width:90%; text-align:center; font-family:'Poppins',sans-serif;">&ndash;&gt;-->
+<!--&lt;!&ndash;        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>&ndash;&gt;-->
+<!--&lt;!&ndash;        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>&ndash;&gt;-->
+<!--&lt;!&ndash;        <div style="display:flex; gap:12px; justify-content:center;">&ndash;&gt;-->
+<!--&lt;!&ndash;            <button onclick="closeModal()" style="padding:10px 24px; border:1px solid #f0e0a0; background:#fff; border-radius:6px; font-size:13px; font-family:'Poppins',sans-serif; cursor:pointer; color:#6B0F1A; font-weight:500;">Cancel</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:6px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:500;">Yes, Logout</a>&ndash;&gt;-->
+<!--&lt;!&ndash;        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;    </div>&ndash;&gt;-->
+<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+<!--&lt;!&ndash;<script>&ndash;&gt;-->
+<!--&lt;!&ndash;function openModal() { document.getElementById('logout-modal').style.display = 'flex'; }&ndash;&gt;-->
+<!--&lt;!&ndash;function closeModal() { document.getElementById('logout-modal').style.display = 'none'; }&ndash;&gt;-->
+<!--&lt;!&ndash;</script>&ndash;&gt;-->
+
+<!--&lt;!&ndash;</body>&ndash;&gt;-->
+<!--&lt;!&ndash;</html>&ndash;&gt;-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>WildEats</title>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">-->
+<!--    <style>-->
+<!--        * { margin: 0; padding: 0; box-sizing: border-box; }-->
+<!--        body { font-family: 'Poppins', sans-serif; }-->
+<!--        .stripe { height: 5px; background: #FFD700; }-->
+<!--        .nav { background: #6B0F1A; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }-->
+<!--        .nav-logo { color: #FFD700; font-size: clamp(16px, 2vw, 20px); font-weight: 600; }-->
+<!--        .nav-links { display: flex; gap: 24px; }-->
+<!--        .nav-links a { color: rgba(255,215,0,0.75); font-size: 13px; text-decoration: none; }-->
+<!--        .nav-links a:hover { color: #FFD700; }-->
+<!--        .hero { background: #7A0E1E; padding: 8vh 5vw; text-align: center; }-->
+<!--        .hero h1 { color: #FFD700; font-size: clamp(24px, 4vw, 36px); font-weight: 600; margin-bottom: 10px; }-->
+<!--        .hero p { color: rgba(255,215,0,0.70); margin-bottom: 10px; font-size: 14px; }-->
+<!--        .hero-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; }-->
+<!--        .btn-gold { background: #FFD700; color: #6B0F1A; padding: 11px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; }-->
+<!--        .btn-outline { background: transparent; color: #FFD700; padding: 11px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1px solid #FFD700; }-->
+<!--        .section { padding: 4vh 5vw; background: #fdfaf4; }-->
+<!--        .section-title { color: #6B0F1A; font-size: 16px; font-weight: 600; margin-bottom: 24px; text-align: center; }-->
+<!--        .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; max-width: 900px; margin: 0 auto; }-->
+<!--        .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 10px; padding: 24px 16px; text-align: center; }-->
+<!--        .card:hover { border-color: #FFD700; }-->
+<!--        .card-icon svg { width: 32px; height: 32px; stroke: #6B0F1A; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; }-->
+<!--        .card-title { color: #6B0F1A; font-size: 14px; font-weight: 600; margin-bottom: 5px; }-->
+<!--        .card-desc { color: #aaa; font-size: 12px; }-->
+<!--        .food-card { background: #fff; border: 1px solid #f0e0a0; border-radius: 10px; padding: 20px; }-->
+<!--        .food-card:hover { border-color: #FFD700; }-->
+<!--        .food-name { color: #6B0F1A; font-weight: 600; font-size: 14px; margin-bottom: 4px; }-->
+<!--        .food-meta { color: #888; font-size: 12px; margin-bottom: 6px; }-->
+<!--        .food-nutrition { font-size: 11px; color: #aaa; margin-top: 8px; }-->
+<!--        .tag { font-size: 10px; background: #fdf0b2; color: #6B0F1A; padding: 3px 8px; border-radius: 20px; display: inline-block; margin: 2px; }-->
+<!--        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<div class="stripe"></div>-->
+<!--<div class="nav">-->
+<!--    <div class="nav-logo">WildEats</div>-->
+<!--    <div class="nav-links">-->
+<!--        <a href="{% url 'home' %}">Home</a>-->
+<!--        {% if user.is_authenticated %}-->
+<!--            <a href="{% url 'add-food' %}">Add Food</a>-->
+<!--            <a href="{% url 'edit-profile' %}">Edit Profile</a>-->
+<!--            <a href="#" onclick="openModal()">Logout</a>-->
+<!--        {% else %}-->
+<!--            <a href="{% url 'login' %}">Login</a>-->
+<!--            <a href="{% url 'register' %}">Register</a>-->
+<!--        {% endif %}-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="hero">-->
+<!--    <h1>Welcome to WildEats</h1>-->
+<!--    <p>Your all-in-one campus cafeteria management system.</p>-->
+<!--    <p>Manage food compositions, orders, meal plans, and more.</p>-->
+<!--    {% if not user.is_authenticated %}-->
+<!--    <div class="hero-actions">-->
+<!--        <a class="btn-gold" href="{% url 'login' %}">Login</a>-->
+<!--        <a class="btn-outline" href="{% url 'register' %}">Register</a>-->
+<!--    </div>-->
+<!--    {% else %}-->
+<!--    <div class="hero-actions">-->
+<!--        <a class="btn-gold" href="{% url 'add-food' %}">+ Add New Food Item</a>-->
+<!--    </div>-->
+<!--    {% endif %}-->
+<!--</div>-->
+
+<!--{% if user.is_authenticated %}-->
+<!--<div class="section">-->
+<!--    <div class="section-title">Navigate to Apps</div>-->
+<!--    <div class="cards">-->
+<!--        <div class="card">-->
+<!--            <div class="card-icon">-->
+<!--                <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 8c0 4 7 13 7 13s7-9 7-13c0-3-3-6-7-6z"/><circle cx="12" cy="8" r="2"/></svg>-->
+<!--            </div>-->
+<!--            <div class="card-title">Food Composition</div>-->
+<!--            <div class="card-desc">Food items, nutrition & recipes</div>-->
+<!--        </div>-->
+<!--        <div class="card">-->
+<!--            <div class="card-icon">-->
+<!--                <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>-->
+<!--            </div>-->
+<!--            <div class="card-title">Accounts</div>-->
+<!--            <div class="card-desc">Users, roles & authentication</div>-->
+<!--        </div>-->
+<!--        <div class="card">-->
+<!--            <div class="card-icon">-->
+<!--                <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>-->
+<!--            </div>-->
+<!--            <div class="card-title">Orders</div>-->
+<!--            <div class="card-desc">Manage orders & payments</div>-->
+<!--        </div>-->
+<!--        <div class="card">-->
+<!--            <div class="card-icon">-->
+<!--                <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>-->
+<!--            </div>-->
+<!--            <div class="card-title">Cafeteria</div>-->
+<!--            <div class="card-desc">Locations & meal plans</div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="section" style="background: #fff;">-->
+<!--    <div class="section-title">Available Food Items</div>-->
+<!--    <div class="cards">-->
+<!--        {% for food in food_items %}-->
+<!--        <div class="food-card">-->
+<!--            <div class="food-name">{{ food.Name }}</div>-->
+<!--            <div class="food-meta">₱{{ food.Price }} | {{ food.PortionSize }}</div>-->
+<!--            {% if food.nutritioninfo %}-->
+<!--            <div class="food-nutrition">-->
+<!--                Calories: {{ food.nutritioninfo.Calories }} | Protein: {{ food.nutritioninfo.Protein }}g |-->
+<!--                Fat: {{ food.nutritioninfo.Fat }}g | Carbs: {{ food.nutritioninfo.Carbs }}g-->
+<!--            </div>-->
+<!--            {% endif %}-->
+<!--            {% if food.recipe %}-->
+<!--            <div class="food-nutrition">Prep Time: {{ food.recipe.PreparationTime }} mins</div>-->
+<!--            <div style="margin-top:8px;">-->
+<!--                {% for ingredient in food.recipe.Ingredients.all %}-->
+<!--                    <span class="tag">{{ ingredient.Name }}</span>-->
+<!--                {% empty %}-->
+<!--                    <span style="font-size:10px; color:#aaa;">No ingredients listed</span>-->
+<!--                {% endfor %}-->
+<!--            </div>-->
+<!--            {% endif %}-->
+<!--        </div>-->
+<!--        {% empty %}-->
+<!--        <p style="color:#aaa; font-size:13px; text-align:center;">No food items yet. Add one!</p>-->
+<!--        {% endfor %}-->
+<!--    </div>-->
+<!--</div>-->
+<!--{% endif %}-->
+
+<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
+<!--<div class="stripe"></div>-->
+
+<!--<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999; align-items:center; justify-content:center;">-->
+<!--    <div style="background:#fff; border-radius:12px; padding:32px; max-width:360px; width:90%; text-align:center; font-family:'Poppins',sans-serif;">-->
+<!--        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>-->
+<!--        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>-->
+<!--        <div style="display:flex; gap:12px; justify-content:center;">-->
+<!--            <button onclick="closeModal()" style="padding:10px 24px; border:1px solid #f0e0a0; background:#fff; border-radius:6px; font-size:13px; font-family:'Poppins',sans-serif; cursor:pointer; color:#6B0F1A; font-weight:500;">Cancel</button>-->
+<!--            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:6px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:500;">Yes, Logout</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--function openModal() { document.getElementById('logout-modal').style.display = 'flex'; }-->
+<!--function closeModal() { document.getElementById('logout-modal').style.display = 'none'; }-->
+<!--</script>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>WildEats</title>-->
+<!--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">-->
+<!--    <style>-->
+<!--        * { margin: 0; padding: 0; box-sizing: border-box; }-->
+<!--        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }-->
+<!--        .stripe { height: 5px; background: #FFD700; }-->
+<!--        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0e0a0; }-->
+<!--        .nav-logo { color: #6B0F1A; font-size: clamp(16px, 2vw, 22px); font-weight: 700; letter-spacing: 1px; }-->
+<!--        .nav-links { display: flex; align-items: center; gap: 8px; }-->
+<!--        .nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; transition: border-color 0.2s; }-->
+<!--        .nav-links a:hover { border-color: #FFD700; }-->
+<!--        .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 7px 18px !important; border-radius: 6px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 13px; font-family: 'Poppins', sans-serif; transition: background 0.2s; }-->
+<!--        .btn-logout:hover { background: #8a1020 !important; }-->
+<!--        .hero { background: #fff; padding: 80px 5vw 60px; text-align: center; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }-->
+<!--        .hero h1 { color: #6B0F1A; font-size: clamp(28px, 5vw, 52px); font-weight: 700; margin-bottom: 16px; }-->
+<!--        .hero p { color: #888; font-size: clamp(13px, 1.5vw, 16px); margin-bottom: 8px; max-width: 500px; line-height: 1.7; }-->
+<!--        .hero-actions { display: flex; gap: 12px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }-->
+<!--        .btn-primary { background: #6B0F1A; color: #FFD700; padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.2s; }-->
+<!--        .btn-primary:hover { background: #8a1020; }-->
+<!--        .btn-secondary { background: #fff; color: #6B0F1A; padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid #6B0F1A; transition: all 0.2s; }-->
+<!--        .btn-secondary:hover { background: #6B0F1A; color: #FFD700; }-->
+<!--        .features { display: flex; gap: 24px; justify-content: center; margin-top: 60px; flex-wrap: wrap; padding: 0 5vw; }-->
+<!--        .feature-card { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 28px 24px; text-align: center; width: 200px; }-->
+<!--        .feature-card svg { width: 36px; height: 36px; stroke: #6B0F1A; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; }-->
+<!--        .feature-title { color: #6B0F1A; font-size: 14px; font-weight: 600; margin-bottom: 6px; }-->
+<!--        .feature-desc { color: #aaa; font-size: 12px; line-height: 1.6; }-->
+<!--        .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="stripe"></div>-->
+<!--<div class="nav">-->
+<!--    <div class="nav-logo">🍽 WildEats</div>-->
+<!--    <div class="nav-links">-->
+<!--        <a href="{% url 'home' %}">Home</a>-->
+<!--        {% if user.is_authenticated %}-->
+<!--            <a href="{% url 'food-list' %}">Food Items</a>-->
+<!--            {% if user.role == 'vendor' or user.role == 'admin' %}-->
+<!--                <a href="{% url 'add-food' %}">Add Food</a>-->
+<!--            {% endif %}-->
+<!--            <a href="{% url 'edit-profile' %}">Edit Profile</a>-->
+<!--            <button class="btn-logout" onclick="openModal()">Logout</button>-->
+<!--        {% else %}-->
+<!--            <a href="{% url 'login' %}">Login</a>-->
+<!--            <a href="{% url 'register' %}">Register</a>-->
+<!--        {% endif %}-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="hero">-->
+<!--    <h1>Welcome to WildEats 🍔</h1>-->
+<!--    <p>Your all-in-one campus cafeteria management system.</p>-->
+<!--    <p>Discover meals, track nutrition, and manage food compositions with ease.</p>-->
+
+<!--    {% if not user.is_authenticated %}-->
+<!--    <div class="hero-actions">-->
+<!--        <a class="btn-primary" href="{% url 'login' %}">Login</a>-->
+<!--        <a class="btn-secondary" href="{% url 'register' %}">Create Account</a>-->
+<!--    </div>-->
+<!--    {% else %}-->
+<!--    <div class="hero-actions">-->
+<!--        <a class="btn-primary" href="{% url 'food-list' %}">Browse Food Items</a>-->
+<!--    </div>-->
+<!--    {% endif %}-->
+
+<!--    <div class="features">-->
+<!--        <div class="feature-card">-->
+<!--            <svg viewBox="0 0 24 24"><path d="M12 2C8 2 5 5 5 8c0 4 7 13 7 13s7-9 7-13c0-3-3-6-7-6z"/><circle cx="12" cy="8" r="2"/></svg>-->
+<!--            <div class="feature-title">Food Composition</div>-->
+<!--            <div class="feature-desc">Detailed nutrition info for every item</div>-->
+<!--        </div>-->
+<!--        <div class="feature-card">-->
+<!--            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>-->
+<!--            <div class="feature-title">Meal Planning</div>-->
+<!--            <div class="feature-desc">Plan your meals across the cafeteria</div>-->
+<!--        </div>-->
+<!--        <div class="feature-card">-->
+<!--            <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>-->
+<!--            <div class="feature-title">Role Based Access</div>-->
+<!--            <div class="feature-desc">Student, Vendor & Admin portals</div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
+<!--<div class="stripe"></div>-->
+
+<!--<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">-->
+<!--    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">-->
+<!--        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>-->
+<!--        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>-->
+<!--        <div style="display:flex; gap:12px; justify-content:center;">-->
+<!--            <button onclick="closeModal()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; cursor:pointer; color:#6B0F1A; font-weight:500;">Cancel</button>-->
+<!--            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--<script>-->
+<!--function openModal() { document.getElementById('logout-modal').style.display = 'flex'; }-->
+<!--function closeModal() { document.getElementById('logout-modal').style.display = 'none'; }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>WildEats</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Poppins', sans-serif; }
-
-        .stripe { height: 5px; background: #FFD700; }
-
-        .nav {
-            background: #6B0F1A;
-            padding: 16px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        .stripe { height: 10px; }
+        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; } /*border-bottom: px solid #f0e0a0; }*/
+        .nav-logo { color: #6B0F1A; font-size: clamp(22px, 2vw, 22px); font-weight: 700; }
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+        /*.nav-links a { background: #fff; color: #6B0F1A; padding: 7px 14px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }*/
+        /*.nav-links a:hover { background: #6B0F1A; color: #FFD700; }*/
+        .btn-home { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-home:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-profile { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-profile:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-login { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-login:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-register { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: all 0.2s; }
+        .btn-register:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: border-color 0.2s; text-decoration: none; display: inline-block; }
+        .btn-logout:hover { background: #8a1020 !important; }
+        .hero { background: #fff; padding: 80px 5vw 60px; text-align: center; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .hero h1 { color: #6B0F1A; font-size: clamp(28px, 5vw, 52px); font-weight: 700; margin-bottom: 16px; }
+        .hero p { color: #000000; font-size: clamp(13px, 1.5vw, 16px); margin-bottom: 8px; max-width: 500px; line-height: 1.7; }
+        .hero-actions { display: flex; gap: 12px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
+        .btn-primary { background: #6B0F1A; color: #FFD700; padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+        .btn-primary:hover { background: #8a1020; }
+        .btn-browsefooditem { background: #6B0F1A; color: #FFD700 ; padding: 12px 32px; border-radius: 30px; font-weight: 600; border: none; cursor: pointer; font-size: 14px; text-decoration: none; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
+        .btn-browsefooditem:hover { background: #8a1020 ; }
+        .btn-browseingredient { background: #6B0F1A; color: #FFD700 ; padding: 12px 32px; border-radius: 30px; font-weight: 600; border: none; cursor: pointer; font-size: 14px; text-decoration: none; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
+        .btn-browseingredient:hover { background: #8a1020 ; }
+        .btn-browsecafeteria { background: #6B0F1A; color: #FFD700 ; padding: 12px 32px; border-radius: 30px; font-weight: 600; border: none; cursor: pointer; font-size: 14px; text-decoration: none; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
+        .btn-browsecafeteria:hover { background: #8a1020 ; }
+        .btn-secondary { background: #fff; color: #6B0F1A; padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; border: 2px solid #6B0F1A; transition: all 0.2s; }
+        .btn-secondary:hover { background: #6B0F1A; color: #FFD700; }
+        .features { display: flex; gap: 13px; justify-content: center; margin-top: 60px; flex-wrap: wrap; padding: 0 5vw; }
+        .feature-card { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 28px 24px; text-align: center; width: 200px; text-decoration: none; transition: all 0.2s; display: block; }
+        .feature-card:hover { border-color: #6B0F1A; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(107,15,26,0.08); }
+        .feature-card svg { width: 36px; height: 36px; stroke: #6B0F1A; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 12px; }
+        .feature-title { color: #6B0F1A; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        .feature-desc { color: #aaa; font-size: 12px; line-height: 1.6; }
+        .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
+        /*.hero-bg { background-image: url("{% static 'foodcomposition/bg.jpg' %}"); background-size: 80%; background-position: right center; background-repeat: no-repeat; position: relative; }*/
+        .hero-bg {
+        background-image: url("{% static 'foodcomposition/bg.jpg' %}");
+        background-size: 85%;
+        background-position: right center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        position: relative;
         }
-
-        .nav-logo {
-            color: #FFD700;
-            font-size: clamp(16px, 2vw, 20px);
-            font-weight: 600;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-        }
-
-        .nav-links a {
-            color: rgba(255,215,0,0.75);
-            text-decoration: none;
-            font-size: 13px;
-        }
-
-        .nav-links a:hover {
-            color: #FFD700;
-        }
-
-        .hero {
-            background: #7A0E1E;
-            padding: 8vh 5vw;
-            text-align: center;
-        }
-
-        .hero h1 {
-            color: #FFD700;
-            font-size: clamp(24px, 4vw, 36px);
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            color: rgba(255,215,0,0.70);
-            margin-bottom: 10px;
-        }
-
-        .hero-btn {
-            background: #FFD700;
-            color: #6B0F1A;
-            padding: 11px 30px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-block;
-            margin-top: 10px;
-        }
-
-        .section {
-            padding: 4vh 5vw;
-            background: #fdfaf4;
-        }
-
-        .section-title {
-            color: #6B0F1A;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 24px;
-            text-align: center;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 14px;
-            max-width: 1000px;
-            margin: 0 auto;
-        }
-
-        .card {
-            background: white;
-            border: 1px solid #f0e0a0;
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .card:hover {
-            border-color: #FFD700;
-        }
-
-        .card-title {
-            color: #6B0F1A;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .card-desc {
-            color: #888;
-            font-size: 12px;
-        }
-
-        .tag {
-            font-size: 10px;
-            background: #fdf0b2;
-            color: #6B0F1A;
-            padding: 4px 8px;
-            border-radius: 20px;
-            display: inline-block;
-            margin: 2px;
-        }
-
-        .footer {
-            background: #6B0F1A;
-            color: rgba(255,215,0,0.6);
-            text-align: center;
-            padding: 18px;
-            font-size: 12px;
-        }
+        .hero-bg::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0); }
+        .hero-bg > * { position: relative; z-index: 1; }
     </style>
+
 </head>
-
 <body>
-
 <div class="stripe"></div>
-
 <div class="nav">
     <div class="nav-logo">WildEats</div>
-
     <div class="nav-links">
-        <a href="{% url 'home' %}">Home</a>
-
-        <a href="{% url 'home' %}#menu">Menu</a>
-
+        <a class="btn-home" href="{% url 'home' %}">Home</a>
         {% if user.is_authenticated %}
-            <a href="{% url 'add-food' %}">Add New Record</a>
-            <a href="{% url 'edit-profile' %}">Edit Profile</a>
-            <a href="{% url 'logout' %}">Logout</a>
-<!--            <a href="#" onclick="openModal()">Logout</a>-->
+            <a class="btn-profile" href="{% url 'edit-profile' %}">Profile</a>
+            <button class="btn-logout" onclick="openModal()">Logout</button>
         {% else %}
-            <a href="{% url 'login' %}">Login</a>
+<!--            <a href="{% url 'login' %}">Login</a>-->
+            <a class="btn-login" href="{% url 'login' %}">Login</a>
+<!--            <a href="{% url 'register' %}">Register</a>-->
+            <a class="btn-register" href="{% url 'register' %}">Register</a>
         {% endif %}
     </div>
 </div>
 
-<div class="hero">
+<div class="hero {% if not user.is_authenticated %}hero-bg{% endif %}">
     <h1>Welcome to WildEats</h1>
     <p>Your all-in-one campus cafeteria management system.</p>
-    <p>Manage food compositions, orders, meal plans, and more.</p>
+    <p>Discover meals, track nutrition, and manage food compositions with ease.</p>
 
     {% if not user.is_authenticated %}
-        <a class="hero-btn" href="{% url 'login' %}">Login to Continue</a>
+<!--    <div class="hero-actions">-->
+<!--        <a class="btn-primary" href="{% url 'login' %}">Login</a>-->
+<!--        <a class="btn-secondary" href="{% url 'register' %}">Create Account</a>-->
+<!--    </div>-->
+    {% else %}
+    <div class="hero-actions">
+        <a class="btn-browsefooditem" href="{% url 'food-list' %}">Browse Food Items</a>
+        <a class="btn-browseingredient" href="{% url 'ingredient-list' %}">Browse Ingredients</a>
+        <a class="btn-browsecafeteria" href="{% url 'cafeteria-list' %}">Browse Cafeterias</a>
+    </div>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="features">
+        <a class="feature-card" href="{% url 'add-food' %}">
+            <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            <div class="feature-title">Add Food Item</div>
+            <div class="feature-desc">Manage food items with nutrition & recipe</div>
+        </a>
+        <a class="feature-card" href="{% url 'add-ingredient' %}">
+            <svg viewBox="0 0 24 24"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            <div class="feature-title">Add Ingredient</div>
+            <div class="feature-desc">Manage ingredients and allergen info</div>
+        </a>
+        <a class="feature-card" href="{% url 'add-cafeteria' %}">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            <div class="feature-title">Add Cafeteria</div>
+            <div class="feature-desc">Manage cafeteria locations</div>
+        </a>
+    </div>
     {% endif %}
 </div>
 
-{% if user.is_authenticated %}
-<div class="section">
-    <div class="section-title">Navigate to Apps</div>
-
-    <div class="cards">
-        <div class="card">
-            <div class="card-title">Food Composition</div>
-            <div class="card-desc">Food items, nutrition & recipes</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Accounts</div>
-            <div class="card-desc">Users, roles & authentication</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Orders</div>
-            <div class="card-desc">Manage orders & payments</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">Cafeteria</div>
-            <div class="card-desc">Locations & meal plans</div>
-        </div>
-    </div>
-</div>
-
-<!-- ✅ THIS IS THE BLOCK YOU WERE LOOKING FOR -->
-<div class="section">
-    <div class="section-title">Available Food Items</div>
-
-    <div class="cards">
-        {% for food in food_items %}
-        <div class="card">
-
-            <div class="card-title">{{ food.Name }}</div>
-
-            <div class="card-desc">
-                ₱{{ food.Price }} | {{ food.PortionSize }}
-            </div>
-
-            {% if food.nutritioninfo %}
-            <p style="font-size:11px; color:#888; margin-top:10px;">
-                Calories: {{ food.nutritioninfo.Calories }} |
-                Protein: {{ food.nutritioninfo.Protein }}g
-            </p>
-            {% endif %}
-
-            {% if food.recipe %}
-            <p style="font-size:11px; color:#888; margin-top:6px;">
-                Prep Time: {{ food.recipe.PreparationTime }} mins
-            </p>
-
-            <div style="margin-top:8px;">
-                {% for ingredient in food.recipe.Ingredients.all %}
-                    <span class="tag">{{ ingredient.Name }}</span>
-                {% empty %}
-                    <span style="font-size:10px; color:#aaa;">No ingredients</span>
-                {% endfor %}
-            </div>
-            {% endif %}
-
-        </div>
-        {% empty %}
-            <p>No food items available.</p>
-        {% endfor %}
-    </div>
-</div>
-{% endif %}
-
-<div class="footer">
-    WildEats &copy; 2026 — Campus Cafeteria System
-</div>
-
+<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
 <div class="stripe"></div>
 
-<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center;">
-
-    <div style="background:white; padding:30px; border-radius:12px; text-align:center; width:90%; max-width:360px;">
-
-        <h3 style="color:#6B0F1A;">Logging Out</h3>
-        <p style="color:#888; margin:15px 0;">Are you sure you want to log out?</p>
-
-        <button onclick="closeModal()">Cancel</button>
-        <a href="{% url 'logout' %}">Yes, Logout</a>
-
+<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">
+        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>
+        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>
+        <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="closeModal()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
+            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
+        </div>
     </div>
 </div>
-
 <script>
-function openModal() {
-    document.getElementById("logout-modal").style.display = "flex";
-}
-
-function closeModal() {
-    document.getElementById("logout-modal").style.display = "none";
-}
+function openModal() { document.getElementById('logout-modal').style.display = 'flex'; }
+function closeModal() { document.getElementById('logout-modal').style.display = 'none'; }
 </script>
-
 </body>
 </html>
