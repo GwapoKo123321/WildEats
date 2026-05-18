@@ -1,334 +1,4 @@
-<!--&lt;!&ndash;&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<html lang="en">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<head>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <title>Add Food Item - WildEats</title>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <style>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        * { margin: 0; padding: 0; box-sizing: border-box; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        body { font-family: 'Poppins', sans-serif; background: #fdfaf4; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .stripe { height: 5px; background: #FFD700; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .nav { background: #6B0F1A; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .nav-logo { color: #FFD700; font-size: 20px; font-weight: 600; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .nav-links a { color: rgba(255,215,0,0.75); font-size: 13px; text-decoration: none; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .nav-links a:hover { color: #FFD700; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .container { max-width: 650px; margin: 40px auto; background: #fff; padding: 36px; border-radius: 12px; border: 1px solid #f0e0a0; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        h2 { text-align: center; color: #6B0F1A; margin-bottom: 28px; font-size: 20px; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        h3 { color: #6B0F1A; font-size: 14px; margin: 24px 0 12px; border-bottom: 1px solid #f0e0a0; padding-bottom: 6px; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .form-group { margin-bottom: 16px; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        label { font-size: 13px; color: #6B0F1A; font-weight: 500; display: block; margin-bottom: 6px; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #f0e0a0; border-radius: 6px; font-size: 13px; font-family: 'Poppins', sans-serif; box-sizing: border-box; outline: none; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        input:focus, select:focus, textarea:focus { border-color: #FFD700; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 16px; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .btn:hover { background: #7A0E1E; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .back { text-align: center; margin-top: 16px; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .back a { color: #6B0F1A; font-size: 13px; text-decoration: none; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .error { color: #c0392b; font-size: 11px; margin-top: 4px; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; margin-top: 40px; }&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    </style>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;</head>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<body>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<div class="stripe"></div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;<div class="nav">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <div class="nav-logo">WildEats</div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <div class="nav-links">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        <a href="{% url 'home' %}">Home</a>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        <a href="{% url 'logout' %}">Logout</a>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    </div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;&lt;!&ndash;<div class="container">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <h2>Add New Food Item</h2>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <form method="POST">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        {% csrf_token %}&ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;&lt;!&ndash;        <h3>Food Item Details</h3>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        {% for field in food_form %}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        <div class="form-group">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            <label>{{ field.label }}</label>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            {{ field }}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            {% if field.errors %}<div class="error">{{ field.errors }}</div>{% endif %}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        {% endfor %}&ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;&lt;!&ndash;        <h3>Nutrition Info</h3>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        {% for field in nutrition_form %}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        <div class="form-group">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            <label>{{ field.label }}</label>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            {{ field }}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            {% if field.errors %}<div class="error">{{ field.errors }}</div>{% endif %}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        {% endfor %}&ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;&lt;!&ndash;        <h3>Recipe</h3>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        {% for field in recipe_form %}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        <div class="form-group">&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            <label>{{ field.label }}</label>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            {{ field }}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;            {% if field.errors %}<div class="error">{{ field.errors }}</div>{% endif %}&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        </div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;        {% endfor %}&ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;&lt;!&ndash;        <button class="btn" type="submit">Save Food Item</button>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    </form>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;    <div class="back"><a href="{% url 'home' %}">← Back to Home</a></div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;&lt;!&ndash;<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;</body>&ndash;&gt;&ndash;&gt;-->
-<!--&lt;!&ndash;&lt;!&ndash;</html>&ndash;&gt;&ndash;&gt;-->
-
-<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
-<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
-<!--&lt;!&ndash;<head>&ndash;&gt;-->
-<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
-<!--&lt;!&ndash;    <title>Add Food Item - WildEats</title>&ndash;&gt;-->
-<!--&lt;!&ndash;    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">&ndash;&gt;-->
-<!--&lt;!&ndash;    <style>&ndash;&gt;-->
-<!--&lt;!&ndash;        * { margin: 0; padding: 0; box-sizing: border-box; }&ndash;&gt;-->
-<!--&lt;!&ndash;        body { font-family: 'Poppins', sans-serif; background: #fdfaf4; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .stripe { height: 5px; background: #FFD700; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .nav { background: #6B0F1A; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .nav-logo { color: #FFD700; font-size: 20px; font-weight: 600; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .nav-links a { color: rgba(255,215,0,0.75); font-size: 13px; text-decoration: none; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .nav-links a:hover { color: #FFD700; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .container { max-width: 650px; margin: 40px auto; background: #fff; padding: 36px; border-radius: 12px; border: 1px solid #f0e0a0; }&ndash;&gt;-->
-<!--&lt;!&ndash;        h2 { text-align: center; color: #6B0F1A; margin-bottom: 28px; font-size: 20px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        h3 { color: #6B0F1A; font-size: 14px; margin: 24px 0 12px; border-bottom: 1px solid #f0e0a0; padding-bottom: 6px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .form-group { margin-bottom: 16px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        label { font-size: 13px; color: #6B0F1A; font-weight: 500; display: block; margin-bottom: 6px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        input, select, textarea { width: 100%; padding: 10px 12px; border: 1px solid #f0e0a0; border-radius: 6px; font-size: 13px; font-family: 'Poppins', sans-serif; box-sizing: border-box; outline: none; }&ndash;&gt;-->
-<!--&lt;!&ndash;        input:focus, select:focus, textarea:focus { border-color: #FFD700; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 16px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .btn:hover { background: #7A0E1E; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .back { text-align: center; margin-top: 16px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .back a { color: #6B0F1A; font-size: 13px; text-decoration: none; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .error { color: #c0392b; font-size: 11px; margin-top: 4px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; margin-top: 40px; }&ndash;&gt;-->
-<!--&lt;!&ndash;    </style>&ndash;&gt;-->
-<!--&lt;!&ndash;</head>&ndash;&gt;-->
-<!--&lt;!&ndash;<body>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="stripe"></div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="nav">&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="nav-logo">WildEats</div>&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="nav-links">&ndash;&gt;-->
-<!--&lt;!&ndash;        <a href="{% url 'home' %}">Home</a>&ndash;&gt;-->
-<!--&lt;!&ndash;        <a href="{% url 'logout' %}">Logout</a>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
-<!--&lt;!&ndash;    <h2>Add New Food Item</h2>&ndash;&gt;-->
-<!--&lt;!&ndash;    <form method="POST">&ndash;&gt;-->
-<!--&lt;!&ndash;        {% csrf_token %}&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <h3>Food Item Details</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;        {% for field in food_form %}&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;            <label>{{ field.label }}</label>&ndash;&gt;-->
-<!--&lt;!&ndash;            {{ field }}&ndash;&gt;-->
-<!--&lt;!&ndash;            {% if field.errors %}<div class="error">{{ field.errors }}</div>{% endif %}&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        {% endfor %}&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <h3>Nutrition Info</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;        {% for field in nutrition_form %}&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;            <label>{{ field.label }}</label>&ndash;&gt;-->
-<!--&lt;!&ndash;            {{ field }}&ndash;&gt;-->
-<!--&lt;!&ndash;            {% if field.errors %}<div class="error">{{ field.errors }}</div>{% endif %}&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        {% endfor %}&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <h3>Recipe</h3>&ndash;&gt;-->
-<!--&lt;!&ndash;        {% for field in recipe_form %}&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;            <label>{{ field.label }}</label>&ndash;&gt;-->
-<!--&lt;!&ndash;            {{ field }}&ndash;&gt;-->
-<!--&lt;!&ndash;            {% if field.errors %}<div class="error">{{ field.errors }}</div>{% endif %}&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;        {% endfor %}&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <button class="btn" type="submit">Save Food Item</button>&ndash;&gt;-->
-<!--&lt;!&ndash;    </form>&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="back"><a href="{% url 'home' %}">← Back to Home</a></div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>&ndash;&gt;-->
-<!--&lt;!&ndash;</body>&ndash;&gt;-->
-<!--&lt;!&ndash;</html>&ndash;&gt;-->
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Add Food Item - WildEats</title>-->
-<!--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">-->
-<!--    <style>-->
-<!--        * { margin: 0; padding: 0; box-sizing: border-box; }-->
-<!--        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }-->
-<!--        .stripe { height: 5px; background: #FFD700; }-->
-<!--        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0e0a0; }-->
-<!--        .nav-logo { color: #6B0F1A; font-size: 20px; font-weight: 700; }-->
-<!--        .nav-links { display: flex; align-items: center; gap: 8px; }-->
-<!--        .nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; }-->
-<!--        .nav-links a:hover { border-color: #FFD700; }-->
-<!--        .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 7px 18px !important; border-radius: 6px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 13px; font-family: 'Poppins', sans-serif; }-->
-<!--        .btn-logout:hover { background: #8a1020 !important; }-->
-<!--        .container { flex: 1; max-width: 680px; margin: 40px auto; padding: 0 16px; width: 100%; }-->
-<!--        .page-title { color: #6B0F1A; font-size: 22px; font-weight: 700; margin-bottom: 28px; }-->
-<!--        .section { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 24px; margin-bottom: 20px; }-->
-<!--        .section h3 { color: #6B0F1A; font-size: 14px; font-weight: 700; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0e0a0; text-transform: uppercase; letter-spacing: 0.5px; }-->
-<!--        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }-->
-<!--        .form-group { margin-bottom: 14px; }-->
-<!--        label { display: block; font-size: 12px; font-weight: 600; color: #6B0F1A; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }-->
-<!--        input, select, textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; transition: border-color 0.2s; }-->
-<!--        input:focus, select:focus, textarea:focus { border-color: #6B0F1A; background: #fff; }-->
-<!--        textarea { resize: vertical; min-height: 90px; }-->
-<!--        .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 8px; }-->
-<!--        .checkbox-item { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1.5px solid #f0e0a0; border-radius: 8px; cursor: pointer; transition: border-color 0.2s; }-->
-<!--        .checkbox-item:hover { border-color: #6B0F1A; }-->
-<!--        .checkbox-item input[type="checkbox"] { width: auto; padding: 0; margin: 0; accent-color: #6B0F1A; }-->
-<!--        .checkbox-item label { font-size: 12px; font-weight: 400; text-transform: none; letter-spacing: 0; cursor: pointer; margin: 0; color: #555; }-->
-<!--        .error { color: #c0392b; font-size: 11px; margin-top: 4px; }-->
-<!--        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 14px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.2s; }-->
-<!--        .btn:hover { background: #8a1020; }-->
-<!--        .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="stripe"></div>-->
-<!--<div class="nav">-->
-<!--    <div class="nav-logo">🍽 WildEats</div>-->
-<!--    <div class="nav-links">-->
-<!--        <a href="{% url 'food-list' %}">Food Items</a>-->
-<!--        <button class="btn-logout" onclick="openModal()">Logout</button>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="container">-->
-<!--    <div class="page-title">Add New Food Item</div>-->
-<!--    <form method="POST">-->
-<!--        {% csrf_token %}-->
-
-<!--        <div class="section">-->
-<!--            <h3>Food Item Details</h3>-->
-<!--            <div class="form-row">-->
-<!--                <div class="form-group">-->
-<!--                    <label>Food Name</label>-->
-<!--                    {{ food_form.Name }}-->
-<!--                    {% if food_form.Name.errors %}<div class="error">{{ food_form.Name.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>Price (₱)</label>-->
-<!--                    {{ food_form.Price }}-->
-<!--                    {% if food_form.Price.errors %}<div class="error">{{ food_form.Price.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-row">-->
-<!--                <div class="form-group">-->
-<!--                    <label>Portion Size</label>-->
-<!--                    {{ food_form.PortionSize }}-->
-<!--                    {% if food_form.PortionSize.errors %}<div class="error">{{ food_form.PortionSize.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>Category</label>-->
-<!--                    {{ food_form.Category }}-->
-<!--                    {% if food_form.Category.errors %}<div class="error">{{ food_form.Category.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label>Cafeteria</label>-->
-<!--                {{ food_form.Cafeteria }}-->
-<!--                {% if food_form.Cafeteria.errors %}<div class="error">{{ food_form.Cafeteria.errors }}</div>{% endif %}-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="section">-->
-<!--            <h3>Nutrition Info</h3>-->
-<!--            <div class="form-row">-->
-<!--                <div class="form-group">-->
-<!--                    <label>Calories (kcal)</label>-->
-<!--                    {{ nutrition_form.Calories }}-->
-<!--                    {% if nutrition_form.Calories.errors %}<div class="error">{{ nutrition_form.Calories.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>Protein (g)</label>-->
-<!--                    {{ nutrition_form.Protein }}-->
-<!--                    {% if nutrition_form.Protein.errors %}<div class="error">{{ nutrition_form.Protein.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-row">-->
-<!--                <div class="form-group">-->
-<!--                    <label>Fat (g)</label>-->
-<!--                    {{ nutrition_form.Fat }}-->
-<!--                    {% if nutrition_form.Fat.errors %}<div class="error">{{ nutrition_form.Fat.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--                <div class="form-group">-->
-<!--                    <label>Carbohydrates (g)</label>-->
-<!--                    {{ nutrition_form.Carbs }}-->
-<!--                    {% if nutrition_form.Carbs.errors %}<div class="error">{{ nutrition_form.Carbs.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label>Sodium (mg)</label>-->
-<!--                {{ nutrition_form.Sodium }}-->
-<!--                {% if nutrition_form.Sodium.errors %}<div class="error">{{ nutrition_form.Sodium.errors }}</div>{% endif %}-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="section">-->
-<!--            <h3>Recipe</h3>-->
-<!--            <div class="form-row">-->
-<!--                <div class="form-group">-->
-<!--                    <label>Preparation Time (minutes)</label>-->
-<!--                    {{ recipe_form.PreparationTime }}-->
-<!--                    {% if recipe_form.PreparationTime.errors %}<div class="error">{{ recipe_form.PreparationTime.errors }}</div>{% endif %}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label>Instructions</label>-->
-<!--                {{ recipe_form.Instructions }}-->
-<!--                {% if recipe_form.Instructions.errors %}<div class="error">{{ recipe_form.Instructions.errors }}</div>{% endif %}-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label>Ingredients</label>-->
-<!--                <div class="checkbox-grid">-->
-<!--                    {% for choice in recipe_form.Ingredients %}-->
-<!--                    <div class="checkbox-item">-->
-<!--                        {{ choice.tag }}-->
-<!--                        <label>{{ choice.choice_label }}</label>-->
-<!--                    </div>-->
-<!--                    {% endfor %}-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <button class="btn" type="submit">Save Food Item</button>-->
-<!--    </form>-->
-<!--</div>-->
-
-<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
-<!--<div class="stripe"></div>-->
-
-<!--<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">-->
-<!--    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">-->
-<!--        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>-->
-<!--        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>-->
-<!--        <div style="display:flex; gap:12px; justify-content:center;">-->
-<!--            <button onclick="closeModal()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>-->
-<!--            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<script>-->
-<!--function openModal() { document.getElementById('logout-modal').style.display = 'flex'; }-->
-<!--function closeModal() { document.getElementById('logout-modal').style.display = 'none'; }-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
-
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -342,10 +12,6 @@
         .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
         .nav-links { display: flex; align-items: center; gap: 8px; }
-        /*.nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; }*/
-        /*.nav-links a:hover { border-color: #FFD700; }*/
-        /*.btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 7px 18px !important; border-radius: 6px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 13px; font-family: 'Poppins', sans-serif; }*/
-        /*.btn-logout:hover { background: #8a1020 !important; }*/
         .btn-home { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
         .btn-home:hover { background: #6B0F1A; color: #FFD700; }
         .btn-fooditem { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
@@ -354,14 +20,22 @@
         .btn-logout:hover { background: #8a1020 !important; }
 
         /* Page content */
-        .content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+        .content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            background-image: url("{% static 'foodcomposition/inbg.jpg' %}");
+            background-size: 78%;
+            background-position: right center;
+            background-repeat: no-repeat;
+        }
         .start-card { text-align: center; max-width: 420px; }
         .start-card h2 { color: #6B0F1A; font-size: 24px; font-weight: 700; margin-bottom: 10px; }
         .start-card p { color: #aaa; font-size: 14px; margin-bottom: 28px; line-height: 1.7; }
         .btn-start { background: #6B0F1A; color: #FFD700; padding: 13px 36px; border: none; border-radius: 30px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: border-color 0.2s; }
         .btn-start:hover { background: #8a1020; }
-        /*.btn-start { background: #6B0F1A; color: #FFD700; padding: 13px 36px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }*/
-        /*.btn-start:hover { background: #8a1020; }*/
 
         /* Modal overlay */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); z-index: 999; align-items: center; justify-content: center; }
@@ -407,10 +81,6 @@
         .btn-back:hover { background: #8a1020; }
         .btn-next { flex: 1; background: #6B0F1A; color: #FFD700; padding: 10px 20px; border: none; border-radius: 30px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
         .btn-next:hover { background: #8a1020; }
-        /*.btn-back { flex: 1; background: #fff; color: #6B0F1A; padding: 11px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: border-color 0.2s; }*/
-        /*.btn-back:hover { border-color: #6B0F1A; }*/
-        /*.btn-next { flex: 2; background: #6B0F1A; color: #FFD700; padding: 11px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }*/
-        /*.btn-next:hover { background: #8a1020; }*/
 
         .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
     </style>
@@ -430,7 +100,7 @@
     <div class="start-card">
         <h2>Add New Food Item</h2>
         <p>Fill in the food details, nutrition info, and recipe in 3 easy steps.</p>
-        <button class="btn-start" onclick="openModal()">+ Start Adding Food</button>
+        <button class="btn-start" onclick="openModal()">+ Add New Food</button>
     </div>
 </div>
 
@@ -569,17 +239,6 @@
                     <label>Instructions</label>
                     {{ recipe_form.Instructions }}
                 </div>
-<!--                <div class="form-group">-->
-<!--                    <label>Ingredients (check all that apply)</label>-->
-<!--                    <div class="checkbox-grid">-->
-<!--                        {% for choice in recipe_form.Ingredients %}-->
-<!--                        <div class="checkbox-item">-->
-<!--                            {{ choice.tag }}-->
-<!--                            <label>{{ choice.choice_label }}</label>-->
-<!--                        </div>-->
-<!--                        {% endfor %}-->
-<!--                    </div>-->
-<!--                </div>-->
                 <div class="form-group">
                     <label>Ingredients (check all that apply)</label>
                     {% if ingredients %}

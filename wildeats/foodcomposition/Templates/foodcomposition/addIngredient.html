@@ -1,101 +1,4 @@
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Add Ingredient - WildEats</title>-->
-<!--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">-->
-<!--    <style>-->
-<!--        * { margin: 0; padding: 0; box-sizing: border-box; }-->
-<!--        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }-->
-<!--        .stripe { height: 5px; background: #FFD700; }-->
-<!--        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0e0a0; }-->
-<!--        .nav-logo { color: #6B0F1A; font-size: 20px; font-weight: 700; }-->
-<!--        .nav-links { display: flex; align-items: center; gap: 8px; }-->
-<!--        .nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; transition: border-color 0.2s; }-->
-<!--        .nav-links a:hover { border-color: #FFD700; }-->
-<!--        .btn-maroon { background: #6B0F1A; color: #FFD700 !important; padding: 7px 18px !important; border-radius: 6px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 13px; font-family: 'Poppins', sans-serif; transition: background 0.2s; text-decoration: none; display: inline-block; }-->
-<!--        .btn-maroon:hover { background: #8a1020 !important; }-->
-<!--        .content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }-->
-<!--        .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 16px; padding: 40px; width: 100%; max-width: 460px; box-shadow: 0 8px 40px rgba(107,15,26,0.08); }-->
-<!--        .card-title { color: #6B0F1A; font-size: 22px; font-weight: 700; margin-bottom: 4px; }-->
-<!--        .card-sub { color: #aaa; font-size: 13px; margin-bottom: 28px; }-->
-<!--        .form-group { margin-bottom: 18px; }-->
-<!--        label { display: block; font-size: 11px; font-weight: 600; color: #6B0F1A; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }-->
-<!--        input[type="text"] { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; transition: border-color 0.2s; }-->
-<!--        input[type="text"]:focus { border-color: #6B0F1A; background: #fff; }-->
-<!--        .checkbox-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid #f0e0a0; border-radius: 8px; cursor: pointer; transition: border-color 0.2s; }-->
-<!--        .checkbox-row:hover { border-color: #6B0F1A; }-->
-<!--        .checkbox-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: #6B0F1A; cursor: pointer; }-->
-<!--        .checkbox-row label { font-size: 13px; font-weight: 500; color: #555; cursor: pointer; margin: 0; text-transform: none; letter-spacing: 0; }-->
-<!--        .allergen-note { color: #7a5c00; font-size: 11px; margin-top: 6px; background: #fff8e1; padding: 8px 12px; border-radius: 6px; }-->
-<!--        .error-msg { color: #c0392b; font-size: 11px; margin-top: 4px; }-->
-<!--        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 13px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.2s; }-->
-<!--        .btn:hover { background: #8a1020; }-->
-<!--        .back { text-align: center; margin-top: 16px; }-->
-<!--        .back a { color: #6B0F1A; font-size: 13px; text-decoration: none; }-->
-<!--        .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="stripe"></div>-->
-<!--<div class="nav">-->
-<!--    <div class="nav-logo">🍽 WildEats</div>-->
-<!--    <div class="nav-links">-->
-<!--        <a href="{% url 'home' %}">Home</a>-->
-<!--        <a href="{% url 'ingredient-list' %}">Ingredient List</a>-->
-<!--        <button class="btn-maroon" onclick="openLogout()">Logout</button>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="content">-->
-<!--    <div class="card">-->
-<!--        <div class="card-title">Add New Ingredient</div>-->
-<!--        <div class="card-sub">Add an ingredient to the system for use in recipes</div>-->
-
-<!--        <form method="POST">-->
-<!--            {% csrf_token %}-->
-<!--            <div class="form-group">-->
-<!--                <label>Ingredient Name</label>-->
-<!--                <input type="text" name="Name" placeholder="e.g. Garlic, Milk, Wheat..." value="{{ form.Name.value|default:'' }}" autofocus>-->
-<!--                <div class="error-msg">{% if form.Name.errors %}{{ form.Name.errors.0 }}{% endif %}</div>-->
-<!--            </div>-->
-
-<!--            <div class="form-group">-->
-<!--                <label>Allergen Status</label>-->
-<!--                <div class="checkbox-row">-->
-<!--                    <input type="checkbox" name="IsAllergen" id="isAllergen" {% if form.IsAllergen.value %}checked{% endif %}>-->
-<!--                    <label for="isAllergen">This ingredient is a known allergen</label>-->
-<!--                </div>-->
-<!--                <div class="allergen-note">⚠️ Common allergens include: Milk, Eggs, Wheat, Soy, Peanuts, Tree Nuts, Fish, Shellfish</div>-->
-<!--            </div>-->
-
-<!--            <button class="btn" type="submit">Save Ingredient</button>-->
-<!--        </form>-->
-
-<!--        <div class="back"><a href="{% url 'ingredient-list' %}">← Back to Ingredient List</a></div>-->
-<!--    </div>-->
-<!--</div>-->
-
-<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
-<!--<div class="stripe"></div>-->
-
-<!--<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">-->
-<!--    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">-->
-<!--        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>-->
-<!--        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>-->
-<!--        <div style="display:flex; gap:12px; justify-content:center;">-->
-<!--            <button onclick="closeLogout()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>-->
-<!--            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<script>-->
-<!--function openLogout() { document.getElementById('logout-modal').style.display = 'flex'; }-->
-<!--function closeLogout() { document.getElementById('logout-modal').style.display = 'none'; }-->
-<!--</script>-->
-<!--</body>-->
-<!--</html>-->
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -108,11 +11,7 @@
         .stripe { height: 10px;}
         .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
-        .nav-links { display: flexx; align-items: center; gap: 8px; }
-        /*.nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; transition: border-color 0.2s; }*/
-        /*.nav-links a:hover { border-color: #FFD700; }*/
-        /*.btn-maroon { background: #6B0F1A; color: #FFD700 !important; padding: 7px 18px !important; border-radius: 6px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 13px; font-family: 'Poppins', sans-serif; transition: background 0.2s; text-decoration: none; display: inline-block; }*/
-        /*.btn-maroon:hover { background: #8a1020 !important; }*/
+        .nav-links { display: flex; align-items: center; gap: 8px; }
         .btn-home { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
         .btn-home:hover { background: #6B0F1A; color: #FFD700; }
         .btn-ingredientlist { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
@@ -121,16 +20,23 @@
         .btn-maroon:hover { background: #8a1020 !important; }
 
         /* Start page */
-        .content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+        .content {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 16px;
+            background-image: url("{% static 'foodcomposition/inbg.jpg' %}");
+            background-size: 78%;
+            background-position: right center;
+            background-repeat: no-repeat;
+        }
         .start-card { text-align: center; max-width: 420px; }
         .start-icon { font-size: 56px; margin-bottom: 20px; }
         .start-card h2 { color: #6B0F1A; font-size: 24px; font-weight: 700; margin-bottom: 10px; }
         .start-card p { color: #aaa; font-size: 14px; margin-bottom: 28px; line-height: 1.7; }
         .btn-start { background: #6B0F1A; color: #FFD700; padding: 13px 36px; border: none; border-radius: 30px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: border-color 0.2s; }
         .btn-start:hover { background: #8a1020; }
-        /*.btn-start { background: #6B0F1A; color: #FFD700; padding: 13px 36px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }*/
-        /*.btn-start:hover { background: #8a1020; }*/
-
 
         /* Modal */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.45); z-index: 999; align-items: center; justify-content: center; }
@@ -140,7 +46,7 @@
         .modal-sub { color: #000; font-size: 12px; margin-bottom: 24px; }
         .form-group { margin-bottom: 18px; }
         label { display: block; font-size: 11px; font-weight: 600; color: #6B0F1A; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        input[type="text"] { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; transition: border-color 0.2s; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; transition: border-color 0.2s; }
         input[type="text"]:focus { border-color: #6B0F1A; background: #fff; }
         .checkbox-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid #f0e0a0; border-radius: 8px; cursor: pointer; transition: border-color 0.2s; }
         .checkbox-row:hover { border-color: #6B0F1A; }
@@ -153,12 +59,6 @@
         .btn-cancel:hover { background: #8a1020; }
         .btn-save { flex: 1; background: #6B0F1A; color: #FFD700; padding: 10px 20px; border: none; border-radius: 30px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
         .btn-save:hover { background: #8a1020; }
-        /*.btn-cancel { flex: 1; background: #fff; color: #6B0F1A; padding: 11px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: border-color 0.2s; }*/
-        /*.btn-cancel:hover { border-color: #6B0F1A; }*/
-        /*.btn-save { flex: 2; background: #6B0F1A; color: #FFD700; padding: 11px; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }*/
-        /*.btn-save:hover { background: #8a1020; }*/
-
-        .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
     </style>
 </head>
 <body>
@@ -213,7 +113,7 @@
 
             <div class="form-group">
                 <label>Low Stock Threshold</label>
-                <input type="number" name="Threshold" placeholder="e.g. 10" min="0" step="0.1" value="{{ form.Threshold.value|default:'' }}">
+                <input type="number" name="Threshold" placeholder="e.g. 10" min="1" value="{{ form.Threshold.value|default:'' }}">
                 <div class="error-msg">{% if form.Threshold.errors %}{{ form.Threshold.errors.0 }}{% endif %}</div>
             </div>
 

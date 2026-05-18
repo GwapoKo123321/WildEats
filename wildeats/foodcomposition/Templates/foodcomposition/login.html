@@ -1,133 +1,4 @@
-<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
-<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
-<!--&lt;!&ndash;<head>&ndash;&gt;-->
-<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
-<!--&lt;!&ndash;    <title>WildEats - Login</title>&ndash;&gt;-->
-<!--&lt;!&ndash;    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">&ndash;&gt;-->
-<!--&lt;!&ndash;    <style>&ndash;&gt;-->
-<!--&lt;!&ndash;        * { margin: 0; padding: 0; box-sizing: border-box; }&ndash;&gt;-->
-<!--&lt;!&ndash;        body { font-family: 'Poppins', sans-serif; background: #fdfaf4; display: flex; flex-direction: column; min-height: 100vh; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .stripe { height: 5px; background: #FFD700; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .nav { background: #6B0F1A; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .nav-logo { color: #FFD700; font-size: 20px; font-weight: 600; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .nav-links a { color: rgba(255,215,0,0.75); font-size: 13px; text-decoration: none; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .nav-links a:hover { color: #FFD700; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 40px 36px; width: 100%; max-width: 400px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .card-title { color: #6B0F1A; font-size: 22px; font-weight: 600; margin-bottom: 6px; text-align: center; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .card-sub { color: #aaa; font-size: 13px; text-align: center; margin-bottom: 28px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .form-group { margin-bottom: 18px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        label { display: block; font-size: 13px; font-weight: 500; color: #6B0F1A; margin-bottom: 6px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        input { width: 100%; padding: 10px 14px; border: 1px solid #f0e0a0; border-radius: 6px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; box-sizing: border-box; }&ndash;&gt;-->
-<!--&lt;!&ndash;        input:focus { border-color: #FFD700; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .btn:hover { background: #7A0E1E; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .error { color: #c0392b; font-size: 13px; text-align: center; margin-top: 12px; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .register-link { text-align: center; margin-top: 16px; font-size: 13px; color: #aaa; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .register-link a { color: #6B0F1A; font-weight: 600; text-decoration: none; }&ndash;&gt;-->
-<!--&lt;!&ndash;        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; }&ndash;&gt;-->
-<!--&lt;!&ndash;    </style>&ndash;&gt;-->
-<!--&lt;!&ndash;</head>&ndash;&gt;-->
-<!--&lt;!&ndash;<body>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="stripe"></div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="nav">&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="nav-logo">WildEats</div>&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="nav-links">&ndash;&gt;-->
-<!--&lt;!&ndash;        <a href="{% url 'home' %}">Home</a>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="card">&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="card-title">Welcome Back</div>&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="card-sub">Login to access WildEats</div>&ndash;&gt;-->
-<!--&lt;!&ndash;        <form method="POST">&ndash;&gt;-->
-<!--&lt;!&ndash;            {% csrf_token %}&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label>Username</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input type="text" name="username" placeholder="Enter your username">&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <div class="form-group">&ndash;&gt;-->
-<!--&lt;!&ndash;                <label>Password</label>&ndash;&gt;-->
-<!--&lt;!&ndash;                <input type="password" name="password" placeholder="Enter your password">&ndash;&gt;-->
-<!--&lt;!&ndash;            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;            <button class="btn" type="submit">Login</button>&ndash;&gt;-->
-<!--&lt;!&ndash;        </form>&ndash;&gt;-->
-<!--&lt;!&ndash;        {% if error %}<p class="error">{{ error }}</p>{% endif %}&ndash;&gt;-->
-<!--&lt;!&ndash;        <div class="register-link">&ndash;&gt;-->
-<!--&lt;!&ndash;            Don't have an account? <a href="{% url 'register' %}">Register here</a>&ndash;&gt;-->
-<!--&lt;!&ndash;        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>&ndash;&gt;-->
-<!--&lt;!&ndash;<div class="stripe"></div>&ndash;&gt;-->
-<!--&lt;!&ndash;</body>&ndash;&gt;-->
-<!--&lt;!&ndash;</html>&ndash;&gt;-->
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>WildEats - Login</title>-->
-<!--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">-->
-<!--    <style>-->
-<!--        * { margin: 0; padding: 0; box-sizing: border-box; }-->
-<!--        body { font-family: 'Poppins', sans-serif; background: #fdfaf4; display: flex; flex-direction: column; min-height: 100vh; }-->
-<!--        .stripe { height: 5px; background: #FFD700; }-->
-<!--        .nav { background: #6B0F1A; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; }-->
-<!--        .nav-logo { color: #FFD700; font-size: 20px; font-weight: 600; }-->
-<!--        .nav-links a { color: rgba(255,215,0,0.75); font-size: 13px; text-decoration: none; }-->
-<!--        .nav-links a:hover { color: #FFD700; }-->
-<!--        .container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }-->
-<!--        .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 40px 36px; width: 100%; max-width: 400px; }-->
-<!--        .card-title { color: #6B0F1A; font-size: 22px; font-weight: 600; margin-bottom: 6px; text-align: center; }-->
-<!--        .card-sub { color: #aaa; font-size: 13px; text-align: center; margin-bottom: 28px; }-->
-<!--        .form-group { margin-bottom: 18px; }-->
-<!--        label { display: block; font-size: 13px; font-weight: 500; color: #6B0F1A; margin-bottom: 6px; }-->
-<!--        input { width: 100%; padding: 10px 14px; border: 1px solid #f0e0a0; border-radius: 6px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; box-sizing: border-box; }-->
-<!--        input:focus { border-color: #FFD700; }-->
-<!--        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; }-->
-<!--        .btn:hover { background: #7A0E1E; }-->
-<!--        .error { color: #c0392b; font-size: 13px; text-align: center; margin-top: 12px; }-->
-<!--        .register-link { text-align: center; margin-top: 16px; font-size: 13px; color: #aaa; }-->
-<!--        .register-link a { color: #6B0F1A; font-weight: 600; text-decoration: none; }-->
-<!--        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="stripe"></div>-->
-<!--<div class="nav">-->
-<!--    <div class="nav-logo">WildEats</div>-->
-<!--    <div class="nav-links">-->
-<!--        <a href="{% url 'home' %}">Home</a>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<div class="container">-->
-<!--    <div class="card">-->
-<!--        <div class="card-title">Welcome Back</div>-->
-<!--        <div class="card-sub">Login to access WildEats</div>-->
-<!--        <form method="POST">-->
-<!--            {% csrf_token %}-->
-<!--            <div class="form-group">-->
-<!--                <label>Username</label>-->
-<!--                <input type="text" name="username" placeholder="Enter your username">-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label>Password</label>-->
-<!--                <input type="password" name="password" placeholder="Enter your password">-->
-<!--            </div>-->
-<!--            <button class="btn" type="submit">Login</button>-->
-<!--        </form>-->
-<!--        {% if error %}<p class="error">{{ error }}</p>{% endif %}-->
-<!--        <div class="register-link">-->
-<!--            Don't have an account? <a href="{% url 'register' %}">Register here</a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
-<!--<div class="stripe"></div>-->
-<!--</body>-->
-<!--</html>-->
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -140,12 +11,11 @@
         .stripe { height: 10px; }
         .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
-        /*.nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; }*/
-        /*.nav-links a:hover { border-color: #FFD700; }*/
+        .nav-links { display: flex; align-items: center; gap: 8px; }
         .btn-home { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
         .btn-home:hover { background: #6B0F1A; color: #FFD700; }
         .container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; background: #fff; }
-        .split { display: flex; width: 100%; max-width: 900px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 40px rgba(107,15,26,0.10); border: 1px solid #f0e0a0; }
+        .split { display: flex; width: 100%; max-width: 900px; border-radius: 16px; overflow: hidden; box-shadow: 0 8px 40px rgba(107,15,26,0.10); }
         .split-left { background: #6B0F1A; padding: 48px 36px; display: flex; flex-direction: column; justify-content: center; align-items: center; width: 40%; text-align: center; }
         .split-left h2 { color: #FFD700; font-size: 26px; font-weight: 700; margin-bottom: 12px; }
         .split-left p { color: rgba(255,215,0,0.7); font-size: 13px; line-height: 1.8; }
@@ -162,6 +32,30 @@
         .error { color: #c0392b; font-size: 13px; text-align: center; margin-top: 12px; background: #ffeaea; padding: 10px; border-radius: 8px; }
         .bottom-link { text-align: center; margin-top: 20px; font-size: 13px; color: #aaa; }
         .bottom-link a { color: #6B0F1A; font-weight: 600; text-decoration: none; }
+        .container {
+        background-image: url("{% static 'foodcomposition/bg.jpg' %}");
+        background-size: 90%;
+        background-position: center center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        position: relative;
+        border-radius: 20px;
+        margin: -5px 5vw;
+        overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(255, 255, 255, 0.90) 0%,
+                rgba(255, 255, 255, 0.30) 50%,
+                rgba(255, 255, 255, 0) 75%
+            );
+            pointer-events: none;
+        }
+        .container > * { position: relative; z-index: 1; }
         .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
         @media (max-width: 600px) { .split { flex-direction: column; } .split-left { width: 100%; padding: 28px; } }
     </style>
@@ -172,6 +66,7 @@
     <div class="nav-logo">WildEats</div>
     <div class="nav-links"><a class="btn-home" href="{% url 'home' %}">Home</a></div>
 </div>
+
 <div class="container">
     <div class="split">
         <div class="split-left">

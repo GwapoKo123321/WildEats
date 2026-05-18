@@ -1,193 +1,3 @@
-<!--&lt;!&ndash;<!DOCTYPE html>&ndash;&gt;-->
-<!--&lt;!&ndash;<html lang="en">&ndash;&gt;-->
-<!--&lt;!&ndash;<head>&ndash;&gt;-->
-<!--&lt;!&ndash;    <meta charset="UTF-8">&ndash;&gt;-->
-<!--&lt;!&ndash;    <title>Edit Profile - WildEats</title>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <style>&ndash;&gt;-->
-<!--&lt;!&ndash;        * { margin: 0; padding: 0; box-sizing: border-box; }&ndash;&gt;-->
-<!--&lt;!&ndash;        body { font-family: 'Poppins', sans-serif; background: #fdfaf4; }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        .stripe { height: 5px; background: #FFD700; }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        .nav {&ndash;&gt;-->
-<!--&lt;!&ndash;            background: #6B0F1A;&ndash;&gt;-->
-<!--&lt;!&ndash;            padding: 16px 32px;&ndash;&gt;-->
-<!--&lt;!&ndash;            display: flex;&ndash;&gt;-->
-<!--&lt;!&ndash;            justify-content: space-between;&ndash;&gt;-->
-<!--&lt;!&ndash;            align-items: center;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        .nav-logo {&ndash;&gt;-->
-<!--&lt;!&ndash;            color: #FFD700;&ndash;&gt;-->
-<!--&lt;!&ndash;            font-weight: 600;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        .nav-links a {&ndash;&gt;-->
-<!--&lt;!&ndash;            color: rgba(255,215,0,0.75);&ndash;&gt;-->
-<!--&lt;!&ndash;            text-decoration: none;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-left: 16px;&ndash;&gt;-->
-<!--&lt;!&ndash;            font-size: 13px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        .nav-links a:hover {&ndash;&gt;-->
-<!--&lt;!&ndash;            color: #FFD700;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        .container {&ndash;&gt;-->
-<!--&lt;!&ndash;            max-width: 500px;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin: 60px auto;&ndash;&gt;-->
-<!--&lt;!&ndash;            background: white;&ndash;&gt;-->
-<!--&lt;!&ndash;            padding: 30px;&ndash;&gt;-->
-<!--&lt;!&ndash;            border-radius: 12px;&ndash;&gt;-->
-<!--&lt;!&ndash;            border: 1px solid #f0e0a0;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        h2 {&ndash;&gt;-->
-<!--&lt;!&ndash;            color: #6B0F1A;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-bottom: 20px;&ndash;&gt;-->
-<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        label {&ndash;&gt;-->
-<!--&lt;!&ndash;            font-size: 12px;&ndash;&gt;-->
-<!--&lt;!&ndash;            color: #6B0F1A;&ndash;&gt;-->
-<!--&lt;!&ndash;            display: block;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-top: 12px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        input {&ndash;&gt;-->
-<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
-<!--&lt;!&ndash;            padding: 10px;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-top: 5px;&ndash;&gt;-->
-<!--&lt;!&ndash;            border: 1px solid #ddd;&ndash;&gt;-->
-<!--&lt;!&ndash;            border-radius: 6px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        button {&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-top: 20px;&ndash;&gt;-->
-<!--&lt;!&ndash;            width: 100%;&ndash;&gt;-->
-<!--&lt;!&ndash;            padding: 12px;&ndash;&gt;-->
-<!--&lt;!&ndash;            background: #FFD700;&ndash;&gt;-->
-<!--&lt;!&ndash;            border: none;&ndash;&gt;-->
-<!--&lt;!&ndash;            border-radius: 6px;&ndash;&gt;-->
-<!--&lt;!&ndash;            font-weight: 600;&ndash;&gt;-->
-<!--&lt;!&ndash;            color: #6B0F1A;&ndash;&gt;-->
-<!--&lt;!&ndash;            cursor: pointer;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        button:hover {&ndash;&gt;-->
-<!--&lt;!&ndash;            background: #f2c200;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-
-<!--&lt;!&ndash;        .footer {&ndash;&gt;-->
-<!--&lt;!&ndash;            text-align: center;&ndash;&gt;-->
-<!--&lt;!&ndash;            padding: 18px;&ndash;&gt;-->
-<!--&lt;!&ndash;            font-size: 12px;&ndash;&gt;-->
-<!--&lt;!&ndash;            color: rgba(255,215,0,0.6);&ndash;&gt;-->
-<!--&lt;!&ndash;            background: #6B0F1A;&ndash;&gt;-->
-<!--&lt;!&ndash;            margin-top: 60px;&ndash;&gt;-->
-<!--&lt;!&ndash;        }&ndash;&gt;-->
-<!--&lt;!&ndash;    </style>&ndash;&gt;-->
-<!--&lt;!&ndash;</head>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<body>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<div class="stripe"></div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<div class="nav">&ndash;&gt;-->
-<!--&lt;!&ndash;    <div class="nav-logo">WildEats</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <div class="nav-links">&ndash;&gt;-->
-<!--&lt;!&ndash;        <a href="{% url 'home' %}">Home</a>&ndash;&gt;-->
-<!--&lt;!&ndash;        <a href="{% url 'logout' %}">Logout</a>&ndash;&gt;-->
-<!--&lt;!&ndash;    </div>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
-<!--&lt;!&ndash;    <h2>Edit Profile</h2>&ndash;&gt;-->
-
-<!--&lt;!&ndash;    <form method="post">&ndash;&gt;-->
-<!--&lt;!&ndash;        {% csrf_token %}&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <label>Username</label>&ndash;&gt;-->
-<!--&lt;!&ndash;        <input type="text" name="username" value="{{ user.username }}">&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <label>Email</label>&ndash;&gt;-->
-<!--&lt;!&ndash;        <input type="email" name="email" value="{{ user.email }}">&ndash;&gt;-->
-
-<!--&lt;!&ndash;        <button type="submit">Save Changes</button>&ndash;&gt;-->
-<!--&lt;!&ndash;    </form>&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;<div class="footer">&ndash;&gt;-->
-<!--&lt;!&ndash;    WildEats © 2026&ndash;&gt;-->
-<!--&lt;!&ndash;</div>&ndash;&gt;-->
-
-<!--&lt;!&ndash;</body>&ndash;&gt;-->
-<!--&lt;!&ndash;</html>&ndash;&gt;-->
-
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Edit Profile - WildEats</title>-->
-<!--    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">-->
-<!--    <style>-->
-<!--        * { margin: 0; padding: 0; box-sizing: border-box; }-->
-<!--        body { font-family: 'Poppins', sans-serif; background: #fdfaf4; display: flex; flex-direction: column; min-height: 100vh; }-->
-<!--        .stripe { height: 5px; background: #FFD700; }-->
-<!--        .nav { background: #6B0F1A; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; }-->
-<!--        .nav-logo { color: #FFD700; font-weight: 600; font-size: 20px; }-->
-<!--        .nav-links a { color: rgba(255,215,0,0.75); text-decoration: none; margin-left: 16px; font-size: 13px; }-->
-<!--        .nav-links a:hover { color: #FFD700; }-->
-<!--        .container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }-->
-<!--        .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 40px 36px; width: 100%; max-width: 420px; }-->
-<!--        .card-title { color: #6B0F1A; font-size: 22px; font-weight: 600; margin-bottom: 24px; text-align: center; }-->
-<!--        .form-group { margin-bottom: 18px; }-->
-<!--        label { font-size: 13px; color: #6B0F1A; font-weight: 500; display: block; margin-bottom: 6px; }-->
-<!--        input { width: 100%; padding: 10px 14px; border: 1px solid #f0e0a0; border-radius: 6px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; box-sizing: border-box; }-->
-<!--        input:focus { border-color: #FFD700; }-->
-<!--        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 12px; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; }-->
-<!--        .btn:hover { background: #7A0E1E; }-->
-<!--        .back { text-align: center; margin-top: 16px; }-->
-<!--        .back a { color: #6B0F1A; font-size: 13px; text-decoration: none; }-->
-<!--        .footer { background: #6B0F1A; color: rgba(255,215,0,0.6); text-align: center; padding: 16px; font-size: 12px; }-->
-<!--    </style>-->
-<!--</head>-->
-<!--<body>-->
-<!--<div class="stripe"></div>-->
-<!--<div class="nav">-->
-<!--    <div class="nav-logo">WildEats</div>-->
-<!--    <div class="nav-links">-->
-<!--        <a href="{% url 'home' %}">Home</a>-->
-<!--        <a href="{% url 'logout' %}">Logout</a>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<div class="container">-->
-<!--    <div class="card">-->
-<!--        <div class="card-title">Edit Profile</div>-->
-<!--        <form method="POST">-->
-<!--            {% csrf_token %}-->
-<!--            <div class="form-group">-->
-<!--                <label>Username</label>-->
-<!--                <input type="text" name="username" value="{{ user.username }}">-->
-<!--            </div>-->
-<!--            <div class="form-group">-->
-<!--                <label>Email</label>-->
-<!--                <input type="email" name="email" value="{{ user.email }}">-->
-<!--            </div>-->
-<!--            <button class="btn" type="submit">Save Changes</button>-->
-<!--        </form>-->
-<!--        <div class="back"><a href="{% url 'home' %}">← Back to Home</a></div>-->
-<!--    </div>-->
-<!--</div>-->
-<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
-<!--</body>-->
-<!--</html>-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -201,14 +11,10 @@
         .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
         .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
         .nav-links { display: flex; align-items: center; gap: 8px; }
-        /*.nav-links a { color: #6B0F1A; font-size: 13px; text-decoration: none; padding: 7px 14px; border-radius: 6px; border: 1.5px solid transparent; }*/
-        /*.nav-links a:hover { border-color: #FFD700; }*/
         .btn-home { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
         .btn-home:hover { background: #6B0F1A; color: #FFD700; }
         .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: border-color 0.2s; text-decoration: none; display: inline-block; }
         .btn-logout:hover { background: #8a1020 !important; }
-        /*.btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 7px 18px !important; border-radius: 6px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 13px; font-family: 'Poppins', sans-serif; }*/
-        /*.btn-logout:hover { background: #8a1020 !important; }*/
         .container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }
         .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 16px; padding: 40px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(107,15,26,0.08); }
         .avatar { width: 72px; height: 72px; background: #6B0F1A; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; }
@@ -218,11 +24,6 @@
         .form-group { margin-bottom: 16px; }
         label { display: block; font-size: 12px; font-weight: 600; color: #6B0F1A; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
         input { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; transition: border-color 0.2s; }
-        /*input:focus { border-color: #6B0F1A; background: #fff; }*/
-        /*.btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 13px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.2s; }*/
-        /*.btn:hover { background: #8a1020; }*/
-        /*.back { text-align: center; margin-top: 16px; }*/
-        /*.back a { color: #6B0F1A; font-size: 13px; text-decoration: none; }*/
         .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 14px; border: none; border-radius: 30px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
         .btn:hover { background: #8a1020; }
         .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
@@ -265,7 +66,6 @@
             </div>
             <button class="btn" type="submit">Save Changes</button>
         </form>
-<!--        <div class="back"><a href="{% url 'home' %}">← Back to Home</a></div>-->
     </div>
 </div>
 <!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
