@@ -180,6 +180,13 @@ class VendorProfile(models.Model):
 
 class Cafeteria(models.Model):
     Name = models.CharField(max_length=100)
+    Location = models.CharField(max_length=200, default='')
+    OperatingHours = models.CharField(max_length=100, default='', help_text="e.g. 7:00 AM - 5:00 PM")
+    Capacity = models.IntegerField(default=1)
+
+    def clean(self):
+        if self.Capacity <= 0:
+            raise ValidationError("Capacity must be greater than zero.")
 
     def __str__(self):
         return self.Name
@@ -225,12 +232,29 @@ COMMON_INGREDIENTS = [
 #         return self.Name
 
 class Ingredient(models.Model):
+    UNIT_CHOICES = [
+        ('g', 'Grams (g)'),
+        ('kg', 'Kilograms (kg)'),
+        ('ml', 'Milliliters (ml)'),
+        ('L', 'Liters (L)'),
+        ('pcs', 'Pieces (pcs)'),
+        ('tbsp', 'Tablespoon (tbsp)'),
+        ('tsp', 'Teaspoon (tsp)'),
+        ('cup', 'Cup'),
+    ]
     Name = models.CharField(max_length=100, unique=True)
+    QuantityUnit = models.CharField(max_length=20, choices=UNIT_CHOICES, default='g')
+    Threshold = models.FloatField(default=0, help_text="Minimum stock before alert")
+    StorageCondition = models.CharField(max_length=200, default='')
+    ExpiryDate = models.DateField(null=True, blank=True)
     IsAllergen = models.BooleanField(default=False)
+
+    def clean(self):
+        if self.Threshold < 0:
+            raise ValidationError("Threshold must be zero or positive.")
 
     def __str__(self):
         return self.Name
-
 
 class FoodItem(models.Model):
     Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE, null=True, blank=True)

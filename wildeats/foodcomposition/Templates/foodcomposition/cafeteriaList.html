@@ -35,10 +35,15 @@
         .content { flex: 1; padding: 32px 5vw; }
         .section-title { color: #6B0F1A; font-size: 18px; font-weight: 700; margin-bottom: 20px; }
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-        .caf-card { background: #6B0F1A; color: #FFD700; border-radius: 12px; padding: 24px 20px; transition: all 0.2s; }
+        /*.caf-card { background: #6B0F1A; color: #FFD700; border-radius: 12px; padding: 24px 20px; transition: all 0.2s; }*/
+        /*.caf-card:hover { background: #8a1020; color: #FFD700; transform: translateY(-2px); }*/
+        /*.caf-icon { font-size: 28px; margin-bottom: 10px; }*/
+        /*.caf-name { color: #ffffff; font-size: 15px; font-weight: 600; }*/
+        .caf-card { background: #6B0F1A; border-radius: 12px; padding: 24px 20px; transition: all 0.2s; text-decoration: none; display: block; }
         .caf-card:hover { background: #8a1020; color: #FFD700; transform: translateY(-2px); }
         .caf-icon { font-size: 28px; margin-bottom: 10px; }
-        .caf-name { color: #ffffff; font-size: 15px; font-weight: 600; }
+        .caf-name { color: #fff; font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+        .caf-meta { color: #fff; font-size: 12px; margin-top: 2px; }
         .empty { text-align: center; padding: 60px; color: #aaa; font-size: 14px; grid-column: 1/-1; }
         .footer { background: #6B0F1A; color: rgba(255,215,0,0.7); text-align: center; padding: 20px 5vw; font-size: 12px; }
 
@@ -84,16 +89,19 @@
 
 <div class="content">
     <div class="section-title">All Cafeteria Locations</div>
-    <div class="grid">
-        {% for caf in cafeterias %}
-        <div class="caf-card">
-            <div class="caf-icon">🏪</div>
-            <div class="caf-name">{{ caf.Name }}</div>
+        <div class="grid">
+            {% for caf in cafeterias %}
+            <a class="caf-card" href="{% url 'cafeteria-detail' caf.pk %}">
+                <div class="caf-icon">🏪</div>
+                <div class="caf-name">{{ caf.Name }}</div>
+                <div class="caf-meta">{{ caf.Location }}</div>
+                <div class="caf-meta">{{ caf.OperatingHours }}</div>
+                <div class="caf-meta">Capacity: {{ caf.Capacity }}</div>
+            </a>
+            {% empty %}
+            <div class="empty">No cafeterias found. Add one!</div>
+            {% endfor %}
         </div>
-        {% empty %}
-        <div class="empty">No cafeterias found. Add one!</div>
-        {% endfor %}
-    </div>
 </div>
 
 <!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->

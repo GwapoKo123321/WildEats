@@ -310,7 +310,25 @@ class VendorRegisterForm(UserCreationForm):
 class CafeteriaForm(forms.ModelForm):
     class Meta:
         model = Cafeteria
-        fields = ['Name']
+        fields = ['Name', 'Location', 'OperatingHours', 'Capacity']
+        labels = {
+            'Name': 'Cafeteria Name',
+            'Location': 'Location',
+            'OperatingHours': 'Operating Hours',
+            'Capacity': 'Capacity',
+        }
+
+    def clean_Name(self):
+        name = self.cleaned_data.get('Name')
+        if Cafeteria.objects.filter(Name__iexact=name).exists():
+            raise forms.ValidationError("This cafeteria already exists.")
+        return name
+
+    def clean_Capacity(self):
+        capacity = self.cleaned_data.get('Capacity')
+        if capacity is not None and capacity <= 0:
+            raise forms.ValidationError("Capacity must be greater than zero.")
+        return capacity
 
 
 class FoodItemForm(forms.ModelForm):
@@ -381,30 +399,102 @@ class RecipeForm(forms.ModelForm):
                 pass
         return recipe
 
-class IngredientForm(forms.ModelForm):
-    class Meta:
-        model = Ingredient
-        fields = ['Name', 'IsAllergen']
-        labels = {
-            'Name': 'Ingredient Name',
-            'IsAllergen': 'Is this an allergen?',
-        }
-
-    def clean_Name(self):
-        name = self.cleaned_data.get('Name')
-        if Ingredient.objects.filter(Name__iexact=name).exists():
-            raise forms.ValidationError("This ingredient already exists.")
-        return name
-
-
 class CafeteriaForm(forms.ModelForm):
     class Meta:
         model = Cafeteria
-        fields = ['Name']
-        labels = {'Name': 'Cafeteria Name'}
+        fields = ['Name', 'Location', 'OperatingHours', 'Capacity']
 
     def clean_Name(self):
         name = self.cleaned_data.get('Name')
-        if Cafeteria.objects.filter(Name__iexact=name).exists():
+        qs = Cafeteria.objects.filter(Name__iexact=name)
+        if self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
             raise forms.ValidationError("This cafeteria already exists.")
         return name
+
+    def clean_Capacity(self):
+        capacity = self.cleaned_data.get('Capacity')
+        if capacity is not None and capacity <= 0:
+            raise forms.ValidationError("Capacity must be greater than zero.")
+        return capacity
+
+
+class IngredientForm(forms.ModelForm):
+    ExpiryDate = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        label='Expiry Date',
+        required=False
+    )
+
+    class Meta:
+        model = Ingredient
+        fields = ['Name', 'QuantityUnit', 'Threshold', 'StorageCondition', 'ExpiryDate', 'IsAllergen']
+
+    def clean_Name(self):
+        name = self.cleaned_data.get('Name')
+        qs = Ingredient.objects.filter(Name__iexact=name)
+        if self.instance.pk:
+            qs = qs.exclude(pk=self.instance.pk)
+        if qs.exists():
+            raise forms.ValidationError("This ingredient already exists.")
+        return name
+
+    def clean_Threshold(self):
+        threshold = self.cleaned_data.get('Threshold')
+        if threshold is not None and threshold < 0:
+            raise forms.ValidationError("Threshold must be zero or positive.")
+        return threshold
+
+# class IngredientForm(forms.ModelForm):
+#     UNIT_CHOICES = [
+#         ('g', 'Grams (g)'),
+#         ('kg', 'Kilograms (kg)'),
+#         ('ml', 'Milliliters (ml)'),
+#         ('L', 'Liters (L)'),
+#         ('pcs', 'Pieces (pcs)'),
+#         ('tbsp', 'Tablespoon (tbsp)'),
+#         ('tsp', 'Teaspoon (tsp)'),
+#         ('cup', 'Cup'),
+#     ]
+#     ExpiryDate = forms.DateField(
+#         widget=forms.DateInput(attrs={'type': 'date'}),
+#         label='Expiry Date'
+#     )
+#
+#     class Meta:
+#         model = Ingredient
+#         fields = ['Name', 'QuantityUnit', 'Threshold', 'StorageCondition', 'ExpiryDate', 'IsAllergen']
+#         labels = {
+#             'Name': 'Ingredient Name',
+#             'QuantityUnit': 'Quantity Unit',
+#             'Threshold': 'Low Stock Threshold',
+#             'StorageCondition': 'Storage Condition',
+#             'ExpiryDate': 'Expiry Date',
+#             'IsAllergen': 'Is Allergen?',
+#         }
+#
+#     def clean_Name(self):
+#         name = self.cleaned_data.get('Name')
+#         if Ingredient.objects.filter(Name__iexact=name).exists():
+#             raise forms.ValidationError("This ingredient already exists.")
+#         return name
+#
+#     def clean_Threshold(self):
+#         threshold = self.cleaned_data.get('Threshold')
+#         if threshold is not None and threshold < 0:
+#             raise forms.ValidationError("Threshold must be zero or positive.")
+#         return threshold
+#
+#
+# class CafeteriaForm(forms.ModelForm):
+#     class Meta:
+#         model = Cafeteria
+#         fields = ['Name']
+#         labels = {'Name': 'Cafeteria Name'}
+#
+#     def clean_Name(self):
+#         name = self.cleaned_data.get('Name')
+#         if Cafeteria.objects.filter(Name__iexact=name).exists():
+#             raise forms.ValidationError("This cafeteria already exists.")
+#         return name

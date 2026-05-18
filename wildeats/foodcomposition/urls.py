@@ -68,7 +68,11 @@ urlpatterns = [
     path('foods/<int:pk>/edit/', views.EditFoodItemView.as_view(), name='edit-food'),
     path('ingredients/', views.IngredientListView.as_view(), name='ingredient-list'),
     path('ingredients/add/', views.AddIngredientView.as_view(), name='add-ingredient'),
+    path('ingredients/<int:pk>/', views.IngredientDetailView.as_view(), name='ingredient-detail'),
+    path('ingredients/<int:pk>/edit/', views.EditIngredientView.as_view(), name='edit-ingredient'),
     path('cafeterias/', views.CafeteriaListView.as_view(), name='cafeteria-list'),
     path('cafeterias/add/', views.AddCafeteriaView.as_view(), name='add-cafeteria'),
+    path('cafeterias/<int:pk>/', views.CafeteriaDetailView.as_view(), name='cafeteria-detail'),
+    path('cafeterias/<int:pk>/edit/', views.EditCafeteriaView.as_view(), name='edit-cafeteria'),
     path('edit-profile/', views.EditProfileView.as_view(), name='edit-profile'),
 ]

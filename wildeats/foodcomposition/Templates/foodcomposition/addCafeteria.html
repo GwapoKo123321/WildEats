@@ -119,10 +119,11 @@
         .modal { background: #fff; border-radius: 16px; padding: 36px; width: 90%; max-width: 440px; }
         .modal-title { color: #6B0F1A; font-size: 18px; font-weight: 700; margin-bottom: 4px; }
         .modal-sub { color: #000; font-size: 12px; margin-bottom: 24px; }
-        .form-group { margin-bottom: 18px; }
+        .form-group { margin-bottom: 16px; }
         label { display: block; font-size: 11px; font-weight: 600; color: #6B0F1A; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
-        input[type="text"] { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; transition: border-color 0.2s; }
+        input[type="text"], input[type="number"] { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; transition: border-color 0.2s; }
         input[  type="text"]:focus { border-color: #6B0F1A; background: #fff; }
+        input:focus { border-color: #6B0F1A; background: #fff; }
         .error-msg { color: #c0392b; font-size: 11px; margin-top: 4px; }
         .modal-actions { display: flex; gap: 10px; margin-top: 20px; }
         .btn-cancel { flex: 1; background: #6B0F1A; color: #FFD700; padding: 10px 20px; border: none; border-radius: 30px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
@@ -155,16 +156,36 @@
 
 <!-- Add Cafeteria Modal -->
 <div class="modal-overlay {% if form.errors %}active{% endif %}" id="addModal">
-    <div class="modal">
+    <div class="modal" style="max-width: 520px;">
         <div class="modal-title">New Cafeteria</div>
         <div class="modal-sub">Fill in the cafeteria details below</div>
         <form method="POST">
             {% csrf_token %}
+
             <div class="form-group">
                 <label>Cafeteria Name</label>
-                <input type="text" name="Name" placeholder="e.g. Main Cafeteria, Building A Canteen..." value="{{ form.Name.value|default:'' }}" autofocus>
+                <input type="text" name="Name" placeholder="e.g. Main Cafeteria" value="{{ form.Name.value|default:'' }}">
                 <div class="error-msg">{% if form.Name.errors %}{{ form.Name.errors.0 }}{% endif %}</div>
             </div>
+
+            <div class="form-group">
+                <label>Location</label>
+                <input type="text" name="Location" placeholder="e.g. Building A, Ground Floor" value="{{ form.Location.value|default:'' }}">
+                <div class="error-msg">{% if form.Location.errors %}{{ form.Location.errors.0 }}{% endif %}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Operating Hours</label>
+                <input type="text" name="OperatingHours" placeholder="e.g. 7:00 AM - 5:00 PM" value="{{ form.OperatingHours.value|default:'' }}">
+                <div class="error-msg">{% if form.OperatingHours.errors %}{{ form.OperatingHours.errors.0 }}{% endif %}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Capacity</label>
+                <input type="number" name="Capacity" placeholder="e.g. 200" min="1" value="{{ form.Capacity.value|default:'' }}">
+                <div class="error-msg">{% if form.Capacity.errors %}{{ form.Capacity.errors.0 }}{% endif %}</div>
+            </div>
+
             <div class="modal-actions">
                 <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
                 <button type="submit" class="btn-save">Save Cafeteria</button>

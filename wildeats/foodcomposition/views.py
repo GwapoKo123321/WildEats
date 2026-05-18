@@ -1046,6 +1046,30 @@ class FoodDetailView(LoginRequiredMixin, View):
             'allergens': allergens,
         })
 
+class CafeteriaDetailView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    template_name = 'foodcomposition/cafeteriaDetail.html'
+
+    def get(self, request, pk):
+        cafeteria = get_object_or_404(Cafeteria, pk=pk)
+        foods = FoodItem.objects.filter(Cafeteria=cafeteria)
+        return render(request, self.template_name, {
+            'cafeteria': cafeteria,
+            'foods': foods,
+            'user': request.user,
+        })
+
+
+class IngredientDetailView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    template_name = 'foodcomposition/ingredientDetail.html'
+
+    def get(self, request, pk):
+        ingredient = get_object_or_404(Ingredient, pk=pk)
+        return render(request, self.template_name, {
+            'ingredient': ingredient,
+            'user': request.user,
+        })
 
 class AddFoodItemView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -1088,6 +1112,27 @@ class AddFoodItemView(LoginRequiredMixin, View):
         })
 
 
+# class EditFoodItemView(LoginRequiredMixin, View):
+#     login_url = '/login/'
+#     template_name = 'foodcomposition/editFoodItem.html'
+#
+#     def get(self, request, pk):
+#         if request.user.role != 'vendor':
+#             return redirect('food-list')
+#         food = get_object_or_404(FoodItem, pk=pk)
+#         form = FoodItemForm(instance=food)
+#         return render(request, self.template_name, {'form': form, 'food': food})
+#
+#     def post(self, request, pk):
+#         if request.user.role != 'vendor':
+#             return redirect('food-list')
+#         food = get_object_or_404(FoodItem, pk=pk)
+#         form = FoodItemForm(request.POST, instance=food)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('food-detail', pk=pk)
+#         return render(request, self.template_name, {'form': form, 'food': food})
+
 class EditFoodItemView(LoginRequiredMixin, View):
     login_url = '/login/'
     template_name = 'foodcomposition/editFoodItem.html'
@@ -1096,19 +1141,61 @@ class EditFoodItemView(LoginRequiredMixin, View):
         if request.user.role != 'vendor':
             return redirect('food-list')
         food = get_object_or_404(FoodItem, pk=pk)
-        form = FoodItemForm(instance=food)
-        return render(request, self.template_name, {'form': form, 'food': food})
+        food_form = FoodItemForm(instance=food)
+        nutrition = getattr(food, 'nutritioninfo', None)
+        recipe = getattr(food, 'recipe', None)
+        nutrition_form = NutritionInfoForm(instance=nutrition) if nutrition else NutritionInfoForm()
+        recipe_form = RecipeForm(instance=recipe) if recipe else RecipeForm()
+        return render(request, self.template_name, {
+            'form': food_form,
+            'nutrition_form': nutrition_form,
+            'recipe_form': recipe_form,
+            'food': food,
+            'ingredients': Ingredient.objects.all().order_by('Name'),
+            'selected_ingredients': list(recipe.Ingredients.values_list('pk', flat=True)) if recipe else [],
+        })
 
     def post(self, request, pk):
         if request.user.role != 'vendor':
             return redirect('food-list')
         food = get_object_or_404(FoodItem, pk=pk)
-        form = FoodItemForm(request.POST, instance=food)
-        if form.is_valid():
-            form.save()
-            return redirect('food-detail', pk=pk)
-        return render(request, self.template_name, {'form': form, 'food': food})
+        nutrition = getattr(food, 'nutritioninfo', None)
+        recipe = getattr(food, 'recipe', None)
 
+        food_form = FoodItemForm(request.POST, instance=food)
+        nutrition_form = NutritionInfoForm(request.POST, instance=nutrition)
+        recipe_form = RecipeForm(request.POST, instance=recipe)
+
+        if food_form.is_valid() and nutrition_form.is_valid() and recipe_form.is_valid():
+            food_form.save()
+
+            nutrition_obj = nutrition_form.save(commit=False)
+            nutrition_obj.FoodItem = food
+            nutrition_obj.save()
+
+            recipe_obj = recipe_form.save(commit=False)
+            recipe_obj.FoodItem = food
+            recipe_obj.save()
+
+            selected_ids = request.POST.getlist('ingredients')
+            recipe_obj.Ingredients.clear()
+            for ing_id in selected_ids:
+                try:
+                    obj = Ingredient.objects.get(pk=ing_id)
+                    recipe_obj.Ingredients.add(obj)
+                except Ingredient.DoesNotExist:
+                    pass
+
+            return redirect('food-detail', pk=pk)
+
+        return render(request, self.template_name, {
+            'form': food_form,
+            'nutrition_form': nutrition_form,
+            'recipe_form': recipe_form,
+            'food': food,
+            'ingredients': Ingredient.objects.all().order_by('Name'),
+            'selected_ingredients': list(recipe.Ingredients.values_list('pk', flat=True)) if recipe else [],
+        })
 
 class AddIngredientView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -1221,3 +1308,46 @@ class EditProfileView(LoginRequiredMixin, View):
         user.Lname = request.POST.get('Lname')
         user.save()
         return redirect('home')
+
+class EditCafeteriaView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    template_name = 'foodcomposition/editCafeteria.html'
+
+    def get(self, request, pk):
+        if request.user.role != 'vendor':
+            return redirect('cafeteria-list')
+        cafeteria = get_object_or_404(Cafeteria, pk=pk)
+        form = CafeteriaForm(instance=cafeteria)
+        return render(request, self.template_name, {'form': form, 'cafeteria': cafeteria})
+
+    def post(self, request, pk):
+        if request.user.role != 'vendor':
+            return redirect('cafeteria-list')
+        cafeteria = get_object_or_404(Cafeteria, pk=pk)
+        form = CafeteriaForm(request.POST, instance=cafeteria)
+        if form.is_valid():
+            form.save()
+            return redirect('cafeteria-list')
+        return render(request, self.template_name, {'form': form, 'cafeteria': cafeteria})
+
+
+class EditIngredientView(LoginRequiredMixin, View):
+    login_url = '/login/'
+    template_name = 'foodcomposition/editIngredient.html'
+
+    def get(self, request, pk):
+        if request.user.role != 'vendor':
+            return redirect('ingredient-list')
+        ingredient = get_object_or_404(Ingredient, pk=pk)
+        form = IngredientForm(instance=ingredient)
+        return render(request, self.template_name, {'form': form, 'ingredient': ingredient})
+
+    def post(self, request, pk):
+        if request.user.role != 'vendor':
+            return redirect('ingredient-list')
+        ingredient = get_object_or_404(Ingredient, pk=pk)
+        form = IngredientForm(request.POST, instance=ingredient)
+        if form.is_valid():
+            form.save()
+            return redirect('ingredient-list')
+        return render(request, self.template_name, {'form': form, 'ingredient': ingredient})

@@ -183,16 +183,52 @@
 
 <!-- Add Ingredient Modal -->
 <div class="modal-overlay {% if form.errors %}active{% endif %}" id="addModal">
-    <div class="modal">
+    <div class="modal" style="max-width: 520px; max-height: 90vh; overflow-y: auto;">
         <div class="modal-title">New Ingredient</div>
         <div class="modal-sub">Fill in the details below</div>
         <form method="POST">
             {% csrf_token %}
+
             <div class="form-group">
                 <label>Ingredient Name</label>
                 <input type="text" name="Name" placeholder="e.g. Garlic, Milk, Wheat..." value="{{ form.Name.value|default:'' }}" autofocus>
                 <div class="error-msg">{% if form.Name.errors %}{{ form.Name.errors.0 }}{% endif %}</div>
             </div>
+
+            <div class="form-group">
+                <label>Quantity Unit</label>
+                <select name="QuantityUnit" style="width:100%; padding:11px 14px; border:1.5px solid #f0e0a0; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; outline:none; background:#fdfaf4;">
+                    <option value="">-- Select Unit --</option>
+                    <option value="g">Grams (g)</option>
+                    <option value="kg">Kilograms (kg)</option>
+                    <option value="ml">Milliliters (ml)</option>
+                    <option value="L">Liters (L)</option>
+                    <option value="pcs">Pieces (pcs)</option>
+                    <option value="tbsp">Tablespoon (tbsp)</option>
+                    <option value="tsp">Teaspoon (tsp)</option>
+                    <option value="cup">Cup</option>
+                </select>
+                <div class="error-msg">{% if form.QuantityUnit.errors %}{{ form.QuantityUnit.errors.0 }}{% endif %}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Low Stock Threshold</label>
+                <input type="number" name="Threshold" placeholder="e.g. 10" min="0" step="0.1" value="{{ form.Threshold.value|default:'' }}">
+                <div class="error-msg">{% if form.Threshold.errors %}{{ form.Threshold.errors.0 }}{% endif %}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Storage Condition</label>
+                <input type="text" name="StorageCondition" placeholder="e.g. Store in a cool dry place" value="{{ form.StorageCondition.value|default:'' }}">
+                <div class="error-msg">{% if form.StorageCondition.errors %}{{ form.StorageCondition.errors.0 }}{% endif %}</div>
+            </div>
+
+            <div class="form-group">
+                <label>Expiry Date</label>
+                <input type="date" name="ExpiryDate" value="{{ form.ExpiryDate.value|default:'' }}" style="width:100%; padding:11px 14px; border:1.5px solid #f0e0a0; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; outline:none; background:#fdfaf4; box-sizing:border-box;">
+                <div class="error-msg">{% if form.ExpiryDate.errors %}{{ form.ExpiryDate.errors.0 }}{% endif %}</div>
+            </div>
+
             <div class="form-group">
                 <label>Allergen Status</label>
                 <div class="checkbox-row">
@@ -203,6 +239,7 @@
                     ⚠️ Common allergens: Milk, Eggs, Wheat, Soy, Peanuts, Tree Nuts, Fish, Shellfish
                 </div>
             </div>
+
             <div class="modal-actions">
                 <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
                 <button type="submit" class="btn-save">Save Ingredient</button>
