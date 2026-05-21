@@ -15,6 +15,8 @@
         .btn-home:hover { background: #6B0F1A; color: #FFD700; }
         .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: border-color 0.2s; text-decoration: none; display: inline-block; }
         .btn-logout:hover { background: #8a1020 !important; }
+        .btn-back { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-back:hover { background: #6B0F1A; color: #FFD700; }
         .container { flex: 1; display: flex; align-items: center; justify-content: center; padding: 48px 16px; }
         .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 16px; padding: 40px; width: 100%; max-width: 480px; box-shadow: 0 8px 40px rgba(107,15,26,0.08); }
         .avatar { width: 72px; height: 72px; background: #6B0F1A; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 16px; }
@@ -34,7 +36,9 @@
 <div class="nav">
     <div class="nav-logo">WildEats</div>
     <div class="nav-links">
-<!--        <a class="btn-back" href="{% url 'home' %}">← Back</a>-->
+        {% if user.role == 'admin' %}
+            <a class="btn-back" href="{% url 'admin-dashboard' %}">Back</a>
+        {% endif %}
         <a class="btn-home" href="{% url 'home' %}">Home</a>
         <button class="btn-logout" onclick="openModal()">Logout</button>
     </div>

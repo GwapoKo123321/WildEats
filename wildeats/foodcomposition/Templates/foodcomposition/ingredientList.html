@@ -17,6 +17,8 @@
         .btn-addingredient:hover { background: #6B0F1A; color: #FFD700; }
         .btn-maroon { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: border-color 0.2s; text-decoration: none; display: inline-block; }
         .btn-maroon:hover { background: #8a1020 !important; }
+        .btn-back { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-back:hover { background: #6B0F1A; color: #FFD700; }
 
         .search-bar { background: #ffffff; padding: 20px 5vw; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
         .search-bar input { flex: 1; min-width: 200px; padding: 10px 16px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; }
@@ -61,10 +63,12 @@
 <div class="nav">
     <div class="nav-logo">WildEats</div>
     <div class="nav-links">
+        {% if user.role == 'admin' %}
+            <a class="btn-back" href="{% url 'admin-dashboard' %}">Back</a>
+        {% endif %}
         <a class="btn-home" href="{% url 'home' %}">Home</a>
-        {% if user.role == 'vendor' or user.role == 'admin' %}
-<!--            <a class="btn-maroon" href="#" onclick="openAddModal()">+ Add Ingredient</a>-->
-        <a class="btn-addingredient" class="btn-maroon" href="{% url 'add-ingredient' %}">+ Add Ingredient</a>
+        {% if user.role == 'vendor' %}
+            <a class="btn-addingredient" class="btn-maroon" href="{% url 'add-ingredient' %}">+ Add Ingredient</a>
         {% endif %}
         <button class="btn-maroon" onclick="openLogout()">Logout</button>
     </div>
@@ -86,25 +90,6 @@
 
 <div class="content">
     <div class="section-title">All Ingredients</div>
-<!--    <div class="grid">-->
-<!--        {% for ing in ingredients %}-->
-<!--        <div class="ing-card">-->
-<!--            <div class="ing-name">{{ ing.Name }}</div>-->
-<!--            {% if ing.IsAllergen %}-->
-<!--                <span class="ing-tag allergen">⚠️ Allergen</span>-->
-<!--            {% else %}-->
-<!--                <span class="ing-tag safe">✓ Safe</span>-->
-<!--            {% endif %}-->
-<!--            <div style="color:#fff; font-size:12px; margin-top:6px;">Unit: {{ ing.get_QuantityUnit_display }}</div>-->
-<!--            <div style="color:#fff; font-size:12px;">Storage: {{ ing.StorageCondition }}</div>-->
-<!--            {% if user.role == 'vendor' %}-->
-<!--            <a href="{% url 'edit-ingredient' ing.pk %}" style="display:inline-block; margin-top:12px; font-size:12px; color:#6B0F1A; font-weight:600; text-decoration:none; padding:6px 14px; border:1.5px solid #f0e0a0; border-radius:20px;">✏️ Edit</a>-->
-<!--            {% endif %}-->
-<!--        </div>-->
-<!--        {% empty %}-->
-<!--        <div class="empty">No ingredients found.</div>-->
-<!--        {% endfor %}-->
-<!--    </div>-->
     <div class="grid">
         {% for ing in ingredients %}
         <a class="ing-card" href="{% url 'ingredient-detail' ing.pk %}">
@@ -114,8 +99,8 @@
             {% else %}
                 <div style="color:#fff; font-size:12px; margin-top:6px;">Unit: {{ ing.get_QuantityUnit_display }}</div>
                 <div style="color:#fff; font-size:12px;">Storage: {{ ing.StorageCondition }}</div>
-            {% endif %}
                 <span class="ing-tag safe">✓ Safe</span>
+            {% endif %}
         </a>
         {% empty %}
         <div class="empty">No ingredients found.</div>

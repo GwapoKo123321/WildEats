@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingredients - Admin Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f8f4f0; display: flex; min-height: 100vh; }
+        .sidebar { width: 240px; background: #6B0F1A; display: flex; flex-direction: column; min-height: 100vh; position: fixed; top: 0; left: 0; z-index: 100; }
+        .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,215,0,0.15); }
+        .sidebar-logo h1 { color: #FFD700; font-size: 20px; font-weight: 700; }
+        .sidebar-logo p { color: rgba(255,215,0,0.6); font-size: 11px; margin-top: 2px; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .nav-section { padding: 8px 20px 4px; color: rgba(255,215,0,0.4); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: rgba(255,215,0,0.75); text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.2s; border-left: 3px solid transparent; }
+        .nav-item:hover, .nav-item.active { color: #FFD700; background: rgba(255,215,0,0.08); border-left-color: #FFD700; }
+        .nav-item svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,215,0,0.15); }
+        .sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .sidebar-avatar { width: 36px; height: 36px; background: rgba(255,215,0,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .sidebar-username { color: #FFD700; font-size: 13px; font-weight: 600; }
+        .sidebar-role { color: rgba(255,215,0,0.5); font-size: 11px; }
+        .btn-sidebar-logout { width: 100%; background: rgba(255,215,0,0.1); color: #FFD700; border: 1px solid rgba(255,215,0,0.2); padding: 8px; border-radius: 8px; font-size: 12px; font-family: 'Poppins', sans-serif; cursor: pointer; }
+        .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; }
+        .topbar { background: #fff; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0e0a0; }
+        .topbar-title { color: #6B0F1A; font-size: 18px; font-weight: 700; }
+        .topbar-sub { color: #aaa; font-size: 12px; margin-top: 2px; }
+        .badge { background: #6B0F1A; color: #FFD700; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .content { padding: 28px 32px; flex: 1; }
+        .search-bar { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 16px 20px; display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .search-bar input { flex: 1; min-width: 200px; padding: 9px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; }
+        .search-bar input:focus { border-color: #6B0F1A; }
+        .search-bar select { padding: 9px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; color: #6B0F1A; }
+        .table-card { background: #fff; border-radius: 12px; border: 1px solid #f0e0a0; overflow: hidden; }
+        .table-card-header { padding: 16px 20px; border-bottom: 1px solid #f0e0a0; display: flex; justify-content: space-between; align-items: center; }
+        .table-card-title { color: #6B0F1A; font-size: 14px; font-weight: 600; }
+        .count-badge { background: #fdfaf4; color: #6B0F1A; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1px solid #f0e0a0; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #fdfaf4; padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 600; color: #6B0F1A; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #f0e0a0; }
+        td { padding: 13px 16px; font-size: 13px; color: #555; border-bottom: 1px solid #fdfaf4; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #fdfaf4; }
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+        .tag-allergen { background: #fff3cd; color: #7a5c00; }
+        .tag-safe { background: #e8f5e9; color: #2e7d32; }
+        .empty { text-align: center; padding: 40px; color: #aaa; font-size: 13px; }
+        .view-link { color: #6B0F1A; font-size: 12px; font-weight: 600; text-decoration: none; }
+        .view-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <h1>WildEats</h1>
+        <p>Admin Dashboard</p>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item" href="{% url 'admin-dashboard' %}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Dashboard
+        </a>
+        <div class="nav-section">Management</div>
+        <a class="nav-item" href="{% url 'admin-user-list' %}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+            Users
+        </a>
+                <a class="nav-item" href="{% url 'admin-food-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="4" width="12" height="16" rx="2"></rect>
+                <line x1="9" y1="9" x2="15" y2="9"></line>
+                <line x1="9" y1="13" x2="15" y2="13"></line>
+                <line x1="9" y1="17" x2="13" y2="17"></line>
+            </svg>
+            Food Items
+        </a>
+        <a class="nav-item" href="{% url 'admin-ingredient-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="4" width="12" height="16" rx="2"></rect>
+                <line x1="9" y1="9" x2="15" y2="9"></line>
+                <line x1="9" y1="13" x2="15" y2="13"></line>
+                <line x1="9" y1="17" x2="13" y2="17"></line>
+            </svg>
+            Ingredients
+        </a>
+        <a class="nav-item" href="{% url 'admin-cafeteria-list' %}">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            Cafeterias
+        </a>
+        <div class="nav-section">Quick Links</div>
+        <a class="nav-item" href="{% url 'food-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            Browse Food Items
+        </a>
+        <a class="nav-item" href="{% url 'ingredient-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            Browse Ingredients
+        </a>
+        <a class="nav-item" href="{% url 'cafeteria-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            Browse Cafeterias
+        </a>
+        <a class="nav-item" href="{% url 'edit-profile' %}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+            My Profile
+        </a>
+        <a class="nav-item" href="{% url 'home' %}">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-user">
+            <div class="sidebar-avatar">👤</div>
+            <div>
+                <div class="sidebar-username">{{ request.user.username }}</div>
+                <div class="sidebar-role">Administrator</div>
+            </div>
+        </div>
+        <button class="btn-sidebar-logout" onclick="openLogout()">Logout</button>
+    </div>
+</div>
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Ingredients</div>
+            <div class="topbar-sub">All ingredients in the system</div>
+        </div>
+        <span class="badge">Admin</span>
+    </div>
+    <div class="content">
+        <div class="search-bar">
+            <input type="text" id="searchInput" value="{{ query }}" placeholder="🔍 Search ingredients...">
+            <select id="allergenFilter">
+                <option value="">All Ingredients</option>
+                <option value="yes" {% if allergen == 'yes' %}selected{% endif %}>Allergens Only</option>
+                <option value="no" {% if allergen == 'no' %}selected{% endif %}>Non-Allergens</option>
+            </select>
+        </div>
+        <div class="table-card">
+            <div class="table-card-header">
+                <div class="table-card-title">All Ingredients</div>
+                <span class="count-badge">{{ ingredients.count }} ingredients</span>
+            </div>
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Name</th><th>Unit</th><th>Threshold</th><th>Storage</th><th>Expiry</th><th>Allergen</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for ing in ingredients %}
+                    <tr>
+                        <td style="color:#aaa;">{{ forloop.counter }}</td>
+                        <td style="font-weight:600; color:#6B0F1A;">{{ ing.Name }}</td>
+                        <td>{{ ing.get_QuantityUnit_display }}</td>
+                        <td>{{ ing.Threshold }} {{ ing.QuantityUnit }}</td>
+                        <td>{{ ing.StorageCondition|default:"—" }}</td>
+                        <td style="color:#aaa;">{{ ing.ExpiryDate|default:"—" }}</td>
+                        <td>
+                            {% if ing.IsAllergen %}
+                                <span class="tag tag-allergen">⚠️ Yes</span>
+                            {% else %}
+                                <span class="tag tag-safe">✓ No</span>
+                            {% endif %}
+                        </td>
+                        <td><a class="view-link" href="{% url 'ingredient-detail' ing.pk %}">View →</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="8" class="empty">No ingredients found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">
+        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>
+        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>
+        <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="closeLogout()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
+            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
+        </div>
+    </div>
+</div>
+<script>
+function applyFilters() {
+    const q = document.getElementById('searchInput').value;
+    const allergen = document.getElementById('allergenFilter').value;
+    window.location.href = `?q=${q}&allergen=${allergen}`;
+}
+document.getElementById('searchInput').addEventListener('input', function() {
+    clearTimeout(this._timer);
+    this._timer = setTimeout(applyFilters, 400);
+});
+document.getElementById('allergenFilter').addEventListener('change', applyFilters);
+function openLogout() { document.getElementById('logout-modal').style.display = 'flex'; }
+function closeLogout() { document.getElementById('logout-modal').style.display = 'none'; }
+</script>
+</body>
+</html>

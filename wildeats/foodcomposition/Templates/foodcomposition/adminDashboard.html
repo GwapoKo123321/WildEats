@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #f8f4f0; display: flex; min-height: 100vh; }
+
+        /* Sidebar */
+        .sidebar { width: 240px; background: #6B0F1A; display: flex; flex-direction: column; min-height: 100vh; position: fixed; top: 0; left: 0; z-index: 100; }
+        .sidebar-logo { padding: 24px 20px; border-bottom: 1px solid rgba(255,215,0,0.15); }
+        .sidebar-logo h1 { color: #FFD700; font-size: 20px; font-weight: 700; }
+        .sidebar-logo p { color: rgba(255,215,0,0.6); font-size: 11px; margin-top: 2px; }
+        .sidebar-nav { flex: 1; padding: 16px 0; }
+        .nav-section { padding: 8px 20px 4px; color: rgba(255,215,0,0.4); font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 20px; color: rgba(255,215,0,0.75); text-decoration: none; font-size: 13px; font-weight: 500; transition: all 0.2s; border-left: 3px solid transparent; }
+        .nav-item:hover, .nav-item.active { color: #FFD700; background: rgba(255,215,0,0.08); border-left-color: #FFD700; }
+        .nav-item svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+        .sidebar-footer { padding: 16px 20px; border-top: 1px solid rgba(255,215,0,0.15); }
+        .sidebar-user { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+        .sidebar-avatar { width: 36px; height: 36px; background: rgba(255,215,0,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; }
+        .sidebar-username { color: #FFD700; font-size: 13px; font-weight: 600; }
+        .sidebar-role { color: rgba(255,215,0,0.5); font-size: 11px; }
+        .btn-sidebar-logout { width: 100%; background: rgba(255,215,0,0.1); color: #FFD700; border: 1px solid rgba(255,215,0,0.2); padding: 8px; border-radius: 8px; font-size: 12px; font-family: 'Poppins', sans-serif; cursor: pointer; transition: background 0.2s; }
+        .btn-sidebar-logout:hover { background: rgba(255,215,0,0.2); }
+
+        /* Main content */
+        .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+        .topbar { background: #fff; padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f0e0a0; }
+        .topbar-title { color: #6B0F1A; font-size: 18px; font-weight: 700; }
+        .topbar-sub { color: #aaa; font-size: 12px; margin-top: 2px; }
+        .topbar-right { display: flex; align-items: center; gap: 12px; }
+        .topbar-date { color: #aaa; font-size: 12px; }
+        .badge { background: #6B0F1A; color: #FFD700; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+
+        .content { padding: 28px 32px; flex: 1; }
+
+        /* KPI Cards */
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .kpi-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #f0e0a0; text-decoration: none; display: block; transition: all 0.2s; }
+        .kpi-card:hover { border-color: #6B0F1A; transform: translateY(-2px); box-shadow: 0 4px 20px rgba(107,15,26,0.08); }
+        .kpi-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 12px; }
+        .kpi-icon svg { width: 20px; height: 20px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .kpi-value { color: #6B0F1A; font-size: 28px; font-weight: 700; margin-bottom: 4px; }
+        .kpi-label { color: #aaa; font-size: 12px; font-weight: 500; }
+        .kpi-sub { color: #6B0F1A; font-size: 11px; margin-top: 6px; font-weight: 500; }
+
+        /* Color variants */
+        .icon-maroon { background: #6B0F1A; }
+        .icon-gold { background: #d4a800; }
+        .icon-green { background: #2e7d32; }
+        .icon-red { background: #c0392b; }
+        .icon-blue { background: #1565c0; }
+        .icon-purple { background: #6a1b9a; }
+
+        /* Section */
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+        .section-title { color: #6B0F1A; font-size: 15px; font-weight: 700; }
+        .view-all { color: #6B0F1A; font-size: 12px; font-weight: 600; text-decoration: none; padding: 6px 14px; border: 1.5px solid #f0e0a0; border-radius: 20px; transition: all 0.2s; }
+        .view-all:hover { background: #6B0F1A; color: #FFD700; border-color: #6B0F1A; }
+
+        /* Two column layout */
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+        /* Table card */
+        .table-card { background: #fff; border-radius: 12px; border: 1px solid #f0e0a0; overflow: hidden; }
+        .table-card-header { padding: 16px 20px; border-bottom: 1px solid #f0e0a0; display: flex; justify-content: space-between; align-items: center; }
+        .table-card-title { color: #6B0F1A; font-size: 14px; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #fdfaf4; padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 600; color: #6B0F1A; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #f0e0a0; }
+        td { padding: 12px 16px; font-size: 13px; color: #555; border-bottom: 1px solid #fdfaf4; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background: #fdfaf4; }
+
+        /* Tags */
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+        .tag-student { background: #e3f2fd; color: #1565c0; }
+        .tag-vendor { background: #f3e5f5; color: #6a1b9a; }
+        .tag-admin { background: #fff3e0; color: #e65100; }
+        .tag-active { background: #e8f5e9; color: #2e7d32; }
+        .tag-inactive { background: #fce4ec; color: #c62828; }
+        .tag-allergen { background: #fff3cd; color: #7a5c00; }
+        .tag-safe { background: #e8f5e9; color: #2e7d32; }
+
+        /* Category breakdown */
+        .cat-list { padding: 0 20px 16px; }
+        .cat-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #fdfaf4; }
+        .cat-item:last-child { border-bottom: none; }
+        .cat-bar-wrap { flex: 1; margin: 0 12px; height: 6px; background: #f0e0a0; border-radius: 3px; overflow: hidden; }
+        .cat-bar { height: 100%; background: #6B0F1A; border-radius: 3px; }
+        .cat-label { color: #555; font-size: 12px; width: 80px; }
+        .cat-count { color: #6B0F1A; font-size: 12px; font-weight: 600; width: 30px; text-align: right; }
+
+        /* User breakdown */
+        .role-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; padding: 16px 20px; }
+        .role-item { text-align: center; padding: 16px; background: #6B0F1A; border-radius: 10px; }
+        .role-count { font-size: 24px; font-weight: 700; color: #fff3cd; }
+        .role-label { font-size: 11px; color: #fff3cd; margin-top: 4px; }
+
+        /* Empty state */
+        .empty-state { text-align: center; padding: 32px; color: #aaa; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <h1>WildEats</h1>
+        <p>Admin Dashboard</p>
+    </div>
+    <nav class="sidebar-nav">
+        <div class="nav-section">Overview</div>
+        <a class="nav-item active" href="{% url 'admin-dashboard' %}">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Dashboard
+        </a>
+
+        <div class="nav-section">Management</div>
+        <a class="nav-item" href="{% url 'admin-user-list' %}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+            Users
+        </a>
+        <a class="nav-item" href="{% url 'admin-food-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="4" width="12" height="16" rx="2"></rect>
+                <line x1="9" y1="9" x2="15" y2="9"></line>
+                <line x1="9" y1="13" x2="15" y2="13"></line>
+                <line x1="9" y1="17" x2="13" y2="17"></line>
+            </svg>
+            Food Items
+        </a>
+        <a class="nav-item" href="{% url 'admin-ingredient-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <rect x="6" y="4" width="12" height="16" rx="2"></rect>
+                <line x1="9" y1="9" x2="15" y2="9"></line>
+                <line x1="9" y1="13" x2="15" y2="13"></line>
+                <line x1="9" y1="17" x2="13" y2="17"></line>
+            </svg>
+            Ingredients
+        </a>
+        <a class="nav-item" href="{% url 'admin-cafeteria-list' %}">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+            Cafeterias
+        </a>
+
+        <div class="nav-section">Quick Links</div>
+        <a class="nav-item" href="{% url 'food-list' %}">
+            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+            Browse Food Items
+        </a>
+        <a class="nav-item" href="{% url 'ingredient-list' %}">
+            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+            Browse Ingredients
+        </a>
+
+        <a class="nav-item" href="{% url 'cafeteria-list' %}">
+            <svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
+            Browse Cafeterias
+        </a>
+        <a class="nav-item" href="{% url 'edit-profile' %}">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+            My Profile
+        </a>
+        <a class="nav-item" href="{% url 'home' %}">
+            <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Home
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <div class="sidebar-user">
+            <div class="sidebar-avatar">👤</div>
+            <div>
+                <div class="sidebar-username">{{ request.user.username }}</div>
+                <div class="sidebar-role">Administrator</div>
+            </div>
+        </div>
+        <button class="btn-sidebar-logout" onclick="openLogout()">Logout</button>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="main">
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Dashboard Overview</div>
+            <div class="topbar-sub">Welcome back, {{ request.user.Fname|default:request.user.username }}!</div>
+        </div>
+        <div class="topbar-right">
+            <span class="topbar-date" id="currentDate"></span>
+            <span class="badge">Admin</span>
+        </div>
+    </div>
+
+    <div class="content">
+
+        <!-- KPI Cards -->
+        <div class="kpi-grid">
+            <a class="kpi-card" href="{% url 'admin-user-list' %}">
+                <div class="kpi-icon icon-maroon">
+                    <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
+                </div>
+                <div class="kpi-value">{{ total_users }}</div>
+                <div class="kpi-label">Total Users</div>
+                <div class="kpi-sub">{{ active_users }} active</div>
+            </a>
+            <a class="kpi-card" href="{% url 'admin-user-list' %}?role=student">
+                <div class="kpi-icon icon-blue">
+                    <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                </div>
+                <div class="kpi-value">{{ total_students }}</div>
+                <div class="kpi-label">Students</div>
+                <div class="kpi-sub">Registered students</div>
+            </a>
+            <a class="kpi-card" href="{% url 'admin-user-list' %}?role=vendor">
+                <div class="kpi-icon icon-purple">
+                    <svg viewBox="0 0 24 24"><path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 9m12-9l2 9M9 22h6"/></svg>
+                </div>
+                <div class="kpi-value">{{ total_vendors }}</div>
+                <div class="kpi-label">Vendors</div>
+                <div class="kpi-sub">Active vendors</div>
+            </a>
+            <a class="kpi-card" href="{% url 'admin-food-list' %}">
+                <div class="kpi-icon icon-gold">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+                    </svg>
+                </div>
+                <div class="kpi-value">{{ total_foods }}</div>
+                <div class="kpi-label">Food Items</div>
+                <div class="kpi-sub">{{ total_recipes }} with recipes</div>
+            </a>
+            <a class="kpi-card" href="{% url 'admin-ingredient-list' %}">
+                <div class="kpi-icon icon-green">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                         stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+                    </svg>
+                </div>
+                <div class="kpi-value">{{ total_ingredients }}</div>
+                <div class="kpi-label">Ingredients</div>
+                <div class="kpi-sub">{{ total_allergens }} allergens</div>
+            </a>
+            <a class="kpi-card" href="{% url 'admin-cafeteria-list' %}">
+                <div class="kpi-icon icon-red">
+                    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+                </div>
+                <div class="kpi-value">{{ total_cafeterias }}</div>
+                <div class="kpi-label">Cafeterias</div>
+                <div class="kpi-sub">Locations</div>
+            </a>
+        </div>
+
+        <!-- User breakdown + Category breakdown -->
+        <div class="two-col">
+            <div class="table-card">
+                <div class="table-card-header">
+                    <div class="table-card-title">User Breakdown</div>
+                    <a class="view-all" href="{% url 'admin-user-list' %}">View All</a>
+                </div>
+                <div class="role-grid">
+                    <div class="role-item">
+                        <div class="role-count">{{ total_students }}</div>
+                        <div class="role-label">Students</div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-count">{{ total_vendors }}</div>
+                        <div class="role-label">Vendors</div>
+                    </div>
+                    <div class="role-item">
+                        <div class="role-count">{{ total_admins }}</div>
+                        <div class="role-label">Admins</div>
+                    </div>
+                </div>
+                <div style="padding: 0 20px 16px;">
+                    <div style="display:flex; justify-content:space-between; font-size:12px; color:#aaa; margin-bottom:8px;">
+                        <span>Active Users</span>
+                        <span style="color:#6B0F1A; font-weight:600;">{{ active_users }} / {{ total_users }}</span>
+                    </div>
+                    <div style="height:6px; background:#f0e0a0; border-radius:3px; overflow:hidden;">
+                        {% if total_users %}
+                        <div style="height:100%; background:#6B0F1A; border-radius:3px; width:{% widthratio active_users total_users 100 %}%;"></div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-card">
+                <div class="table-card-header">
+                    <div class="table-card-title">Food by Category</div>
+                    <a class="view-all" href="{% url 'admin-food-list' %}">View All</a>
+                </div>
+                <div class="cat-list">
+                    {% for cat in category_counts %}
+                    <div class="cat-item">
+                        <span class="cat-label">{{ cat.label }}</span>
+                        <div class="cat-bar-wrap">
+                            {% if total_foods %}
+                            <div class="cat-bar" style="width:{% widthratio cat.count total_foods 100 %}%;"></div>
+                            {% endif %}
+                        </div>
+                        <span class="cat-count">{{ cat.count }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent tables -->
+        <div class="three-col">
+
+            <!-- Recent Users -->
+            <div class="table-card">
+                <div class="table-card-header">
+                    <div class="table-card-title">Recent Users</div>
+                    <a class="view-all" href="{% url 'admin-user-list' %}">View All</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Username</th><th>Role</th><th>Status</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for u in recent_users %}
+                        <tr>
+                            <td>{{ u.username }}</td>
+                            <td><span class="tag tag-{{ u.role }}">{{ u.role }}</span></td>
+                            <td><span class="tag tag-{{ u.status }}">{{ u.status }}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="empty-state">No users yet</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recent Food Items -->
+            <div class="table-card">
+                <div class="table-card-header">
+                    <div class="table-card-title">Recent Food Items</div>
+                    <a class="view-all" href="{% url 'admin-food-list' %}">View All</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Name</th><th>Category</th><th>Price</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for food in recent_foods %}
+                        <tr>
+                            <td>{{ food.Name }}</td>
+                            <td>{{ food.get_Category_display }}</td>
+                            <td style="color:#8a1020; font-weight:600;">₱{{ food.Price }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="empty-state">No food items yet</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Recent Ingredients -->
+            <div class="table-card">
+                <div class="table-card-header">
+                    <div class="table-card-title">Recent Ingredients</div>
+                    <a class="view-all" href="{% url 'admin-ingredient-list' %}">View All</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Name</th><th>Unit</th><th>Allergen</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for ing in recent_ingredients %}
+                        <tr>
+                            <td>{{ ing.Name }}</td>
+                            <td>{{ ing.QuantityUnit }}</td>
+                            <td>
+                                {% if ing.IsAllergen %}
+                                    <span class="tag tag-allergen">⚠️ Yes</span>
+                                {% else %}
+                                    <span class="tag tag-safe">✓ No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="empty-state">No ingredients yet</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Logout Modal -->
+<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">
+        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>
+        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>
+        <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="closeLogout()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
+            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
+        </div>
+    </div>
+</div>
+
+<script>
+function openLogout() { document.getElementById('logout-modal').style.display = 'flex'; }
+function closeLogout() { document.getElementById('logout-modal').style.display = 'none'; }
+document.getElementById('currentDate').textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+</script>
+</body>
+</html>

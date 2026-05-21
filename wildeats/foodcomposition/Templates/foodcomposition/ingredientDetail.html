@@ -42,9 +42,9 @@
 <div class="nav">
     <div class="nav-logo">WildEats</div>
     <div class="nav-links">
-        <a class="btn-ingredientlist" href="{% url 'ingredient-list' %}">Ingredient List</a>
-        <a class="btn-addingredient" href="{% url 'add-ingredient' %}">+ Add Food</a>
-        <button class="btn-logout" onclick="openModal()">Logout</button>
+            <a class="btn-ingredientlist" href="{% url 'ingredient-list' %}">Ingredient List</a>
+            <a class="btn-addingredient" href="{% url 'add-ingredient' %}">+ Add Ingredient</a>
+            <button class="btn-logout" onclick="openLogout()">Logout</button>
     </div>
 </div>
 
@@ -84,7 +84,6 @@
     {% endif %}
 </div>
 
-<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>
 <div class="stripe"></div>
 
 <div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">

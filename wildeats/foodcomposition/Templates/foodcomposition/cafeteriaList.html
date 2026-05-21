@@ -17,6 +17,8 @@
         .btn-addcafeteria:hover { background: #6B0F1A; color: #FFD700; }
         .btn-maroon { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: border-color 0.2s; text-decoration: none; display: inline-block; }
         .btn-maroon:hover { background: #8a1020 !important; }
+        .btn-back { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
+        .btn-back:hover { background: #6B0F1A; color: #FFD700; }
 
         .search-bar { background: #ffffff; padding: 20px 5vw; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
         .search-bar input { flex: 1; min-width: 200px; padding: 10px 16px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; }
@@ -56,10 +58,12 @@
 <div class="nav">
     <div class="nav-logo">WildEats</div>
     <div class="nav-links">
+        {% if user.role == 'admin' %}
+            <a class="btn-back" href="{% url 'admin-dashboard' %}">Back</a>
+        {% endif %}
         <a class="btn-home" href="{% url 'home' %}">Home</a>
-        {% if user.role == 'vendor' or user.role == 'admin' %}
-<!--            <a class="btn-maroon" href="#" onclick="openAddModal()">+ Add Cafeteria</a>-->
-        <a class="btn-addcafeteria" href="{% url 'add-cafeteria' %}">+ Add Cafeteria</a>
+        {% if user.role == 'vendor' %}
+            <a class="btn-addcafeteria" href="{% url 'add-cafeteria' %}">+ Add Cafeteria</a>
         {% endif %}
         <button class="btn-maroon" onclick="openLogout()">Logout</button>
     </div>

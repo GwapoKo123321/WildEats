@@ -96,11 +96,22 @@
     <p>Your all-in-one campus cafeteria management system.</p>
     <p>Discover meals, track nutrition, and manage food compositions with ease.</p>
 
+<!--    {% if user.is_authenticated %}-->
+<!--    <div class="hero-actions">-->
+<!--        <a class="btn-browsefooditem" href="{% url 'food-list' %}">Browse Food Items</a>-->
+<!--        <a class="btn-browseingredient" href="{% url 'ingredient-list' %}">Browse Ingredients</a>-->
+<!--        <a class="btn-browsecafeteria" href="{% url 'cafeteria-list' %}">Browse Cafeterias</a>-->
+<!--    </div>-->
+<!--    {% endif %}-->
     {% if user.is_authenticated %}
     <div class="hero-actions">
-        <a class="btn-browsefooditem" href="{% url 'food-list' %}">Browse Food Items</a>
-        <a class="btn-browseingredient" href="{% url 'ingredient-list' %}">Browse Ingredients</a>
-        <a class="btn-browsecafeteria" href="{% url 'cafeteria-list' %}">Browse Cafeterias</a>
+        {% if user.role == 'admin' %}
+            <a class="btn-browsefooditem" href="{% url 'admin-dashboard' %}">Go to Dashboard</a>
+        {% else %}
+            <a class="btn-browsefooditem" href="{% url 'food-list' %}">Browse Food Items</a>
+            <a class="btn-browseingredient" href="{% url 'ingredient-list' %}">Browse Ingredients</a>
+            <a class="btn-browsecafeteria" href="{% url 'cafeteria-list' %}">Browse Cafeterias</a>
+        {% endif %}
     </div>
     {% endif %}
 
@@ -123,6 +134,7 @@
         </a>
     </div>
     {% endif %}
+
 </div>
 
 <!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
