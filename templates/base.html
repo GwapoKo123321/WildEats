@@ -1,0 +1,448 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}WildEats{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #65101d;
+            --maroon-2: #83182a;
+            --gold: #f5c84b;
+            --cream: #fff9ec;
+            --surface: #ffffff;
+            --surface-soft: #f8f2e8;
+            --text: #251a1c;
+            --muted: #7b6d70;
+            --line: #eadfcb;
+            --teal: #197278;
+            --danger: #b3261e;
+            --shadow: 0 18px 44px rgba(101, 16, 29, 0.10);
+            --radius-xl: 18px;
+            --radius-lg: 16px;
+            --radius-md: 10px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Poppins", "Segoe UI", sans-serif;
+            color: var(--text);
+            background:
+                radial-gradient(circle at 12% 18%, rgba(25, 114, 120, 0.16), transparent 28rem),
+                radial-gradient(circle at 92% 14%, rgba(245, 200, 75, 0.20), transparent 24rem),
+                linear-gradient(135deg, var(--cream) 0%, #ffffff 46%, #f6fbfa 100%);
+            animation: page-in 280ms ease-out;
+        }
+
+        @keyframes page-in {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
+
+        a { color: inherit; text-decoration: none; }
+
+        .shell {
+            width: min(1120px, calc(100% - 2rem));
+            margin: 0 auto;
+            padding: 1.25rem 0 3rem;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.2rem;
+            background: rgba(255, 255, 255, 0.90);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(8px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--maroon);
+            font-weight: 800;
+        }
+
+        .brand-mark {
+            width: 2.75rem;
+            height: 2.75rem;
+            display: grid;
+            place-items: center;
+            border-radius: 14px;
+            color: var(--gold);
+            background: var(--maroon);
+        }
+
+        .nav-links,
+        .hero-actions,
+        .stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+
+        .nav-links a,
+        .button,
+        button {
+            min-height: 44px;
+            padding: 0.8rem 1rem;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: var(--surface);
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 180ms ease, color 180ms ease, transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+        }
+
+        .nav-links a:hover,
+        .button:hover,
+        button:hover {
+            transform: translateY(-1px);
+            border-color: var(--teal);
+            box-shadow: 0 12px 28px rgba(101, 16, 29, 0.14);
+        }
+
+        .button,
+        button {
+            color: var(--gold);
+            border-color: transparent;
+            background: var(--maroon);
+        }
+
+        .button.secondary {
+            color: var(--maroon);
+            background: var(--surface);
+            border-color: var(--line);
+        }
+
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            width: fit-content;
+            padding: 0.42rem 0.72rem;
+            border-radius: 999px;
+            background: rgba(25, 114, 120, 0.10);
+            color: var(--teal);
+            font-size: 0.78rem;
+            font-weight: 800;
+        }
+
+        .chip.danger {
+            color: var(--danger);
+            background: #fff0ed;
+        }
+
+        .hero,
+        .panel,
+        .card,
+        .order-card,
+        .empty-state,
+        .shape-panel,
+        .mini-list li {
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow);
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 1.2rem;
+            padding: 1.4rem;
+        }
+
+        .hero-copy {
+            display: grid;
+            align-content: center;
+            gap: 1rem;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            width: fit-content;
+            padding: 0.4rem 0.7rem;
+            border-radius: 999px;
+            background: rgba(25, 114, 120, 0.10);
+            color: var(--teal);
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            color: var(--maroon);
+            line-height: 1.08;
+        }
+
+        h1 { font-size: clamp(2.3rem, 5vw, 4.6rem); }
+        h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
+
+        p {
+            margin: 0;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .hero-art,
+        .shape-panel {
+            position: relative;
+            overflow: hidden;
+            min-height: 280px;
+            background:
+                linear-gradient(135deg, rgba(101, 16, 29, 0.92), rgba(25, 114, 120, 0.72)),
+                url("{% static 'foodcomposition/bg.jpg' %}") center / cover no-repeat;
+        }
+
+        .grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .grid.stats {
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        }
+
+        .card,
+        .panel {
+            padding: 1.25rem;
+        }
+
+        a.card {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+            transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        a.card:hover {
+            border-color: var(--teal);
+            transform: translateY(-2px);
+            box-shadow: 0 18px 46px rgba(101, 16, 29, 0.14);
+        }
+
+        .stat-value {
+            color: var(--maroon);
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .stat-label {
+            margin-top: 0.35rem;
+            font-size: 0.92rem;
+        }
+
+        .section-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 1rem;
+            margin: 1.6rem 0 1rem;
+        }
+
+        .order-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .order-card {
+            display: grid;
+            gap: 1rem;
+            padding: 1.2rem;
+            transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .order-card:hover {
+            border-color: var(--teal);
+            transform: translateY(-2px);
+            box-shadow: 0 18px 46px rgba(101, 16, 29, 0.14);
+        }
+
+        .order-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.9rem;
+        }
+
+        .mini-list {
+            display: grid;
+            gap: 0.7rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .mini-list li {
+            padding: 0.9rem 1rem;
+            border-radius: var(--radius-md);
+            background: var(--surface-soft);
+            box-shadow: none;
+        }
+
+        .empty-state {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.92rem;
+        }
+
+        th,
+        td {
+            padding: 0.8rem 0.9rem;
+            border-bottom: 1px solid var(--line);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--maroon);
+            font-weight: 800;
+            background: var(--surface-soft);
+        }
+
+        form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        form p {
+            display: grid;
+            gap: 0.45rem;
+            color: var(--text);
+        }
+
+        label {
+            color: var(--maroon);
+            font-weight: 700;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            background: #fffcf6;
+            color: var(--text);
+            font: inherit;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            background: #fff;
+            border-color: var(--teal);
+            box-shadow: 0 0 0 4px rgba(25, 114, 120, 0.12);
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            accent-color: var(--maroon);
+        }
+
+        ul.errorlist {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            color: var(--danger);
+            font-size: 0.92rem;
+        }
+
+        .login-layout {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 1.2rem;
+        }
+
+        @media (max-width: 860px) {
+            .hero,
+            .login-layout,
+            .split {
+                grid-template-columns: 1fr;
+            }
+
+            .section-head,
+            .nav {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .shell {
+                width: min(100% - 1rem, 1100px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shell">
+        <nav class="nav">
+            <a class="brand" href="/">
+                <span class="brand-mark">WE</span>
+                <span>WildEats</span>
+            </a>
+            <div class="nav-links">
+                {% if user.is_authenticated %}
+                    <a href="/">Home</a>
+                    <a href="{% url 'sales_home' %}">Orders</a>
+<!--                    {% if is_student %}-->
+<!--                        <a href="{% url 'add_new_order' %}">Add Order</a>-->
+<!--                    {% endif %}-->
+<!--                    <a href="{% url 'menu_items' %}">Menu Items</a>-->
+<!--                    <a href="{% url 'payment_records' %}">Payment Records</a>-->
+                    <a href="{% url 'edit_profile' %}">Profile</a>
+                    <a href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                    <a href="{% url 'login' %}">Login</a>
+                {% endif %}
+            </div>
+        </nav>
+        {% if messages %}
+            <section class="stack" style="margin-bottom: 1rem;">
+                {% for message in messages %}
+                    <p class="chip">{{ message }}</p>
+                {% endfor %}
+            </section>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+</body>
+</html>

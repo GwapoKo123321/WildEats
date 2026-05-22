@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | Menu Items{% endblock %}
+
+{% block content %}
+<section class="section-head">
+    <div>
+        <span class="eyebrow">Menu Items</span>
+        <h2 style="margin-top: 0.8rem;">Menu Items</h2>
+        <p style="max-width: 560px;">
+            {% if is_student %}
+                Browse available cafeteria items for your next order.
+            {% else %}
+                Keep cafeteria items, prices, and availability ready for student orders.
+            {% endif %}
+        </p>
+    </div>
+    <div class="stack">
+        <a href="{% url 'sales_home' %}" class="button secondary">Back to Dashboard</a>
+        {% if is_vendor or is_admin %}
+            <a href="{% url 'add_menu_item' %}" class="button">Add Menu Item</a>
+        {% endif %}
+    </div>
+</section>
+
+{% if menu_items %}
+    <section class="order-list">
+        {% for item in menu_items %}
+            <article class="order-card">
+                <div class="stack">
+                    <span class="chip">{{ item.vendor.username }}</span>
+                    <span class="chip {% if not item.is_available %}danger{% endif %}">
+                        {% if item.is_available %}Available{% else %}Disabled{% endif %}
+                    </span>
+                </div>
+                <div>
+                    <h3>{{ item.name }}</h3>
+                    <div class="order-meta">
+                        <span>&#8369;{{ item.price|floatformat:2 }}</span>
+                        <span>Updated {{ item.updated_at|date:"M d, Y" }}</span>
+                    </div>
+                    {% if item.description %}
+                        <p style="margin-top: 0.6rem;">{{ item.description }}</p>
+                    {% endif %}
+                </div>
+                {% if is_vendor or is_admin %}
+                    <div class="stack">
+                        <a href="{% url 'edit_menu_item' item.MenuItemID %}" class="button">Edit</a>
+                        {% if item.is_available %}
+                            <form method="post" action="{% url 'disable_menu_item' item.MenuItemID %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button
+                                    class="button secondary"
+                                    type="submit"
+                                    onclick="return confirm('Disable {{ item.name }}?');"
+                                >
+                                    Disable
+                                </button>
+                            </form>
+                        {% endif %}
+                        <form method="post" action="{% url 'delete_menu_item' item.MenuItemID %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button
+                                class="button secondary"
+                                type="submit"
+                                onclick="return confirm('Delete {{ item.name }}? Used items are disabled to keep order history.');"
+                            >
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
+            </article>
+        {% endfor %}
+    </section>
+{% else %}
+    <section class="empty-state">
+        <h3>No menu items yet.</h3>
+        <p style="margin-top: 0.5rem;">Add the first item so students can select it when ordering.</p>
+        <div class="stack" style="justify-content: center; margin-top: 1rem;">
+            {% if is_vendor or is_admin %}
+                <a href="{% url 'add_menu_item' %}" class="button">Add Menu Item</a>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}
+{% endblock %}

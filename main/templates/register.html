@@ -1,0 +1,249 @@
+{% load static %}
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WildEats - Register</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --maroon: #65101d;
+            --maroon-2: #83182a;
+            --gold: #f5c84b;
+            --cream: #fff9ec;
+            --paper: #ffffff;
+            --ink: #251a1c;
+            --muted: #7b6d70;
+            --line: #eadfcb;
+            --teal: #197278;
+            --danger: #b3261e;
+            --shadow: 0 22px 60px rgba(101, 16, 29, 0.14);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            font-family: "Poppins", Arial, sans-serif;
+            color: var(--ink);
+            background:
+                linear-gradient(90deg, rgba(255, 249, 236, 0.97), rgba(255, 255, 255, 0.88) 52%, rgba(255, 255, 255, 0.54)),
+                url("{% static 'foodcomposition/bg.jpg' %}") right center / min(58vw, 820px) auto no-repeat fixed,
+                linear-gradient(135deg, var(--cream), #fff);
+            animation: page-in 280ms ease-out;
+        }
+        @keyframes page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+        }
+        .topbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 18px clamp(18px, 5vw, 64px);
+        }
+        .brand { color: var(--maroon); font-size: 22px; font-weight: 700; text-decoration: none; }
+        .nav-link {
+            color: var(--maroon);
+            border-radius: 999px;
+            padding: 9px 18px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 180ms ease, color 180ms ease, transform 180ms ease;
+        }
+        .nav-link:hover { background: var(--maroon); color: var(--gold); transform: translateY(-1px); }
+        main { flex: 1; display: grid; place-items: center; padding: 28px clamp(16px, 4vw, 48px) 56px; }
+        .card {
+            width: min(760px, 100%);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            background: var(--paper);
+            box-shadow: var(--shadow);
+            padding: clamp(28px, 5vw, 48px);
+        }
+        h1, p { margin: 0; }
+        .form-title { color: var(--maroon); text-align: center; font-size: 26px; line-height: 1.15; margin-bottom: 8px; }
+        .form-sub { color: var(--muted); text-align: center; font-size: 14px; margin-bottom: 24px; }
+        .role-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px; }
+        .role-btn {
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            color: var(--maroon);
+            background: #fffcf6;
+            padding: 12px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 700;
+            transition: background 180ms ease, color 180ms ease, transform 180ms ease, border-color 180ms ease;
+        }
+        .role-btn:hover, .role-btn.active { background: var(--maroon); border-color: var(--maroon); color: var(--gold); transform: translateY(-1px); }
+        .pick-role { text-align: center; padding: 12px 0 2px; }
+        .pick-role p { color: var(--ink); font-size: 14px; margin-bottom: 18px; }
+        .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; color: var(--maroon); font-size: 12px; font-weight: 700; margin-bottom: 7px; text-transform: uppercase; }
+        input, select {
+            width: 100%;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            background: #fffcf6;
+            color: var(--ink);
+            font: inherit;
+            font-size: 14px;
+            padding: 12px 14px;
+            outline: none;
+            transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+        }
+        input:focus, select:focus { background: #fff; border-color: var(--teal); box-shadow: 0 0 0 4px rgba(25, 114, 120, 0.12); }
+        .btn {
+            width: 100%;
+            border: 0;
+            border-radius: 999px;
+            background: var(--maroon);
+            color: var(--gold);
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+            padding: 13px 18px;
+            margin-top: 4px;
+            transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+        }
+        .btn:hover { background: var(--maroon-2); transform: translateY(-1px); box-shadow: 0 12px 28px rgba(101, 16, 29, 0.20); }
+        .alert, .field-error {
+            border-radius: 10px;
+            background: #fff0ed;
+            color: var(--danger);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .alert { padding: 11px 13px; margin-bottom: 14px; }
+        .field-error { padding: 8px 10px; margin-top: 7px; }
+        .bottom-link { margin-top: 18px; text-align: center; color: var(--muted); font-size: 13px; }
+        .bottom-link a { color: var(--maroon); font-weight: 700; text-decoration: none; }
+        .bottom-link a:hover { color: var(--teal); }
+        @media (max-width: 640px) {
+            .role-selector, .form-row { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="{% url 'home' %}">WildEats</a>
+    <a class="nav-link" href="{% url 'home' %}">Home</a>
+</header>
+
+<main>
+    <section class="card">
+        <h1 class="form-title">Create Account</h1>
+        <p class="form-sub">{% if role %}Register as {{ role|title }}{% else %}Choose the account type that fits your role.{% endif %}</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if not role %}
+            <div class="pick-role">
+                <p>Who are you registering as?</p>
+                <div class="role-selector">
+                    <a class="role-btn" href="?role=student">Student</a>
+                    <a class="role-btn" href="?role=vendor">Vendor</a>
+                    <a class="role-btn" href="?role=admin">Admin</a>
+                </div>
+            </div>
+        {% else %}
+            <div class="role-selector">
+                <a class="role-btn {% if role == 'student' %}active{% endif %}" href="?role=student">Student</a>
+                <a class="role-btn {% if role == 'vendor' %}active{% endif %}" href="?role=vendor">Vendor</a>
+                <a class="role-btn {% if role == 'admin' %}active{% endif %}" href="?role=admin">Admin</a>
+            </div>
+
+            <form method="post" novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="role" value="{{ role }}">
+
+                {% if form.non_field_errors %}
+                    <div class="alert">{{ form.non_field_errors }}</div>
+                {% endif %}
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_first_name">First Name</label>
+                        <input id="id_first_name" type="text" name="first_name" value="{{ first_name|default:'' }}" placeholder="Juan" autocomplete="given-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_last_name">Last Name</label>
+                        <input id="id_last_name" type="text" name="last_name" value="{{ last_name|default:'' }}" placeholder="Dela Cruz" autocomplete="family-name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_username">Username</label>
+                    <input id="id_username" type="text" name="username" value="{{ form.username.value|default:'' }}" placeholder="Choose a username" autocomplete="username" required>
+                    {% if form.username.errors %}<div class="field-error">{{ form.username.errors }}</div>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email">Email</label>
+                    <input id="id_email" type="email" name="email" value="{{ email|default:'' }}" placeholder="your@email.com" autocomplete="email" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="id_password1">Password</label>
+                        <input id="id_password1" type="password" name="password1" placeholder="Password" autocomplete="new-password" required>
+                        {% if form.password1.errors %}<div class="field-error">{{ form.password1.errors }}</div>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password2">Confirm Password</label>
+                        <input id="id_password2" type="password" name="password2" placeholder="Repeat password" autocomplete="new-password" required>
+                        {% if form.password2.errors %}<div class="field-error">{{ form.password2.errors }}</div>{% endif %}
+                    </div>
+                </div>
+
+                {% if role == 'admin' %}
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_admin_level">Admin Level</label>
+                            <input id="id_admin_level" type="text" name="admin_level" placeholder="Supervisor" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_cafeteria_type">Cafeteria Type</label>
+                            <select id="id_cafeteria_type" name="cafeteria_type">
+                                <option value="college">College</option>
+                                <option value="highschool">High School</option>
+                            </select>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if role == 'vendor' %}
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="id_contact_number">Contact Number</label>
+                            <input id="id_contact_number" type="text" name="contact_number" placeholder="09XXXXXXXXX" autocomplete="tel" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="id_business_license_number">Business License</label>
+                            <input id="id_business_license_number" type="text" name="business_license_number" placeholder="License number" required>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <button class="btn" type="submit">Create {{ role|title }} Account</button>
+            </form>
+        {% endif %}
+
+        <div class="bottom-link">Already have an account? <a href="{% url 'login' %}">Login here</a></div>
+    </section>
+</main>
+</body>
+</html>

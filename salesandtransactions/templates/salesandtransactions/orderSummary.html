@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | Order Details{% endblock %}
+
+{% block content %}
+<section class="section-head">
+    <div>
+        <span class="eyebrow">Order Details</span>
+        <h2 style="margin-top: 0.8rem;">Order #{{ order.OrderID }}</h2>
+        <p style="max-width: 560px;">
+            {{ order.CustomerName }} - placed {{ order.OrderDate|date:"M d, Y" }}
+        </p>
+    </div>
+    <div class="stack">
+        <a href="{% url 'sales_home' %}" class="button secondary">Back to Dashboard</a>
+        {% if can_cancel_order and is_student or can_cancel_order and is_admin %}
+            <form method="post" action="{% url 'delete_order' order.OrderID %}" style="display: inline;">
+                {% csrf_token %}
+                <button
+                    type="submit"
+                    class="button secondary"
+                    onclick="return confirm('Cancel Order #{{ order.OrderID }}?');"
+                >
+                    Cancel Order
+                </button>
+            </form>
+        {% endif %}
+    </div>
+</section>
+
+<section class="grid stats" style="margin-bottom: 1rem;">
+    <article class="card">
+        <div class="stat-value">&#8369;{{ order.TotalCost|floatformat:2 }}</div>
+        <p class="stat-label">Total Cost</p>
+    </article>
+    <article class="card">
+        <div class="stat-value">{{ payment_status }}</div>
+        <p class="stat-label">Payment Status</p>
+    </article>
+    <article class="card">
+        <div class="stat-value">{{ order.OrderStatus }}</div>
+        <p class="stat-label">Order Status</p>
+    </article>
+</section>
+
+{% if order.is_inactive %}
+    <section class="panel" style="margin-bottom: 1rem;">
+        <span class="chip danger">{{ order.OrderStatus }}</span>
+        <p style="margin-top: 0.8rem;">This order is kept for history. Editing, payments, verification, and status updates are disabled.</p>
+    </section>
+{% endif %}
+
+<section class="panel" style="margin-bottom: 1rem;">
+    <span class="eyebrow">Order Information</span>
+    <div class="order-meta" style="margin-top: 1rem;">
+        <span>Customer: {{ order.CustomerName }}</span>
+        {% if order.Student_id %}
+            <span>Student: {{ order.Student.username }}</span>
+        {% endif %}
+        {% if order.Vendor_id %}
+            <span>Vendor: {{ order.Vendor.username }}</span>
+        {% endif %}
+        <span>Placed: {{ order.OrderDate|date:"M d, Y" }}</span>
+        <span>Status: {{ order.OrderStatus }}</span>
+        <span>Payment: {{ payment_status }}</span>
+        <span>Total: &#8369;{{ order.TotalCost|floatformat:2 }}</span>
+        <span>Paid: &#8369;{{ order.TotalPaid|floatformat:2 }}</span>
+        <span>Balance: &#8369;{{ order.balance_due|floatformat:2 }}</span>
+    </div>
+</section>
+
+<section class="split">
+    <section class="panel">
+        <span class="eyebrow">Order Items</span>
+        <ul class="mini-list" style="margin-top: 1rem;">
+            {% for item in order.items.all %}
+                <li>
+                    <div style="display: flex; justify-content: space-between; gap: 1rem; align-items: center;">
+                        <span>
+                            <strong>{{ item.ProductName }}</strong><br>
+                            {{ item.Quantity }} x &#8369;{{ item.Price|floatformat:2 }} =
+                            &#8369;{{ item.line_total|floatformat:2 }}
+                        </span>
+                        {% if not order.is_inactive and is_admin or not order.is_inactive and is_student %}
+                            {% if order.OrderStatus == "Pending Payment" or order.OrderStatus == "Payment Failed" %}
+                                <form method="post" action="{% url 'delete_order_item' order.OrderID item.OrderItemID %}">
+                                    {% csrf_token %}
+                                    <button class="chip danger" type="submit">Delete</button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </li>
+            {% empty %}
+                <li>No items yet.</li>
+            {% endfor %}
+        </ul>
+
+        {% if not order.is_inactive and is_admin or not order.is_inactive and is_student %}
+            {% if order.OrderStatus == "Pending Payment" or order.OrderStatus == "Payment Failed" %}
+                <form method="post" action="{% url 'add_order_item' order.OrderID %}" style="margin-top: 1rem;">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{ item_form.menu_item.label_tag }}
+                        {{ item_form.menu_item }}
+                        {{ item_form.menu_item.errors }}
+                    </div>
+                    <div class="form-group">
+                        {{ item_form.Quantity.label_tag }}
+                        {{ item_form.Quantity }}
+                        {{ item_form.Quantity.errors }}
+                    </div>
+                    <button class="button" type="submit">Add Order Item</button>
+                </form>
+            {% endif %}
+        {% endif %}
+    </section>
+
+    <section class="panel">
+        <span class="eyebrow">Payment Records</span>
+        <ul class="mini-list" style="margin-top: 1rem;">
+            {% for payment in order.payments.all %}
+                <li>
+                    <div style="display: grid; gap: 0.6rem;">
+                        <span>
+                            <strong>{{ payment.PaymentMethod }}</strong><br>
+                            &#8369;{{ payment.Amount|floatformat:2 }}
+                            on {{ payment.PaymentDate|date:"M d, Y" }} -
+                            {{ payment.PaymentStatus }}
+                        </span>
+                        {% if not order.is_inactive and is_vendor or not order.is_inactive and is_admin %}
+                            {% if payment.PaymentStatus == "Pending" %}
+                                <div class="stack">
+                                    <form method="post" action="{% url 'verify_payment' order.OrderID payment.PaymentID %}">
+                                        {% csrf_token %}
+                                        <button class="chip" type="submit">Verify</button>
+                                    </form>
+                                    <form method="post" action="{% url 'fail_payment' order.OrderID payment.PaymentID %}">
+                                        {% csrf_token %}
+                                        <button class="chip danger" type="submit">Fail</button>
+                                    </form>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </li>
+            {% empty %}
+                <li>No payments yet.</li>
+            {% endfor %}
+        </ul>
+
+        {% if not order.is_inactive and is_admin or not order.is_inactive and is_student %}
+            {% if order.TotalCost > 0 %}
+                {% if order.OrderStatus == "Pending Payment" or order.OrderStatus == "Payment Failed" %}
+                    <form method="post" action="{% url 'record_payment' order.OrderID %}" style="margin-top: 1rem;">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            {{ payment_form.Amount.label_tag }}
+                            {{ payment_form.Amount }}
+                            {{ payment_form.Amount.errors }}
+                        </div>
+                        <div class="form-group">
+                            {{ payment_form.PaymentMethod.label_tag }}
+                            {{ payment_form.PaymentMethod }}
+                            {{ payment_form.PaymentMethod.errors }}
+                        </div>
+                        <button class="button" type="submit">Submit Payment</button>
+                    </form>
+                {% endif %}
+            {% else %}
+                <p style="margin-top: 1rem;">Add items before submitting payment.</p>
+            {% endif %}
+        {% endif %}
+    </section>
+</section>
+
+{% if not order.is_inactive and is_vendor or not order.is_inactive and is_admin %}
+    {% if order.OrderStatus == "Payment Verified" or order.OrderStatus == "Processing" %}
+        <section class="panel" style="margin-top: 1rem;">
+            <span class="eyebrow">Order Progress</span>
+            <form method="post" action="{% url 'update_order_status' order.OrderID %}" style="margin-top: 1rem;">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="id_status">Next Status</label>
+                    <select id="id_status" name="status">
+                        <option value="Processing">Processing</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+                <button class="button" type="submit">Update Status</button>
+            </form>
+        </section>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

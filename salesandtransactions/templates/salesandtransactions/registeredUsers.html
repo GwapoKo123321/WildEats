@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | {{ title }}{% endblock %}
+
+{% block content %}
+<section class="section-head">
+    <div>
+        <span class="eyebrow">Registered Users</span>
+        <h2 style="margin-top: 0.8rem;">{{ title }}</h2>
+    </div>
+    <a href="{% url 'sales_home' %}" class="button secondary">Back to Dashboard</a>
+</section>
+
+{% if users %}
+    <section class="panel table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for account in users %}
+                    <tr>
+                        <td>{{ account.get_full_name|default:account.username }}</td>
+                        <td>{{ account.email|default:"-" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% else %}
+    <section class="empty-state">
+        <h3>No registered users yet.</h3>
+    </section>
+{% endif %}
+{% endblock %}

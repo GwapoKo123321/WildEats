@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}WildEats | {{ title }}{% endblock %}
+
+{% block content %}
+<section class="section-head">
+    <div>
+        <span class="eyebrow">Menu Items</span>
+        <h2 style="margin-top: 0.8rem;">{{ title }}</h2>
+        <p style="max-width: 520px;">
+            Students will see available items in the order item dropdown.
+        </p>
+    </div>
+</section>
+
+<section class="form-card panel">
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {{ form.name.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+            {{ form.description.errors }}
+        </div>
+
+        <div class="form-group">
+            {{ form.price.label_tag }}
+            {{ form.price }}
+            {{ form.price.errors }}
+        </div>
+
+        <div class="form-group">
+            <label style="display: flex; align-items: center; gap: 0.55rem;">
+                {{ form.is_available }}
+                Available for student orders
+            </label>
+            {{ form.is_available.errors }}
+        </div>
+
+        <div class="stack" style="margin-top: 0.5rem;">
+            <button class="button" type="submit">Save Menu Item</button>
+            <a href="{% url 'menu_items' %}" class="button secondary">Back to Menu Items</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
