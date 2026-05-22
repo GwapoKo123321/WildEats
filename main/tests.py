@@ -25,6 +25,15 @@ class RoleRegistrationTests(TestCase):
         self.assertContains(response, "Who are you registering as?")
         self.assertContains(response, "?role=student")
 
+    def test_home_redirects_authenticated_users_to_dashboard(self):
+        user = User.objects.create_user(username="student", password="StrongPass123!")
+        user.groups.add(Group.objects.create(name="student"))
+
+        self.client.login(username="student", password="StrongPass123!")
+        response = self.client.get(reverse("home"))
+
+        self.assertRedirects(response, reverse("sales_home"))
+
     def test_student_registration_creates_student_user_only(self):
         response = self.register_user("student", "studentuser")
 

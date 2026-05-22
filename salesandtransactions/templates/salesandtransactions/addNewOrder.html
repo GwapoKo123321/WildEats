@@ -8,7 +8,7 @@
         <span class="eyebrow">Create Order</span>
         <h2 style="margin-top: 0.8rem;">Create Order</h2>
         <p style="max-width: 500px;">
-            Enter the customer name to start a new order. Total cost starts at ₱0.00 and status starts as Unpaid.
+            Start a new order with at least one menu item.
         </p>
     </div>
 </section>
@@ -21,6 +21,16 @@
             {{ form.CustomerName.label_tag }}
             {{ form.CustomerName }}
             {{ form.CustomerName.errors }}
+        </div>
+        <div class="form-group">
+            {{ item_form.menu_item.label_tag }}
+            {{ item_form.menu_item }}
+            {{ item_form.menu_item.errors }}
+        </div>
+        <div class="form-group">
+            {{ item_form.Quantity.label_tag }}
+            {{ item_form.Quantity }}
+            {{ item_form.Quantity.errors }}
         </div>
 
         <div class="stack" style="margin-top: 0.5rem;">

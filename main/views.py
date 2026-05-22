@@ -55,11 +55,6 @@ def sync_role_flags(user):
         user.save(update_fields=["is_staff", "is_superuser"])
 
 
-@login_required
-def index(request):
-    return redirect("sales_home")
-
-
 class CustomLoginView(LoginView):
     template_name = "login.html"
     redirect_authenticated_user = True
@@ -184,11 +179,6 @@ def edit_profile(request):
     return render(request, "edit_profile.html")
 
 
-@login_required
-def add_new_record(request):
-    return redirect("add_new_order")
-
-
 def log_off(request):
     request.session.flush()
     logout(request)
@@ -198,10 +188,13 @@ class HomePageView(View):
     template_name = 'index.html'
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect("sales_home")
+
         user = request.user
         return render(request, self.template_name, {
             'user': user,
-            'is_student': user.is_authenticated and user.groups.filter(name="student").exists(),
-            'is_vendor': user.is_authenticated and user.groups.filter(name="vendor").exists(),
-            'is_admin': user.is_authenticated and user.groups.filter(name="admin").exists(),
+            'is_student': False,
+            'is_vendor': False,
+            'is_admin': False,
         })

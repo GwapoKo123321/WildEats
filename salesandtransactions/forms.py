@@ -1,6 +1,8 @@
+from decimal import Decimal
+
 from django import forms
 
-from .models import Order, OrderItem, PaymentRecord
+from .models import MenuItem, Order, OrderItem, PaymentRecord
 
 
 class PesoDecimalField(forms.DecimalField):
@@ -34,10 +36,43 @@ class OrderForm(forms.ModelForm):
         fields = ['CustomerName']
 
 
+class MenuItemChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        return f"{obj.name} - \u20b1{obj.price:.2f}"
+
+
 class OrderItemForm(forms.ModelForm):
-    Price = PesoDecimalField(
+    menu_item = MenuItemChoiceField(
+        queryset=MenuItem.objects.none(),
+        empty_label="Select a menu item",
+        label="Menu Item",
+    )
+
+    def __init__(self, *args, vendor=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        queryset = MenuItem.objects.filter(is_available=True).select_related("vendor")
+        if vendor is not None:
+            queryset = queryset.filter(vendor=vendor)
+        self.fields["menu_item"].queryset = queryset.order_by("name")
+        self.fields["Quantity"].min_value = 1
+
+    class Meta:
+        model = OrderItem
+        fields = ['menu_item', 'Quantity']
+
+
+class MenuItemForm(forms.ModelForm):
+    description = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={
+            "rows": 3,
+            "style": "min-height: 7rem; resize: vertical;",
+        }),
+    )
+    price = PesoDecimalField(
         max_digits=10,
         decimal_places=2,
+        min_value=0,
         widget=forms.TextInput(attrs={
             'class': 'money-input',
             'placeholder': '\u20b10.00',
@@ -46,16 +81,13 @@ class OrderItemForm(forms.ModelForm):
     )
 
     class Meta:
-        model = OrderItem
-        fields = ['ProductName', 'Quantity', 'Price']
+        model = MenuItem
+        fields = ["name", "description", "price", "is_available"]
 
 
 class PaymentRecordForm(forms.ModelForm):
     PAYMENT_METHOD_CHOICES = [
         ('Cash', 'Cash'),
-        ('Card', 'Card'),
-        ('GCash', 'GCash'),
-        ('Bank Transfer', 'Bank Transfer'),
     ]
 
     PaymentMethod = forms.ChoiceField(choices=PAYMENT_METHOD_CHOICES)
@@ -73,6 +105,7 @@ class PaymentRecordForm(forms.ModelForm):
     def __init__(self, *args, order=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.order = order
+        self.fields["PaymentMethod"].initial = "Cash"
 
     def clean_Amount(self):
         amount = self.cleaned_data['Amount']
@@ -80,14 +113,19 @@ class PaymentRecordForm(forms.ModelForm):
         if self.order is None:
             return amount
 
+        if amount != self.order.TotalCost:
+            raise forms.ValidationError(
+                f"Payment must cover the full order total of \u20b1{self.order.TotalCost:.2f}."
+            )
+
         open_payment_total = sum(
             (
                 payment.Amount
                 for payment in self.order.payments.exclude(
-                    PaymentStatus=PaymentRecord.STATUS_REJECTED
+                    PaymentStatus=PaymentRecord.STATUS_FAILED
                 )
             ),
-            0,
+            Decimal("0.00"),
         )
         remaining_submittable = self.order.TotalCost - open_payment_total
         if amount > remaining_submittable:
@@ -96,6 +134,12 @@ class PaymentRecordForm(forms.ModelForm):
             )
 
         return amount
+
+    def clean_PaymentMethod(self):
+        payment_method = self.cleaned_data["PaymentMethod"]
+        if payment_method != "Cash":
+            raise forms.ValidationError("Payments must be made in cash.")
+        return payment_method
 
     class Meta:
         model = PaymentRecord

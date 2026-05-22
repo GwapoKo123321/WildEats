@@ -34,11 +34,13 @@ python manage.py runserver 8080
 
 ## URLs
 
-* `/` → Index
-* `/login/` → Login
-* `/sales/` → Sales page
-* `/sales/addNewOrder/` → Add Order
-* `/sales/addOrderItem/<id>/` → Add Item
+* `/` - Home
+* `/login/` - Login
+* `/register/` - Registration
+* `/edit-profile/` - Profile
+* `/sales/` - Orders dashboard
+* `/sales/addNewOrder/` - Create order
+* `/sales/orderSummary/<id>/` - Order details
 
 ---
 

@@ -12,16 +12,20 @@
         {% elif is_vendor %}
             <span class="eyebrow">Vendor Dashboard</span>
             <h2 style="margin-top: 0.8rem;">Orders for Verification</h2>
-            <p style="max-width: 560px;">Review submitted payments, verify or reject them, then update order progress.</p>
+            <p style="max-width: 560px;">Review submitted payments, verify or fail them, then update order progress.</p>
         {% else %}
             <span class="eyebrow">Admin Dashboard</span>
             <h2 style="margin-top: 0.8rem;">All Transactions</h2>
             <p style="max-width: 560px;">Monitor orders, users, vendors, payments, and transaction statuses.</p>
         {% endif %}
     </div>
-    {% if is_student %}
-        <a href="{% url 'add_new_order' %}" class="button">Add Order</a>
-    {% endif %}
+    <div class="stack">
+        {% if is_student %}
+            <a href="{% url 'add_new_order' %}" class="button">Create Order</a>
+        {% endif %}
+        <a href="{% url 'menu_items' %}" class="button secondary">Menu Items</a>
+        <a href="{% url 'payment_records' %}" class="button secondary">Payment Records</a>
+    </div>
 </section>
 
 <section class="grid stats" style="margin-bottom: 1rem;">
@@ -29,19 +33,23 @@
         <div class="stat-value">{{ orders|length }}</div>
         <p class="stat-label">Visible Orders</p>
     </article>
+    <a class="card" href="{% url 'menu_items' %}">
+        <div class="stat-value">{{ menu_items|length }}</div>
+        <p class="stat-label">Menu Items</p>
+    </a>
+    <a class="card" href="{% url 'payment_records' %}">
+        <div class="stat-value">{{ payments|length }}</div>
+        <p class="stat-label">Payment Records</p>
+    </a>
     {% if is_admin %}
-        <article class="card">
-            <div class="stat-value">{{ payments|length }}</div>
-            <p class="stat-label">Payment Records</p>
-        </article>
-        <article class="card">
+        <a class="card" href="{% url 'registered_students' %}">
             <div class="stat-value">{{ users|length }}</div>
             <p class="stat-label">Students</p>
-        </article>
-        <article class="card">
+        </a>
+        <a class="card" href="{% url 'registered_vendors' %}">
             <div class="stat-value">{{ vendors|length }}</div>
             <p class="stat-label">Vendors</p>
-        </article>
+        </a>
     {% endif %}
 </section>
 
@@ -51,7 +59,7 @@
             <article class="order-card">
                 <div class="stack">
                     <span class="chip">Order #{{ order.OrderID }}</span>
-                    <span class="chip">{{ order.OrderStatus }}</span>
+                    <span class="chip {% if order.is_inactive %}danger{% endif %}">{{ order.OrderStatus }}</span>
                 </div>
 
                 <div>
@@ -66,15 +74,15 @@
 
                 <div class="stack">
                     <a href="{% url 'order_summary' order.OrderID %}" class="button">Order Details</a>
-                    {% if is_student or is_admin %}
+                    {% if order.can_cancel and is_student or order.can_cancel and is_admin %}
                         <form method="post" action="{% url 'delete_order' order.OrderID %}" style="display: inline;">
                             {% csrf_token %}
                             <button
                                 type="submit"
                                 class="button secondary"
-                                onclick="return confirm('Delete Order #{{ order.OrderID }}?');"
+                                onclick="return confirm('Cancel Order #{{ order.OrderID }}?');"
                             >
-                                Delete
+                                Cancel
                             </button>
                         </form>
                     {% endif %}
@@ -94,50 +102,4 @@
     </section>
 {% endif %}
 
-{% if is_admin %}
-    <section class="section-head">
-        <div>
-            <span class="eyebrow">All Payments</span>
-            <h2 style="margin-top: 0.8rem;">Payment Records</h2>
-        </div>
-    </section>
-    <section class="panel">
-        <ul class="mini-list">
-            {% for payment in payments %}
-                <li>
-                    Order #{{ payment.Order.OrderID }} -
-                    {{ payment.Order.Student.username|default:"No student" }} -
-                    &#8369;{{ payment.Amount|floatformat:2 }} -
-                    {{ payment.PaymentStatus }}
-                </li>
-            {% empty %}
-                <li>No payment records.</li>
-            {% endfor %}
-        </ul>
-    </section>
-
-    <section class="split" style="margin-top: 1rem;">
-        <section class="panel">
-            <span class="eyebrow">Students</span>
-            <ul class="mini-list" style="margin-top: 1rem;">
-                {% for student in users %}
-                    <li>{{ student.username }} - {{ student.email|default:"No email" }}</li>
-                {% empty %}
-                    <li>No student accounts.</li>
-                {% endfor %}
-            </ul>
-        </section>
-
-        <section class="panel">
-            <span class="eyebrow">Vendors</span>
-            <ul class="mini-list" style="margin-top: 1rem;">
-                {% for vendor in vendors %}
-                    <li>{{ vendor.username }} - {{ vendor.email|default:"No email" }}</li>
-                {% empty %}
-                    <li>No vendor accounts.</li>
-                {% endfor %}
-            </ul>
-        </section>
-    </section>
-{% endif %}
 {% endblock %}
