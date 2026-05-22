@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Discount - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        .stripe { height: 10px; }
+        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+        .btn-nav { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: all 0.2s; }
+        .btn-nav:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-maroon { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
+        .btn-maroon:hover { background: #8a1020 !important; }
+        .content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
+        .card { background: #fff; border: 1px solid #f0e0a0; border-radius: 16px; padding: 40px; width: 100%; max-width: 520px; box-shadow: 0 8px 40px rgba(107,15,26,0.08); }
+        .card-title { color: #6B0F1A; font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .card-sub { color: #aaa; font-size: 13px; margin-bottom: 28px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-size: 11px; font-weight: 600; color: #6B0F1A; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        input[type="text"], input[type="number"], input[type="date"], textarea { width: 100%; padding: 11px 14px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 13px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; box-sizing: border-box; transition: border-color 0.2s; }
+        input:focus, textarea:focus { border-color: #6B0F1A; background: #fff; }
+        textarea { resize: vertical; min-height: 70px; }
+        .error-msg { color: #c0392b; font-size: 11px; margin-top: 4px; }
+        .btn { width: 100%; background: #6B0F1A; color: #FFD700; padding: 13px; border: none; border-radius: 30px; font-size: 14px; font-weight: 600; font-family: 'Poppins', sans-serif; cursor: pointer; margin-top: 8px; transition: background 0.2s; }
+        .btn:hover { background: #8a1020; }
+        .back { text-align: center; margin-top: 16px; }
+        .back a { color: #6B0F1A; font-size: 13px; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="stripe"></div>
+<div class="nav">
+    <div class="nav-logo">WildEats</div>
+    <div class="nav-links">
+        <a class="btn-nav" href="{% url 'home' %}">Home</a>
+        <a class="btn-nav" href="{% url 'discount-list' %}">Discount List</a>
+        <button class="btn-maroon" onclick="openLogout()">Logout</button>
+    </div>
+</div>
+
+<div class="content">
+    <div class="card">
+        <div class="card-title">Edit Discount</div>
+        <div class="card-sub">Editing: {{ discount.Name }}</div>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Discount Name</label>
+                <input type="text" name="Name" value="{{ form.Name.value|default:'' }}">
+                <div class="error-msg">{% if form.Name.errors %}{{ form.Name.errors.0 }}{% endif %}</div>
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="Description">{{ form.Description.value|default:'' }}</textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Start Date</label>
+                    <input type="date" name="StartDate" value="{{ form.StartDate.value|default:'' }}">
+                    <div class="error-msg">{% if form.StartDate.errors %}{{ form.StartDate.errors.0 }}{% endif %}</div>
+                </div>
+                <div class="form-group">
+                    <label>End Date</label>
+                    <input type="date" name="EndDate" value="{{ form.EndDate.value|default:'' }}">
+                    <div class="error-msg">{% if form.EndDate.errors %}{{ form.EndDate.errors.0 }}{% endif %}</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Discount Percentage (%)</label>
+                <input type="number" name="Percentage" min="1" max="100" step="0.1" value="{{ form.Percentage.value|default:'' }}">
+                <div class="error-msg">{% if form.Percentage.errors %}{{ form.Percentage.errors.0 }}{% endif %}</div>
+            </div>
+            {% if form.non_field_errors %}
+            <div class="error-msg">{{ form.non_field_errors.0 }}</div>
+            {% endif %}
+            <button class="btn" type="submit">Save Changes</button>
+        </form>
+        <div class="back"><a href="{% url 'discount-list' %}">← Back to Discount List</a></div>
+    </div>
+</div>
+
+<div class="stripe"></div>
+<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">
+        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>
+        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>
+        <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="closeLogout()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
+            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
+        </div>
+    </div>
+</div>
+<script>
+function openLogout() { document.getElementById('logout-modal').style.display = 'flex'; }
+function closeLogout() { document.getElementById('logout-modal').style.display = 'none'; }
+</script>
+</body>
+</html>

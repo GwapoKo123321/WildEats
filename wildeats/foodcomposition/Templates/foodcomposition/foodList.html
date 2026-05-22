@@ -19,6 +19,7 @@
         .btn-logout:hover { background: #8a1020 !important; }
         .btn-back { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
         .btn-back:hover { background: #6B0F1A; color: #FFD700; }
+        .food-price { color: #8a1020; font-size: 16px; font-weight: 700; margin-bottom: 4px; }
         .search-bar { background: #ffffff; padding: 20px 5vw; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
         .search-bar input { flex: 1; min-width: 200px; padding: 10px 16px; border: 1.5px solid #f0e0a0; border-radius: 8px; font-size: 14px; font-family: 'Poppins', sans-serif; outline: none; background: #fdfaf4; }
         .search-bar input:focus { border-color: #6B0F1A; }
@@ -79,16 +80,36 @@
         {% if category %} — {{ category|title }}{% endif %}
     </div>
     <div class="grid">
+<!--        {% for food in foods %}-->
+<!--        <a class="food-card" href="{% url 'food-detail' food.pk %}">-->
+<!--            <div class="food-category">{{ food.get_Category_display }}</div>-->
+<!--            <div class="food-name">{{ food.Name }}</div>-->
+<!--            <div class="food-price">₱{{ food.Price }}</div>-->
+<!--            <div class="food-portion">{{ food.PortionSize }}</div>-->
+<!--        </a>-->
+<!--        {% empty %}-->
+<!--        <div class="empty" style="grid-column: 1/-1;">-->
+<!--            <p>No food items found. {% if user.role == 'vendor' %}<a href="{% url 'add-food' %}" style="color:#6B0F1A;">Add one?</a>{% endif %}</p>-->
+<!--        </div>-->
+<!--        {% endfor %}-->
         {% for food in foods %}
         <a class="food-card" href="{% url 'food-detail' food.pk %}">
             <div class="food-category">{{ food.get_Category_display }}</div>
             <div class="food-name">{{ food.Name }}</div>
-            <div class="food-price">₱{{ food.Price }}</div>
+            {% if food.Discount and food.Discount.is_active %}
+                <div style="text-decoration:line-through; color:#aaa; font-size:13px;">₱{{ food.Price }}</div>
+                <div class="food-price">₱{{ food.discounted_price }}</div>
+                <div style="display:inline-block; background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; margin-top:2px;">
+                    {{ food.Discount.Percentage }}% OFF
+                </div>
+            {% else %}
+                <div class="food-price">₱{{ food.Price }}</div>
+            {% endif %}
             <div class="food-portion">{{ food.PortionSize }}</div>
         </a>
         {% empty %}
         <div class="empty" style="grid-column: 1/-1;">
-            <p>No food items found. {% if user.role == 'vendor' %}<a href="{% url 'add-food' %}" style="color:#6B0F1A;">Add one?</a>{% endif %}</p>
+            <p>No food items found.</p>
         </div>
         {% endfor %}
     </div>

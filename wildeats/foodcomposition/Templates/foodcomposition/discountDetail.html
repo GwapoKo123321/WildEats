@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ discount.Name }} - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        .stripe { height: 10px; }
+        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
+        .nav-links { display: flex; align-items: center; gap: 8px; }
+        .btn-nav { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: all 0.2s; }
+        .btn-nav:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
+        .btn-logout:hover { background: #8a1020 !important; }
+        .container { flex: 1; max-width: 700px; margin: 40px auto; padding: 0 16px; width: 100%; }
+        .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+        .discount-name { color: #6B0F1A; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .pct-badge { display: inline-block; background: #6B0F1A; color: #FFD700; padding: 6px 16px; border-radius: 20px; font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+        .status-tag { font-size: 12px; padding: 4px 12px; border-radius: 20px; font-weight: 600; display: inline-block; }
+        .status-active { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .status-expired { background: #fce4ec; color: #c62828; border: 1px solid #ef9a9a; }
+        .btn-edit { background: #6B0F1A; color: #FFD700; padding: 10px 22px; border-radius: 30px; font-size: 13px; font-weight: 600; text-decoration: none; white-space: nowrap; transition: background 0.2s; }
+        .btn-edit:hover { background: #8a1020; }
+        .section { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+        .section h3 { color: #6B0F1A; font-size: 15px; font-weight: 700; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0e0a0; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f0d0; font-size: 13px; }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { color: #888; }
+        .info-value { color: #6B0F1A; font-weight: 500; }
+        .food-item { padding: 12px 0; border-bottom: 1px solid #f9f0d0; display: flex; justify-content: space-between; align-items: center; text-decoration: none; }
+        .food-item:last-child { border-bottom: none; }
+        .food-item:hover .food-item-name { text-decoration: underline; }
+        .food-item-name { color: #6B0F1A; font-size: 14px; font-weight: 600; }
+        .food-item-prices { text-align: right; }
+        .original-price { color: #aaa; font-size: 12px; text-decoration: line-through; }
+        .discounted-price { color: #8a1020; font-size: 14px; font-weight: 700; }
+        .tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; background: #fff3cd; color: #6B0F1A; margin-left: 6px; }
+        .empty { color: #aaa; font-size: 13px; text-align: center; padding: 20px; }
+        .desc-box { background: #fdfaf4; padding: 14px; border-radius: 8px; font-size: 13px; color: #555; line-height: 1.7; }
+    </style>
+</head>
+<body>
+<div class="stripe"></div>
+<div class="nav">
+    <div class="nav-logo">WildEats</div>
+    <div class="nav-links">
+        <a class="btn-nav" href="{% url 'discount-list' %}">Discount List</a>
+        <a class="btn-nav" href="{% url 'add-discount' %}">+ Add Discount</a>
+        <button class="btn-logout" onclick="openLogout()">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div>
+            <div class="discount-name">{{ discount.Name }}</div>
+            <div class="pct-badge">{{ discount.Percentage }}% OFF</div>
+            <div style="margin-top:6px;">
+                {% if discount.is_active %}
+                    <span class="status-tag status-active">✓ Currently Active</span>
+                {% else %}
+                    <span class="status-tag status-expired">✗ Expired</span>
+                {% endif %}
+            </div>
+        </div>
+        {% if user.role == 'vendor' %}
+        <a class="btn-edit" href="{% url 'edit-discount' discount.pk %}">✏️ Edit Discount</a>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h3>Discount Details</h3>
+        <div class="info-row">
+            <span class="info-label">Discount Name</span>
+            <span class="info-value">{{ discount.Name }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Percentage</span>
+            <span class="info-value" style="color:#8a1020; font-weight:700;">{{ discount.Percentage }}% OFF</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Start Date</span>
+            <span class="info-value">{{ discount.StartDate }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">End Date</span>
+            <span class="info-value">{{ discount.EndDate }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Status</span>
+            <span class="info-value">
+                {% if discount.is_active %}
+                    <span style="color:#2e7d32; font-weight:600;">✓ Active</span>
+                {% else %}
+                    <span style="color:#c62828; font-weight:600;">✗ Expired</span>
+                {% endif %}
+            </span>
+        </div>
+        {% if discount.Description %}
+        <div style="margin-top:16px;">
+            <div style="color:#888; font-size:12px; font-weight:600; text-transform:uppercase; margin-bottom:8px;">Description</div>
+            <div class="desc-box">{{ discount.Description }}</div>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h3>Food Items with this Discount</h3>
+        {% for food in food_items %}
+        <a class="food-item" href="{% url 'food-detail' food.pk %}">
+            <div>
+                <div class="food-item-name">
+                    {{ food.Name }}
+                    <span class="tag">{{ food.get_Category_display }}</span>
+                </div>
+                <div style="color:#aaa; font-size:12px; margin-top:2px;">{{ food.PortionSize }}</div>
+            </div>
+            <div class="food-item-prices">
+                <div class="original-price">₱{{ food.Price }}</div>
+                <div class="discounted-price">₱{{ food.discounted_price }}</div>
+            </div>
+        </a>
+        {% empty %}
+        <div class="empty">No food items are using this discount yet.</div>
+        {% endfor %}
+    </div>
+</div>
+
+<div class="stripe"></div>
+
+<div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">
+    <div style="background:#fff; border-radius:16px; padding:36px; max-width:360px; width:90%; text-align:center;">
+        <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>
+        <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>
+        <div style="display:flex; gap:12px; justify-content:center;">
+            <button onclick="closeLogout()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
+            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
+        </div>
+    </div>
+</div>
+<script>
+function openLogout() { document.getElementById('logout-modal').style.display = 'flex'; }
+function closeLogout() { document.getElementById('logout-modal').style.display = 'none'; }
+</script>
+</body>
+</html>

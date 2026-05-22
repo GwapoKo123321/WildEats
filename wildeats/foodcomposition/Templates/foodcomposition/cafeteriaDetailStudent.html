@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ cafeteria.Name }} - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        .stripe { height: 10px; }
+        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
+        .btn-back { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: all 0.2s; }
+        .btn-back:hover { background: #6B0F1A; color: #FFD700; }
+        .container { flex: 1; max-width: 700px; margin: 40px auto; padding: 0 16px; width: 100%; }
+        .caf-name { color: #6B0F1A; font-size: 28px; font-weight: 700; margin-bottom: 6px; }
+        .caf-meta { color: #888; font-size: 13px; margin-top: 4px; }
+        .section { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 24px; margin-bottom: 20px; margin-top: 24px; }
+        .section h3 { color: #6B0F1A; font-size: 15px; font-weight: 700; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0e0a0; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f0d0; font-size: 13px; }
+        .info-label { color: #888; }
+        .info-value { color: #6B0F1A; font-weight: 500; }
+        .food-item { padding: 12px 0; border-bottom: 1px solid #f9f0d0; display: flex; justify-content: space-between; align-items: center; }
+        .food-item:last-child { border-bottom: none; }
+        .food-item-name { color: #6B0F1A; font-size: 14px; font-weight: 600; }
+        .food-item-price { color: #8a1020; font-size: 13px; font-weight: 600; }
+        .empty { color: #aaa; font-size: 13px; text-align: center; padding: 20px; }
+    </style>
+</head>
+<body>
+<div class="stripe"></div>
+<div class="nav">
+    <div class="nav-logo">WildEats</div>
+    <a class="btn-back" href="{% url 'cafeteria-list' %}">← Back</a>
+</div>
+
+<div class="container">
+    <div class="caf-name">{{ cafeteria.Name }}</div>
+    <div class="caf-meta">📍 {{ cafeteria.Location }}</div>
+    <div class="caf-meta">🕐 {{ cafeteria.OperatingHours }}</div>
+    <div class="caf-meta">👥 Capacity: {{ cafeteria.Capacity }}</div>
+
+    <div class="section">
+        <h3>Cafeteria Details</h3>
+        <div class="info-row"><span class="info-label">Name</span><span class="info-value">{{ cafeteria.Name }}</span></div>
+        <div class="info-row"><span class="info-label">Location</span><span class="info-value">{{ cafeteria.Location }}</span></div>
+        <div class="info-row"><span class="info-label">Operating Hours</span><span class="info-value">{{ cafeteria.OperatingHours }}</span></div>
+        <div class="info-row"><span class="info-label">Capacity</span><span class="info-value">{{ cafeteria.Capacity }} people</span></div>
+    </div>
+
+    <div class="section">
+        <h3>Food Items Available</h3>
+        {% for food in foods %}
+        <div class="food-item">
+            <div class="food-item-name">{{ food.Name }}</div>
+            <div class="food-item-price">₱{{ food.Price }}</div>
+        </div>
+        {% empty %}
+        <div class="empty">No food items available in this cafeteria.</div>
+        {% endfor %}
+    </div>
+</div>
+<div class="stripe"></div>
+</body>
+</html>

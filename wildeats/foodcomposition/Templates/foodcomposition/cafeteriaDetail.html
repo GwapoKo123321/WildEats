@@ -17,7 +17,7 @@
         .btn-cafeterialist:hover { background: #6B0F1A; color: #FFD700; }
         .btn-addcafeteria { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: border-color 0.2s; }
         .btn-addcafeteria:hover { background: #6B0F1A; color: #FFD700; }
-        .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
+        .btn-logout { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: 1.5px solid transparent !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
         .btn-logout:hover { background: #8a1020 !important; }
         .container { flex: 1; max-width: 700px; margin: 40px auto; padding: 0 16px; width: 100%; }
         .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
@@ -91,8 +91,8 @@
         <h3 style="color:#6B0F1A; font-size:18px; font-weight:600; margin-bottom:10px;">Logging Out</h3>
         <p style="color:#aaa; font-size:13px; margin-bottom:24px;">Are you sure you want to log out?</p>
         <div style="display:flex; gap:12px; justify-content:center;">
-            <button onclick="closeLogout()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:13px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
-            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
+            <button onclick="closeLogout()" style="padding:10px 24px; border:1.5px solid #f0e0a0; background:#fff; border-radius:8px; font-size:14px; cursor:pointer; color:#6B0F1A; font-weight:500; font-family:'Poppins',sans-serif;">Cancel</button>
+            <a href="{% url 'logout' %}" style="padding:10px 24px; background:#6B0F1A; color:#FFD700; border-radius:8px; font-size:14px; font-family:'Poppins',sans-serif; text-decoration:none; font-weight:600;">Yes, Logout</a>
         </div>
     </div>
 </div>

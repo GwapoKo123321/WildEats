@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ ingredient.Name }} - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fff; display: flex; flex-direction: column; min-height: 100vh; }
+        .stripe { height: 10px; }
+        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; }
+        .btn-back { background: #fff; color: #6B0F1A; padding: 10px 20px; border-radius: 30px; font-size: 14px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: all 0.2s; }
+        .btn-back:hover { background: #6B0F1A; color: #FFD700; }
+        .container { flex: 1; max-width: 700px; margin: 40px auto; padding: 0 16px; width: 100%; }
+        .header { margin-bottom: 24px; }
+        .ing-name { color: #6B0F1A; font-size: 28px; font-weight: 700; margin-bottom: 10px; }
+        .ing-tag { font-size: 12px; padding: 4px 12px; border-radius: 20px; display: inline-block; font-weight: 600; }
+        .ing-tag.allergen { background: #fff3cd; color: #7a5c00; border: 1px solid #FFD700; }
+        .ing-tag.safe { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+        .section { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+        .section h3 { color: #6B0F1A; font-size: 15px; font-weight: 700; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid #f0e0a0; }
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f9f0d0; font-size: 13px; }
+        .info-label { color: #888; }
+        .info-value { color: #6B0F1A; font-weight: 500; }
+        .warning { background: #fff8e1; border: 1px solid #FFD700; border-radius: 10px; padding: 14px 18px; display: flex; gap: 10px; align-items: flex-start; margin-top: 16px; }
+        .warning-text { color: #7a5c00; font-size: 12px; line-height: 1.7; }
+    </style>
+</head>
+<body>
+<div class="stripe"></div>
+<div class="nav">
+    <div class="nav-logo">WildEats</div>
+    <a class="btn-back" href="{% url 'ingredient-list' %}">← Back</a>
+</div>
+
+<div class="container">
+    <div class="header">
+        <div class="ing-name">{{ ingredient.Name }}</div>
+        {% if ingredient.IsAllergen %}
+            <span class="ing-tag allergen">⚠️ Known Allergen</span>
+        {% else %}
+            <span class="ing-tag safe">✓ Safe Ingredient</span>
+        {% endif %}
+    </div>
+
+    <div class="section">
+        <h3>Ingredient Details</h3>
+        <div class="info-row"><span class="info-label">Name</span><span class="info-value">{{ ingredient.Name }}</span></div>
+        <div class="info-row"><span class="info-label">Quantity Unit</span><span class="info-value">{{ ingredient.get_QuantityUnit_display }}</span></div>
+        <div class="info-row"><span class="info-label">Low Stock Threshold</span><span class="info-value">{{ ingredient.Threshold }} {{ ingredient.QuantityUnit }}</span></div>
+        <div class="info-row"><span class="info-label">Storage Condition</span><span class="info-value">{{ ingredient.StorageCondition|default:"—" }}</span></div>
+        <div class="info-row"><span class="info-label">Expiry Date</span><span class="info-value">{{ ingredient.ExpiryDate|default:"Not specified" }}</span></div>
+        <div class="info-row"><span class="info-label">Allergen</span><span class="info-value">{% if ingredient.IsAllergen %}Yes ⚠️{% else %}No{% endif %}</span></div>
+    </div>
+
+    {% if ingredient.IsAllergen %}
+    <div class="warning">
+        <div style="font-size:18px;">⚠️</div>
+        <div class="warning-text">
+            <strong>Allergen Warning:</strong> This ingredient is a known allergen.
+            Food items containing this ingredient will display an allergen warning to students.
+        </div>
+    </div>
+    {% endif %}
+</div>
+<div class="stripe"></div>
+</body>
+</html>

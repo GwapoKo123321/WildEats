@@ -170,6 +170,22 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label>Apply Discount (Optional)</label>
+                    <select name="Discount" style="width:100%; padding:10px 13px; border:1.5px solid #f0e0a0; border-radius:8px; font-size:13px; font-family:'Poppins',sans-serif; outline:none; background:#fdfaf4; box-sizing:border-box; transition:border-color 0.2s;">
+                        <option value="">-- No Discount --</option>
+                        {% for discount in discounts %}
+                            <option value="{{ discount.pk }}">
+                                {{ discount.Name }} — {{ discount.Percentage }}% OFF
+                                {% if discount.is_active %} ✓ Active{% else %} ✗ Expired{% endif %}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <small style="color:#aaa; font-size:11px; margin-top:4px; display:block;">
+                        Don't see yours? <a href="{% url 'add-discount' %}" style="color:#6B0F1A;">Add a discount first</a>
+                    </small>
+                </div>
+
                 <!-- Add new cafeteria inline -->
 <!--                <div class="form-group" style="margin-top:4px;">-->
 <!--                    <label style="color:#aaa;">Or add a new cafeteria</label>-->

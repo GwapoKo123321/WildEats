@@ -54,12 +54,37 @@
     </div>
 </div>
 <div class="container">
+<!--    <div class="food-header">-->
+<!--        <div class="food-info">-->
+<!--            <div class="food-category">{{ food.get_Category_display }}</div>-->
+<!--            <div class="food-name">{{ food.Name }}</div>-->
+<!--            <div class="food-price">₱{{ food.Price }}</div>-->
+<!--            <div class="food-portion">Portion: {{ food.PortionSize }}</div>-->
+<!--        </div>-->
+<!--        <a class="btn-edit" href="{% url 'edit-food' food.pk %}">Edit Food Item</a>-->
+<!--    </div>-->
+
     <div class="food-header">
         <div class="food-info">
             <div class="food-category">{{ food.get_Category_display }}</div>
             <div class="food-name">{{ food.Name }}</div>
             <div class="food-price">₱{{ food.Price }}</div>
             <div class="food-portion">Portion: {{ food.PortionSize }}</div>
+            {% if food.Discount %}
+            <div style="margin-top:10px; background:#fdfaf4; border:1px solid #f0e0a0; border-radius:10px; padding:12px 16px; max-width:320px;">
+                <div style="font-size:11px; font-weight:600; color:#6B0F1A; text-transform:uppercase; margin-bottom:6px;">Applied Discount</div>
+                <div style="font-size:14px; font-weight:700; color:#6B0F1A;">{{ food.Discount.Name }} — {{ food.Discount.Percentage }}% OFF</div>
+                <div style="font-size:12px; color:#888; margin-top:2px;">{{ food.Discount.StartDate }} → {{ food.Discount.EndDate }}</div>
+                {% if food.Discount.is_active %}
+                    <div style="font-size:11px; font-weight:600; color:#2e7d32; margin-top:4px;">✓ Active</div>
+                    <div style="font-size:13px; color:#8a1020; font-weight:700; margin-top:6px;">Discounted Price: ₱{{ food.discounted_price }}</div>
+                {% else %}
+                    <div style="font-size:11px; font-weight:600; color:#c62828; margin-top:4px;">✗ Expired</div>
+                {% endif %}
+            </div>
+            {% else %}
+            <div style="margin-top:8px; font-size:12px; color:#aaa;">No discount applied.</div>
+            {% endif %}
         </div>
         <a class="btn-edit" href="{% url 'edit-food' food.pk %}">Edit Food Item</a>
     </div>

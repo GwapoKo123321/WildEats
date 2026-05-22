@@ -1,140 +1,7 @@
-# # from django.db import models
-# # from django.core.exceptions import ValidationError
-# #
-# #
-# # class Cafeteria(models.Model):
-# #     Name = models.CharField(max_length=100)
-# #
-# #     def __str__(self):
-# #         return self.Name
-# #
-# #
-# # class FoodItem(models.Model):
-# #     Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE, null=True, blank=True)
-# #     Name = models.CharField(max_length=100)
-# #     Price = models.DecimalField(max_digits=10, decimal_places=2)
-# #     PortionSize = models.CharField(max_length=50)
-# #
-# #     class Meta:
-# #         constraints = [
-# #             models.UniqueConstraint(fields=['Cafeteria', 'Name'], name='unique_food_per_cafeteria')
-# #         ]
-# #
-# #     def __str__(self):
-# #         return self.Name
-# #
-# #
-# # class Ingredient(models.Model):
-# #     Name = models.CharField(max_length=100, unique=True)
-# #
-# #     def __str__(self):
-# #         return self.Name
-# #
-# #
-# # class Recipe(models.Model):
-# #     RecipeID = models.AutoField(primary_key=True)
-# #     FoodItem = models.OneToOneField(FoodItem, on_delete=models.CASCADE)
-# #     PreparationTime = models.IntegerField()
-# #     Instructions = models.TextField()
-# #     Ingredients = models.ManyToManyField(Ingredient, blank=True)
-# #
-# #     def clean(self):
-# #         if self.PreparationTime <= 0:
-# #             raise ValidationError("Preparation time must be greater than zero.")
-# #         if not self.Instructions.strip():
-# #             raise ValidationError("Instructions cannot be empty.")
-# #
-# #     def __str__(self):
-# #         return f"Recipe for {self.FoodItem.Name}"
-# #
-# #
-# # class NutritionInfo(models.Model):
-# #     NutritionInfoID = models.AutoField(primary_key=True)
-# #     FoodItem = models.OneToOneField(FoodItem, on_delete=models.CASCADE)
-# #     Calories = models.FloatField()
-# #     Protein = models.FloatField()
-# #     Fat = models.FloatField()
-# #     Carbs = models.FloatField()
-# #     Sodium = models.FloatField()
-# #
-# #     def clean(self):
-# #         values = [self.Calories, self.Protein, self.Fat, self.Carbs, self.Sodium]
-# #         if any(v < 0 for v in values):
-# #             raise ValidationError("Nutritional values must be zero or positive.")
-# #
-# #     def __str__(self):
-# #         return f"Nutrition for {self.FoodItem.Name}"
-#
-# from django.db import models
-# from django.core.exceptions import ValidationError
-#
-#
-# class Cafeteria(models.Model):
-#     Name = models.CharField(max_length=100)
-#
-#     def __str__(self):
-#         return self.Name
-#
-#
-# class FoodItem(models.Model):
-#     Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE, null=True, blank=True)
-#     Name = models.CharField(max_length=100)
-#     Price = models.DecimalField(max_digits=10, decimal_places=2)
-#     PortionSize = models.CharField(max_length=50)
-#
-#     class Meta:
-#         constraints = [
-#             models.UniqueConstraint(fields=['Cafeteria', 'Name'], name='unique_food_per_cafeteria')
-#         ]
-#
-#     def __str__(self):
-#         return self.Name
-#
-#
-# class Ingredient(models.Model):
-#     Name = models.CharField(max_length=100, unique=True)
-#
-#     def __str__(self):
-#         return self.Name
-#
-#
-# class Recipe(models.Model):
-#     RecipeID = models.AutoField(primary_key=True)
-#     FoodItem = models.OneToOneField(FoodItem, on_delete=models.CASCADE)
-#     PreparationTime = models.IntegerField()
-#     Instructions = models.TextField()
-#     Ingredients = models.ManyToManyField(Ingredient, blank=True)
-#
-#     def clean(self):
-#         if self.PreparationTime <= 0:
-#             raise ValidationError("Preparation time must be greater than zero.")
-#         if not self.Instructions.strip():
-#             raise ValidationError("Instructions cannot be empty.")
-#
-#     def __str__(self):
-#         return f"Recipe for {self.FoodItem.Name}"
-#
-#
-# class NutritionInfo(models.Model):
-#     NutritionInfoID = models.AutoField(primary_key=True)
-#     FoodItem = models.OneToOneField(FoodItem, on_delete=models.CASCADE)
-#     Calories = models.FloatField()
-#     Protein = models.FloatField()
-#     Fat = models.FloatField()
-#     Carbs = models.FloatField()
-#     Sodium = models.FloatField()
-#
-#     def clean(self):
-#         values = [self.Calories, self.Protein, self.Fat, self.Carbs, self.Sodium]
-#         if any(v < 0 for v in values):
-#             raise ValidationError("Nutritional values must be zero or positive.")
-#
-#     def __str__(self):
-#         return f"Nutrition for {self.FoodItem.Name}"
-
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractUser
+import datetime
 
 
 class CustomUser(AbstractUser):
@@ -223,14 +90,6 @@ COMMON_INGREDIENTS = [
     ('tomato', 'Tomato'),
 ]
 
-
-# class Ingredient(models.Model):
-#     Name = models.CharField(max_length=100, unique=True)
-#     IsAllergen = models.BooleanField(default=False)
-#
-#     def __str__(self):
-#         return self.Name
-
 class Ingredient(models.Model):
     UNIT_CHOICES = [
         ('g', 'Grams (g)'),
@@ -256,8 +115,28 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.Name
 
+# class FoodItem(models.Model):
+#     Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE, null=True, blank=True)
+#     Name = models.CharField(max_length=100)
+#     Price = models.DecimalField(max_digits=10, decimal_places=2)
+#     PortionSize = models.CharField(max_length=50)
+#     Category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='lunch')
+#
+#     class Meta:
+#         constraints = [
+#             models.UniqueConstraint(fields=['Cafeteria', 'Name'], name='unique_food_per_cafeteria')
+#         ]
+#
+#     def clean(self):
+#         if self.Price is not None and self.Price <= 0:
+#             raise ValidationError("Price must be greater than zero.")
+#
+#     def __str__(self):
+#         return self.Name
+
 class FoodItem(models.Model):
     Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE, null=True, blank=True)
+    Discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True, blank=True)
     Name = models.CharField(max_length=100)
     Price = models.DecimalField(max_digits=10, decimal_places=2)
     PortionSize = models.CharField(max_length=50)
@@ -271,6 +150,12 @@ class FoodItem(models.Model):
     def clean(self):
         if self.Price is not None and self.Price <= 0:
             raise ValidationError("Price must be greater than zero.")
+
+    def discounted_price(self):
+        if self.Discount and self.Discount.is_active():
+            discount_amount = float(self.Price) * (self.Discount.Percentage / 100)
+            return round(float(self.Price) - discount_amount, 2)
+        return None
 
     def __str__(self):
         return self.Name
@@ -307,3 +192,24 @@ class NutritionInfo(models.Model):
 
     def __str__(self):
         return f"Nutrition for {self.FoodItem.Name}"
+
+
+class Discount(models.Model):
+    Name = models.CharField(max_length=100)
+    Description = models.TextField(blank=True)
+    StartDate = models.DateField()
+    EndDate = models.DateField()
+    Percentage = models.FloatField(help_text="Percentage between 1 and 100")
+
+    def clean(self):
+        if self.Percentage < 1 or self.Percentage > 100:
+            raise ValidationError("Discount percentage must be between 1 and 100.")
+        if self.StartDate and self.EndDate and self.StartDate >= self.EndDate:
+            raise ValidationError("Start date must be before end date.")
+
+    def is_active(self):
+        today = datetime.date.today()
+        return self.StartDate <= today <= self.EndDate
+
+    def __str__(self):
+        return f"{self.Name} ({self.Percentage}%)"

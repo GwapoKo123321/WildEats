@@ -257,6 +257,14 @@
                 <div class="kpi-label">Cafeterias</div>
                 <div class="kpi-sub">Locations</div>
             </a>
+            <a class="kpi-card" href="{% url 'admin-discount-list' %}">
+                <div class="kpi-icon icon-green">
+                    <svg viewBox="0 0 24 24"><path d="M9 14l6-6M10 8.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm5 5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/><circle cx="12" cy="12" r="9"/></svg>
+                </div>
+                <div class="kpi-value">{{ total_discounts }}</div>
+                <div class="kpi-label">Discounts</div>
+                <div class="kpi-sub">{{ active_discounts }} currently active</div>
+            </a>
         </div>
 
         <!-- User breakdown + Category breakdown -->
