@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Record - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'supply/supply.css' %}">
+</head>
+<body>
+<div class="page">
+    <div class="stripe"></div>
+    <nav class="nav">
+        <a class="nav-logo" href="{% url 'index' %}">WildEats</a>
+        <div class="nav-links">
+            <a class="btn-light" href="{% url 'index' %}">Home</a>
+            <a class="btn-maroon" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="content">
+        <div class="section-title">Add New Record</div>
+        <section class="choice-grid" aria-label="Record type choices">
+            <a class="choice-card" href="{% url 'add_new_ingredient' %}">
+                <h2>Ingredient</h2>
+                <p>Add ingredient IDs, storage details, threshold, unit, supplier, and expiry date.</p>
+            </a>
+            <a class="choice-card" href="{% url 'add_new_inventory' %}">
+                <h2>Inventory</h2>
+                <p>Add cafeteria reference, ingredient stock quantity, notification reference, expiration date, and location.</p>
+            </a>
+            <a class="choice-card" href="{% url 'add_new_supplier' %}">
+                <h2>Supplier</h2>
+                <p>Add supplier name, ingredient reference, contact information, rating, and delivery frequency.</p>
+            </a>
+        </section>
+    </main>
+    <div class="stripe"></div>
+</div>
+</body>
+</html>

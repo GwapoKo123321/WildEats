@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildEats Supply Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'supply/supply.css' %}">
+</head>
+<body>
+<div class="page">
+    <div class="stripe"></div>
+    <nav class="nav">
+        <a class="nav-logo" href="{% url 'login' %}">WildEats</a>
+        <div class="nav-links">
+            <a class="btn-light" href="{% url 'login' %}">Home</a>
+        </div>
+    </nav>
+
+    <main class="login-container">
+        <div class="split">
+            <section class="split-left">
+                <h2>WildEats</h2>
+                <p>Supply module for managing ingredients, inventory, and supplier records.</p>
+            </section>
+            <section class="split-right">
+                <div class="form-title">Welcome Back</div>
+                <div class="form-sub">Login to access your supply dashboard</div>
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="error">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post">
+                    {% csrf_token %}
+                    <p>
+                        <label for="username">Username</label>
+                        <input id="username" type="text" name="username" placeholder="Enter your username" autofocus required>
+                    </p>
+                    <p>
+                        <label for="password">Password</label>
+                        <input id="password" type="password" name="password" placeholder="Enter your password" required>
+                    </p>
+                    <button class="btn-maroon" type="submit" style="width:100%; margin-top:8px;">Login</button>
+                </form>
+            </section>
+        </div>
+    </main>
+    <div class="stripe"></div>
+</div>
+</body>
+</html>

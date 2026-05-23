@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Supplier - WildEats</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'supply/supply.css' %}">
+</head>
+<body>
+<div class="page">
+    <div class="stripe"></div>
+    <nav class="nav">
+        <a class="nav-logo" href="{% url 'index' %}">WildEats</a>
+        <div class="nav-links">
+            <a class="btn-light" href="{% url 'index' %}">Home</a>
+            <a class="btn-light" href="{% url 'add_new_record' %}">Add Record</a>
+            <a class="btn-maroon" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </nav>
+
+    <main class="form-shell image-content">
+        <section class="form-card">
+            <h1>Add New Supplier</h1>
+            <p class="form-sub">Record supplier contact details, rating, and delivery frequency.</p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="actions">
+                    <button class="btn-maroon" type="submit">Save Supplier</button>
+                    <a class="btn-light" href="{% url 'index' %}">Cancel</a>
+                </div>
+            </form>
+        </section>
+    </main>
+    <div class="stripe"></div>
+</div>
+</body>
+</html>

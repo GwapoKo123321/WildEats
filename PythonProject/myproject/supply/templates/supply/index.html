@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WildEats Supply Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'supply/supply.css' %}">
+</head>
+<body>
+<div class="page">
+    <div class="stripe"></div>
+    <nav class="nav">
+        <a class="nav-logo" href="{% url 'index' %}">WildEats</a>
+        <div class="nav-links">
+            <a class="btn-light" href="{% url 'edit_profile' %}">Profile</a>
+            <a class="btn-light" href="{% url 'add_new_record' %}">Add Record</a>
+            <a class="btn-maroon" href="{% url 'logout' %}">Logout</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Supply Hub</h1>
+        <p>Manage assigned supply records for ingredients, inventory, and suppliers.</p>
+        <p>Signed in as {{ user.username|default:"guest" }}</p>
+        <div class="hero-actions">
+            <a class="btn-maroon" href="{% url 'add_new_ingredient' %}">Add Ingredient</a>
+            <a class="btn-maroon" href="{% url 'add_new_inventory' %}">Add Inventory</a>
+            <a class="btn-maroon" href="{% url 'add_new_supplier' %}">Add Supplier</a>
+        </div>
+    </section>
+
+    <main class="content">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="flash">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <section class="kpi-grid" aria-label="Supply summary">
+            <article class="kpi-card">
+                <div class="kpi-value">{{ ingredients|length }}</div>
+                <div class="kpi-label">Ingredients</div>
+                <div class="kpi-sub">Assigned ingredient records</div>
+            </article>
+            <article class="kpi-card">
+                <div class="kpi-value">{{ inventory_items|length }}</div>
+                <div class="kpi-label">Inventory Records</div>
+                <div class="kpi-sub">Tracked stock entries</div>
+            </article>
+            <article class="kpi-card">
+                <div class="kpi-value">{{ suppliers|length }}</div>
+                <div class="kpi-label">Suppliers</div>
+                <div class="kpi-sub">Supply chain contacts</div>
+            </article>
+        </section>
+
+        <section class="table-grid">
+            <article class="table-card" id="ingredients">
+                <div class="table-card-header">
+                    <div class="table-card-title">Ingredient Directory</div>
+                    <a class="btn-light" href="{% url 'add_new_ingredient' %}">Add Ingredient</a>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Name</th><th>Unit</th><th>Threshold</th><th>Storage Condition</th><th>Expiry Date</th><th>Supplier</th><th>Recipe ID</th><th>Inventory ID</th><th>Notification ID</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for ingredient in ingredients %}
+                            <tr>
+                                <td>{{ ingredient.name }}</td>
+                                <td><span class="tag tag-blue">{{ ingredient.get_quantity_unit_display }}</span></td>
+                                <td>{{ ingredient.threshold }}</td>
+                                <td>{{ ingredient.storage_condition }}</td>
+                                <td>{{ ingredient.expiry_date|date:"M d, Y" }}</td>
+                                <td>{{ ingredient.supplier.name }}</td>
+                                <td>{{ ingredient.recipe_id|default:"-" }}</td>
+                                <td>{{ ingredient.inventory_id|default:"-" }}</td>
+                                <td>{{ ingredient.notification_id|default:"-" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="9" class="empty-state">No ingredients recorded.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="table-card" id="inventory">
+                <div class="table-card-header">
+                    <div class="table-card-title">Inventory Monitor</div>
+                    <a class="btn-light" href="{% url 'add_new_inventory' %}">Add Inventory</a>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Cafeteria ID</th><th>Ingredient</th><th>Notification ID</th><th>Quantity Available</th><th>Expiration Date</th><th>Location</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for item in inventory_items %}
+                            <tr>
+                                <td>{{ item.cafeteria_id }}</td>
+                                <td>{{ item.ingredient.name }}</td>
+                                <td>{{ item.notification_id|default:"-" }}</td>
+                                <td><span class="tag tag-green">{{ item.quantity_available }}</span></td>
+                                <td>{{ item.expiration_date|date:"M d, Y" }}</td>
+                                <td>{{ item.location }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="6" class="empty-state">No inventory records available.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+
+            <article class="table-card" id="suppliers">
+                <div class="table-card-header">
+                    <div class="table-card-title">Supplier Directory</div>
+                    <a class="btn-light" href="{% url 'add_new_supplier' %}">Add Supplier</a>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr><th>Ingredient ID</th><th>Name</th><th>Contact Info</th><th>Rating</th><th>Delivery Frequency</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for supplier in suppliers %}
+                            <tr>
+                                <td>{{ supplier.ingredient_id|default:"-" }}</td>
+                                <td>{{ supplier.name }}</td>
+                                <td>{{ supplier.contact_info }}</td>
+                                <td><span class="tag tag-green">{{ supplier.rating }}/5</span></td>
+                                <td>{{ supplier.get_delivery_frequency_display }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="5" class="empty-state">No suppliers recorded.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+    </main>
+    <div class="stripe"></div>
+</div>
+</body>
+</html>
