@@ -20,17 +20,7 @@
         .btn-logout:hover { background: #8a1020 !important; }
 
         /* Page content */
-        .content {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 40px 16px;
-            background-image: url("{% static 'foodcomposition/inbg.jpg' %}");
-            background-size: 78%;
-            background-position: right center;
-            background-repeat: no-repeat;
-        }
+        .content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; background-image: url("{% static 'foodcomposition/inbg.jpg' %}"); background-size: 78%; background-position: right center; background-repeat: no-repeat; }
         .start-card { text-align: center; max-width: 420px; }
         .start-card h2 { color: #6B0F1A; font-size: 24px; font-weight: 700; margin-bottom: 10px; }
         .start-card p { color: #aaa; font-size: 14px; margin-bottom: 28px; line-height: 1.7; }
@@ -342,56 +332,6 @@
             line.classList.toggle('done', i < step);
         }
     }
-
-    // function goToStep(step) {
-    //      elementById('panel' + i).classList.contains('active')) return i;
-    //     }
-    //     return 1;
-    // }
-    //
-    // function validateStep(step) {
-    //     const panel = document.getElementById('panel' + step);
-    //     const required = panel.querySelectorAll('input[required], select[required]');
-    //     let valid = true;
-    //     required.forEach(input => {
-    //         if (!input.value.trim()) {
-    //             input.style.borderColor = '#c0392b';
-    //             valid = false;
-    //         } else {
-    //             input.style.borderColor = '#f0e0a0';
-    //         }
-    //     });
-    //
-    //     // Step 1 specific checks
-    //     if (step === 1) {
-    //         const price = panel.querySelector('input[name="Price"]');
-    //         if (price && (parseFloat(price.value) <= 0 || price.value === '')) {
-    //             price.style.borderColor = '#c0392b';
-    //             valid = false;
-    //         }
-    //         const name = panel.querySelector('input[name="Name"]');
-    //         if (!name || !name.value.trim()) {
-    //             if (name) name.style.borderColor = '#c0392b';
-    //             valid = false;
-    //         }
-    //     }
-    //
-    //     // Step 2 - nutrition all required
-    //     if (step === 2) {
-    //         const nums = panel.querySelectorAll('input[type="number"]');
-    //         nums.forEach(input => {
-    //             if (input.value === '' || parseFloat(input.value) < 0) {
-    //                 input.style.borderColor = '#c0392b';
-    //                 valid = false;
-    //             }
-    //         });
-    //     }
-    //
-    //     if (!valid) {
-    //         alert('Please fill in all required fields before proceeding.');
-    //     }
-    //     return valid;
-    // }
 
     function openLogout() { document.getElementById('logout-modal').style.display = 'flex'; }
     function closeLogout() { document.getElementById('logout-modal').style.display = 'none'; }

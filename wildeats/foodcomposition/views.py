@@ -67,39 +67,6 @@ class LogoutView(View):
         logout(request)
         return redirect('login')
 
-
-# class FoodListView(LoginRequiredMixin, View):
-#     login_url = '/login/'
-#     template_name = 'foodcomposition/foodList.html'
-#
-#     def get(self, request):
-#         foods = FoodItem.objects.all()
-#         query = request.GET.get('q', '')
-#         category = request.GET.get('category', '')
-#         sort = request.GET.get('sort', '')
-#
-#         if query:
-#             foods = foods.filter(Name__icontains=query)
-#         if category:
-#             foods = foods.filter(Category=category)
-#         if sort == 'az':
-#             foods = foods.order_by('Name')
-#         elif sort == 'za':
-#             foods = foods.order_by('-Name')
-#         elif sort == 'low':
-#             foods = foods.order_by('Price')
-#         elif sort == 'high':
-#             foods = foods.order_by('-Price')
-#
-#         return render(request, self.template_name, {
-#             'foods': foods,
-#             'query': query,
-#             'category': category,
-#             'sort': sort,
-#             'categories': CATEGORY_CHOICES,
-#             'user': request.user,
-#         })
-
 class FoodListView(LoginRequiredMixin, View):
     login_url = '/login/'
     template_name = 'foodcomposition/foodList.html'
@@ -211,46 +178,6 @@ class DiscountDetailView(LoginRequiredMixin, View):
             'food_items': food_items,
             'user': request.user,
         })
-
-# class AddFoodItemView(LoginRequiredMixin, View):
-#     login_url = '/login/'
-#     template_name = 'foodcomposition/addNewFoodItem.html'
-#
-#     def get(self, request):
-#         if request.user.role not in ['vendor', 'admin']:
-#             return redirect('food-list')
-#         return render(request, self.template_name, {
-#             'food_form': FoodItemForm(),
-#             'nutrition_form': NutritionInfoForm(),
-#             'recipe_form': RecipeForm(),
-#             'ingredients': Ingredient.objects.all().order_by('Name'),
-#             'cafeterias': Cafeteria.objects.all().order_by('Name'),
-#         })
-#
-#     def post(self, request):
-#         if request.user.role not in ['vendor', 'admin']:
-#             return redirect('food-list')
-#
-#         food_form = FoodItemForm(request.POST)
-#         nutrition_form = NutritionInfoForm(request.POST)
-#         recipe_form = RecipeForm(request.POST)
-#
-#         if food_form.is_valid() and nutrition_form.is_valid() and recipe_form.is_valid():
-#             food_item = food_form.save()
-#             nutrition = nutrition_form.save(commit=False)
-#             nutrition.FoodItem = food_item
-#             nutrition.save()
-#             selected_ids = request.POST.getlist('ingredients')
-#             recipe_form.save_with_ingredients(food_item, selected_ids)
-#             return redirect('food-list')
-#
-#         return render(request, self.template_name, {
-#             'food_form': food_form,
-#             'nutrition_form': nutrition_form,
-#             'recipe_form': recipe_form,
-#             'ingredients': Ingredient.objects.all().order_by('Name'),
-#             'cafeterias': Cafeteria.objects.all().order_by('Name'),
-#         })
 
 class AddFoodItemView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -467,27 +394,6 @@ class EditProfileView(LoginRequiredMixin, View):
         user.save()
         return redirect('home')
 
-# class EditCafeteriaView(LoginRequiredMixin, View):
-#     login_url = '/login/'
-#     template_name = 'foodcomposition/editCafeteria.html'
-#
-#     def get(self, request, pk):
-#         if request.user.role != 'vendor':
-#             return redirect('cafeteria-list')
-#         cafeteria = get_object_or_404(Cafeteria, pk=pk)
-#         form = CafeteriaForm(instance=cafeteria)
-#         return render(request, self.template_name, {'form': form, 'cafeteria': cafeteria})
-#
-#     def post(self, request, pk):
-#         if request.user.role != 'vendor':
-#             return redirect('cafeteria-list')
-#         cafeteria = get_object_or_404(Cafeteria, pk=pk)
-#         form = CafeteriaForm(request.POST, instance=cafeteria)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('cafeteria-list')
-#         return render(request, self.template_name, {'form': form, 'cafeteria': cafeteria})
-
 class EditCafeteriaView(LoginRequiredMixin, View):
     login_url = '/login/'
     template_name = 'foodcomposition/editCafeteria.html'
@@ -537,55 +443,6 @@ class EditIngredientView(LoginRequiredMixin, View):
             form.save()
             return redirect('ingredient-list')
         return render(request, self.template_name, {'form': form, 'ingredient': ingredient})
-
-
-# class AdminDashboardView(LoginRequiredMixin, View):
-#     login_url = '/login/'
-#     template_name = 'foodcomposition/adminDashboard.html'
-#
-#     def get(self, request):
-#         if request.user.role != 'admin':
-#             return redirect('home')
-#
-#         total_users = CustomUser.objects.count()
-#         total_students = CustomUser.objects.filter(role='student').count()
-#         total_vendors = CustomUser.objects.filter(role='vendor').count()
-#         total_admins = CustomUser.objects.filter(role='admin').count()
-#         active_users = CustomUser.objects.filter(status='active').count()
-#         total_foods = FoodItem.objects.count()
-#         total_ingredients = Ingredient.objects.count()
-#         total_allergens = Ingredient.objects.filter(IsAllergen=True).count()
-#         total_cafeterias = Cafeteria.objects.count()
-#         total_recipes = Recipe.objects.count()
-#         total_nutrition = NutritionInfo.objects.count()
-#
-#         recent_foods = FoodItem.objects.all().order_by('-id')[:5]
-#         recent_users = CustomUser.objects.all().order_by('-date_joined')[:5]
-#         recent_ingredients = Ingredient.objects.all().order_by('-id')[:5]
-#
-#         from .models import CATEGORY_CHOICES
-#         category_counts = []
-#         for val, label in CATEGORY_CHOICES:
-#             count = FoodItem.objects.filter(Category=val).count()
-#             category_counts.append({'label': label, 'count': count})
-#
-#         return render(request, self.template_name, {
-#             'total_users': total_users,
-#             'total_students': total_students,
-#             'total_vendors': total_vendors,
-#             'total_admins': total_admins,
-#             'active_users': active_users,
-#             'total_foods': total_foods,
-#             'total_ingredients': total_ingredients,
-#             'total_allergens': total_allergens,
-#             'total_cafeterias': total_cafeterias,
-#             'total_recipes': total_recipes,
-#             'total_nutrition': total_nutrition,
-#             'recent_foods': recent_foods,
-#             'recent_users': recent_users,
-#             'recent_ingredients': recent_ingredients,
-#             'category_counts': category_counts,
-#         })
 
 class AdminDashboardView(LoginRequiredMixin, View):
     login_url = '/login/'

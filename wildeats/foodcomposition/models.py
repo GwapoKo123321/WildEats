@@ -186,12 +186,6 @@ class Discount(models.Model):
     EndDate = models.DateField()
     Percentage = models.FloatField(help_text="Percentage between 1 and 100")
 
-    # def clean(self):
-    #     if self.Percentage < 1 or self.Percentage > 100:
-    #         raise ValidationError("Discount percentage must be between 1 and 100.")
-    #     if self.StartDate and self.EndDate and self.StartDate >= self.EndDate:
-    #         raise ValidationError("Start date must be before end date.")
-
     def clean(self):
         if self.Percentage is not None and (self.Percentage < 1 or self.Percentage > 100):
             raise ValidationError("Discount percentage must be between 1 and 100.")

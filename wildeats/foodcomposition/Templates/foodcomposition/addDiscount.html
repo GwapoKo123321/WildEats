@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,6 +16,7 @@
         .btn-nav:hover { background: #6B0F1A; color: #FFD700; }
         .btn-maroon { background: #6B0F1A; color: #FFD700 !important; padding: 10px 20px !important; border-radius: 30px !important; font-weight: 600; border: none !important; cursor: pointer; font-size: 14px; font-family: 'Poppins', sans-serif; transition: background 0.2s; }
         .btn-maroon:hover { background: #8a1020 !important; }
+        .content {flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; background-image: url("{% static 'foodcomposition/inbg.jpg' %}"); background-size: 78%; background-position: right center; background-repeat: no-repeat; }
         .content { flex: 1; display: flex; align-items: center; justify-content: center; padding: 40px 16px; }
         .start-card { text-align: center; max-width: 420px; }
         .start-card h2 { color: #6B0F1A; font-size: 24px; font-weight: 700; margin-bottom: 10px; }

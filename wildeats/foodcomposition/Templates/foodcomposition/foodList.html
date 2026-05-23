@@ -80,38 +80,6 @@
         {% if category %} — {{ category|title }}{% endif %}
     </div>
     <div class="grid">
-<!--        {% for food in foods %}-->
-<!--        <a class="food-card" href="{% url 'food-detail' food.pk %}">-->
-<!--            <div class="food-category">{{ food.get_Category_display }}</div>-->
-<!--            <div class="food-name">{{ food.Name }}</div>-->
-<!--            <div class="food-price">₱{{ food.Price }}</div>-->
-<!--            <div class="food-portion">{{ food.PortionSize }}</div>-->
-<!--        </a>-->
-<!--        {% empty %}-->
-<!--        <div class="empty" style="grid-column: 1/-1;">-->
-<!--            <p>No food items found. {% if user.role == 'vendor' %}<a href="{% url 'add-food' %}" style="color:#6B0F1A;">Add one?</a>{% endif %}</p>-->
-<!--        </div>-->
-<!--        {% endfor %}-->
-<!--        {% for food in foods %}-->
-<!--        <a class="food-card" href="{% url 'food-detail' food.pk %}">-->
-<!--            <div class="food-category">{{ food.get_Category_display }}</div>-->
-<!--            <div class="food-name">{{ food.Name }}</div>-->
-<!--            {% if food.Discount and food.Discount.is_active %}-->
-<!--                <div style="text-decoration:line-through; color:#aaa; font-size:13px;">₱{{ food.Price }}</div>-->
-<!--                <div class="food-price">₱{{ food.discounted_price }}</div>-->
-<!--                <div style="display:inline-block; background:#e8f5e9; color:#2e7d32; font-size:10px; font-weight:600; padding:2px 8px; border-radius:20px; margin-top:2px;">-->
-<!--                    {{ food.Discount.Percentage }}% OFF-->
-<!--                </div>-->
-<!--            {% else %}-->
-<!--                <div class="food-price">₱{{ food.Price }}</div>-->
-<!--            {% endif %}-->
-<!--            <div class="food-portion">{{ food.PortionSize }}</div>-->
-<!--        </a>-->
-<!--        {% empty %}-->
-<!--        <div class="empty" style="grid-column: 1/-1;">-->
-<!--            <p>No food items found.</p>-->
-<!--        </div>-->
-<!--        {% endfor %}-->
         {% for food in foods %}
         <a class="food-card" href="{% url 'food-detail' food.pk %}">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
@@ -141,7 +109,6 @@
     </div>
 </div>
 
-<!--<div class="footer">WildEats &copy; 2026 — Campus Cafeteria System</div>-->
 <div class="stripe"></div>
 
 <div id="logout-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:999; align-items:center; justify-content:center;">
