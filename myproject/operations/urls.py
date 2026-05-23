@@ -17,5 +17,5 @@ urlpatterns = [
 
     # Notifications
     path('ReadNotification/<int:notif_id>/', views.read_notification, name='read_notification'),
-    path('ReadAllNotifications/', views.read_all_notifications, name='read_all_notifications'),  # NEW API PATH
+    path('ReadAllNotifications/', views.read_all_notifications, name='read_all_notifications'),
 ]

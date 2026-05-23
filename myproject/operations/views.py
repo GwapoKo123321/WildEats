@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.http import JsonResponse  # NEW: Import this so we can send background responses
+from django.http import JsonResponse
 import random
 
 from .models import Cafeteria, Report, Notification, Ingredient, Inventory, Order, Menu, MealPlan
@@ -26,24 +26,25 @@ def manage_cafeteria(request, cafe_id):
     if request.method == 'POST':
         form_type = request.POST.get('form_type')
 
+        # UPDATED: Now looking for unique HTML names so the browser doesn't get confused
         if form_type == 'menu':
-            Menu.objects.create(cafeteria=cafe, name=request.POST.get('name'),
-                                description=request.POST.get('description'))
+            Menu.objects.create(cafeteria=cafe, name=request.POST.get('menu_name'),
+                                description=request.POST.get('menu_desc'))
             messages.success(request, "Menu added successfully!")
 
         elif form_type == 'mealplan':
-            MealPlan.objects.create(cafeteria=cafe, name=request.POST.get('name'), price=request.POST.get('price'))
+            MealPlan.objects.create(cafeteria=cafe, name=request.POST.get('plan_name'),
+                                    price=request.POST.get('plan_price'))
             messages.success(request, "Meal Plan added successfully!")
 
         elif form_type == 'inventory':
-            ing_name = request.POST.get('ingredient_name')
-            qty = int(request.POST.get('quantity'))
+            ing_name = request.POST.get('ing_name')
+            qty = int(request.POST.get('ing_qty'))
             ingredient, _ = Ingredient.objects.get_or_create(name=ing_name)
             inv, created = Inventory.objects.get_or_create(cafeteria=cafe, ingredient=ingredient)
             inv.quantity = qty if created else inv.quantity + qty
             inv.save()
 
-            # TRIGGER INVENTORY ALERT IF LOW
             if inv.quantity < 10:
                 Notification.objects.create(inventory=inv, status='Unread')
                 messages.warning(request, f"Low stock alert triggered for {ingredient.name}!")
@@ -69,7 +70,6 @@ def add_order(request):
     return render(request, 'operations/addOrder.html', {'form': form})
 
 
-
 @login_required
 def read_notification(request, notif_id):
     try:
@@ -83,12 +83,10 @@ def read_notification(request, notif_id):
 
 @login_required
 def read_all_notifications(request):
-
     if request.headers.get('x-requested-with') == 'XMLHttpRequest':
         Notification.objects.filter(status='Unread').update(status='Read')
         return JsonResponse({'success': True})
     return redirect('index')
-
 
 
 @login_required

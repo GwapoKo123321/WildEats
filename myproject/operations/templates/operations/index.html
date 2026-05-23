@@ -57,8 +57,6 @@
         ul.report-list { list-style: none; padding: 0; margin: 0; }
         ul.report-list li { background: #fdfaf4; margin-bottom: 10px; padding: 16px; border-radius: 8px; border-left: 4px solid #6B0F1A; font-size: 13px; position: relative; transition: all 0.3s ease; }
         .report-meta { color: #aaa; font-size: 11px; margin-top: 6px; display: block; }
-        .btn-dismiss { font-size: 14px; font-weight: bold; color: #ccc; text-decoration: none; transition: color 0.2s; cursor: pointer; }
-        .btn-dismiss:hover { color: #c0392b; }
 
         .btn-manage { background: #6B0F1A; color: #FFD700; padding: 6px 12px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: 600; }
         .btn-manage:hover { background: #8a1020; }
@@ -88,16 +86,14 @@
                             {% for n in notifications %}
                             <li class="notif-item" style="border-left-color: #e74c3c;">
                                 <div style="float: right; display: flex; align-items: center; gap: 8px;">
-                                    <span style="font-size: 10px; font-weight: 600; background: #ffeaea; padding: 2px 6px; border-radius: 12px; color: #c0392b;">Unread</span>
-
-                                    <a href="#" data-url="{% url 'read_notification' n.id %}" onclick="dismissNotif(event, this)" class="btn-dismiss" title="Mark as Read">✕</a>
+                                    <span class="unread-pill" style="font-size: 10px; font-weight: 600; background: #ffeaea; padding: 2px 6px; border-radius: 12px; color: #c0392b;">Unread</span>
                                 </div>
                                 <strong style="color: #6B0F1A; font-size: 13px;">
                                     Alert #{{ n.id }} - {% if n.report %}Report Logged{% elif n.inventory %}Low Stock Alert{% elif n.order %}Order Update{% endif %}
                                 </strong>
                                 <br><span style="color: #555; font-size: 12px; display: inline-block; margin-top: 6px;">
                                     {% if n.report %}{{ n.report.report_type }} report generated.{% endif %}
-                                    {% if n.inventory %}{{ n.inventory.ingredient.name }} is running low!{% endif %}
+                                    {% if n.inventory %}<strong>{{ n.inventory.ingredient.name }}</strong> is running low at <strong>{{ n.inventory.cafeteria.name }}</strong>!{% endif %}
                                     {% if n.order %}Order #{{ n.order.id }} is {{ n.order.status }}.{% endif %}
                                 </span>
                             </li>
@@ -185,7 +181,6 @@
     </div>
 
     <script>
-
         function toggleNotifs(event) {
             event.stopPropagation();
             var panel = document.getElementById('notifPanel');
@@ -197,7 +192,6 @@
             } else {
                 panel.style.display = 'block';
 
-
                 if (badge) {
                     fetch("{% url 'read_all_notifications' %}", {
                         headers: { 'X-Requested-With': 'XMLHttpRequest' }
@@ -205,25 +199,18 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-
                             badge.remove();
-
-
                             if (headerCount) headerCount.innerText = '0 Unread';
 
-
-                            document.querySelectorAll('.btn-dismiss').forEach(function(btn) {
-                                btn.parentElement.remove();
+                            document.querySelectorAll('.unread-pill').forEach(function(pill) {
+                                pill.remove();
                             });
-
-
                         }
                     })
                     .catch(error => console.error("Error marking all as read:", error));
                 }
             }
         }
-
 
         window.onclick = function(event) {
             var panel = document.getElementById('notifPanel');
@@ -232,7 +219,6 @@
                 panel.style.display = 'none';
             }
         }
-
 
         document.addEventListener("DOMContentLoaded", function() {
             setTimeout(function() {
