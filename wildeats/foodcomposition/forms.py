@@ -246,6 +246,12 @@ class StudentRegisterForm(UserCreationForm):
         model = CustomUser
         fields = ['Fname', 'Lname', 'username', 'email', 'password1', 'password2']
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already registered.")
+        return email
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = 'student'
@@ -270,6 +276,12 @@ class AdminRegisterForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['Fname', 'Lname', 'username', 'email', 'password1', 'password2']
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already registered.")
+        return email
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -298,6 +310,12 @@ class VendorRegisterForm(UserCreationForm):
         model = CustomUser
         fields = ['Fname', 'Lname', 'username', 'email', 'password1', 'password2']
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already registered.")
+        return email
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.role = 'vendor'
@@ -315,26 +333,68 @@ class VendorRegisterForm(UserCreationForm):
         return user
 
 
+# class DiscountForm(forms.ModelForm):
+#     StartDate = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+#     EndDate = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+#
+#     class Meta:
+#         model = Discount
+#         fields = ['Name', 'Description', 'StartDate', 'EndDate', 'Percentage']
+#         labels = {
+#             'Name': 'Discount Name',
+#             'Description': 'Description',
+#             'StartDate': 'Start Date',
+#             'EndDate': 'End Date',
+#             'Percentage': 'Discount Percentage (%)',
+#         }
+#
+#     def clean_Percentage(self):
+#         pct = self.cleaned_data.get('Percentage')
+#         if pct is not None and (pct < 1 or pct > 100):
+#             raise forms.ValidationError("Percentage must be between 1 and 100.")
+#         return pct
+#
+#     def clean(self):
+#         cleaned_data = super().clean()
+#         start = cleaned_data.get('StartDate')
+#         end = cleaned_data.get('EndDate')
+#         if start and end and start >= end:
+#             raise forms.ValidationError("Start date must be before end date.")
+#         return cleaned_data
+
 class DiscountForm(forms.ModelForm):
-    StartDate = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
-    EndDate = forms.DateField(widget=forms.DateInput(attrs={'type': 'date'}))
+    StartDate = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=True
+    )
+    EndDate = forms.DateField(
+        widget=forms.DateInput(attrs={'type': 'date'}),
+        required=True
+    )
 
     class Meta:
         model = Discount
         fields = ['Name', 'Description', 'StartDate', 'EndDate', 'Percentage']
-        labels = {
-            'Name': 'Discount Name',
-            'Description': 'Description',
-            'StartDate': 'Start Date',
-            'EndDate': 'End Date',
-            'Percentage': 'Discount Percentage (%)',
-        }
 
     def clean_Percentage(self):
         pct = self.cleaned_data.get('Percentage')
-        if pct is not None and (pct < 1 or pct > 100):
+        if pct is None:
+            raise forms.ValidationError("Percentage is required.")
+        if pct < 1 or pct > 100:
             raise forms.ValidationError("Percentage must be between 1 and 100.")
         return pct
+
+    def clean_StartDate(self):
+        start = self.cleaned_data.get('StartDate')
+        if not start:
+            raise forms.ValidationError("Start date is required.")
+        return start
+
+    def clean_EndDate(self):
+        end = self.cleaned_data.get('EndDate')
+        if not end:
+            raise forms.ValidationError("End date is required.")
+        return end
 
     def clean(self):
         cleaned_data = super().clean()
@@ -345,19 +405,53 @@ class DiscountForm(forms.ModelForm):
         return cleaned_data
 
 
+# class FoodItemForm(forms.ModelForm):
+#     class Meta:
+#         model = FoodItem
+#         fields = ['Name', 'Price', 'PortionSize', 'Category', 'Cafeteria', 'Discount']
+#         labels = {
+#             'Discount': 'Apply Discount (optional)',
+#         }
+#
+#     def clean_Price(self):
+#         price = self.cleaned_data.get('Price')
+#         if price is not None and price <= 0:
+#             raise forms.ValidationError("Price must be greater than zero.")
+#         return price
+#
+#     def clean_Name(self):
+#         name = self.cleaned_data.get('Name')
+#         cafeteria = self.cleaned_data.get('Cafeteria')
+#         qs = FoodItem.objects.filter(Name__iexact=name, Cafeteria=cafeteria)
+#         if self.instance.pk:
+#             qs = qs.exclude(pk=self.instance.pk)
+#         if qs.exists():
+#             raise forms.ValidationError("A food item with this name already exists.")
+#         return name
+#
+#     def clean_Cafeteria(self):
+#         return self.cleaned_data.get('Cafeteria') or None
+
 class FoodItemForm(forms.ModelForm):
     class Meta:
         model = FoodItem
         fields = ['Name', 'Price', 'PortionSize', 'Category', 'Cafeteria', 'Discount']
-        labels = {
-            'Discount': 'Apply Discount (optional)',
-        }
 
     def clean_Price(self):
         price = self.cleaned_data.get('Price')
         if price is not None and price <= 0:
             raise forms.ValidationError("Price must be greater than zero.")
         return price
+
+    def clean_PortionSize(self):
+        portion_size = self.cleaned_data.get('PortionSize')
+
+        if portion_size is not None and portion_size < 1:
+            raise forms.ValidationError(
+                "Portion size must be greater than zero."
+            )
+
+        return portion_size
 
     def clean_Name(self):
         name = self.cleaned_data.get('Name')

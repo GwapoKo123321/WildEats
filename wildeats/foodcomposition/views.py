@@ -68,28 +68,65 @@ class LogoutView(View):
         return redirect('login')
 
 
+# class FoodListView(LoginRequiredMixin, View):
+#     login_url = '/login/'
+#     template_name = 'foodcomposition/foodList.html'
+#
+#     def get(self, request):
+#         foods = FoodItem.objects.all()
+#         query = request.GET.get('q', '')
+#         category = request.GET.get('category', '')
+#         sort = request.GET.get('sort', '')
+#
+#         if query:
+#             foods = foods.filter(Name__icontains=query)
+#         if category:
+#             foods = foods.filter(Category=category)
+#         if sort == 'az':
+#             foods = foods.order_by('Name')
+#         elif sort == 'za':
+#             foods = foods.order_by('-Name')
+#         elif sort == 'low':
+#             foods = foods.order_by('Price')
+#         elif sort == 'high':
+#             foods = foods.order_by('-Price')
+#
+#         return render(request, self.template_name, {
+#             'foods': foods,
+#             'query': query,
+#             'category': category,
+#             'sort': sort,
+#             'categories': CATEGORY_CHOICES,
+#             'user': request.user,
+#         })
+
 class FoodListView(LoginRequiredMixin, View):
     login_url = '/login/'
     template_name = 'foodcomposition/foodList.html'
 
     def get(self, request):
-        foods = FoodItem.objects.all()
+        foods = list(FoodItem.objects.all())
         query = request.GET.get('q', '')
         category = request.GET.get('category', '')
         sort = request.GET.get('sort', '')
 
         if query:
-            foods = foods.filter(Name__icontains=query)
+            foods = [f for f in foods if query.lower() in f.Name.lower()]
         if category:
-            foods = foods.filter(Category=category)
+            foods = [f for f in foods if f.Category == category]
+
+        def effective_price(food):
+            dp = food.discounted_price()
+            return float(dp) if dp is not None else float(food.Price)
+
         if sort == 'az':
-            foods = foods.order_by('Name')
+            foods.sort(key=lambda f: f.Name.lower())
         elif sort == 'za':
-            foods = foods.order_by('-Name')
+            foods.sort(key=lambda f: f.Name.lower(), reverse=True)
         elif sort == 'low':
-            foods = foods.order_by('Price')
+            foods.sort(key=effective_price)
         elif sort == 'high':
-            foods = foods.order_by('-Price')
+            foods.sort(key=effective_price, reverse=True)
 
         return render(request, self.template_name, {
             'foods': foods,
@@ -430,6 +467,27 @@ class EditProfileView(LoginRequiredMixin, View):
         user.save()
         return redirect('home')
 
+# class EditCafeteriaView(LoginRequiredMixin, View):
+#     login_url = '/login/'
+#     template_name = 'foodcomposition/editCafeteria.html'
+#
+#     def get(self, request, pk):
+#         if request.user.role != 'vendor':
+#             return redirect('cafeteria-list')
+#         cafeteria = get_object_or_404(Cafeteria, pk=pk)
+#         form = CafeteriaForm(instance=cafeteria)
+#         return render(request, self.template_name, {'form': form, 'cafeteria': cafeteria})
+#
+#     def post(self, request, pk):
+#         if request.user.role != 'vendor':
+#             return redirect('cafeteria-list')
+#         cafeteria = get_object_or_404(Cafeteria, pk=pk)
+#         form = CafeteriaForm(request.POST, instance=cafeteria)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('cafeteria-list')
+#         return render(request, self.template_name, {'form': form, 'cafeteria': cafeteria})
+
 class EditCafeteriaView(LoginRequiredMixin, View):
     login_url = '/login/'
     template_name = 'foodcomposition/editCafeteria.html'
@@ -439,7 +497,11 @@ class EditCafeteriaView(LoginRequiredMixin, View):
             return redirect('cafeteria-list')
         cafeteria = get_object_or_404(Cafeteria, pk=pk)
         form = CafeteriaForm(instance=cafeteria)
-        return render(request, self.template_name, {'form': form, 'cafeteria': cafeteria})
+        return render(request, self.template_name, {
+            'form': form,
+            'cafeteria': cafeteria,
+            'discounts': Discount.objects.all().order_by('Name'),
+        })
 
     def post(self, request, pk):
         if request.user.role != 'vendor':
@@ -448,9 +510,12 @@ class EditCafeteriaView(LoginRequiredMixin, View):
         form = CafeteriaForm(request.POST, instance=cafeteria)
         if form.is_valid():
             form.save()
-            return redirect('cafeteria-list')
-        return render(request, self.template_name, {'form': form, 'cafeteria': cafeteria})
-
+            return redirect('cafeteria-detail', pk=pk)
+        return render(request, self.template_name, {
+            'form': form,
+            'cafeteria': cafeteria,
+            'discounts': Discount.objects.all().order_by('Name'),
+        })
 
 class EditIngredientView(LoginRequiredMixin, View):
     login_url = '/login/'
@@ -548,6 +613,7 @@ class AdminDashboardView(LoginRequiredMixin, View):
         recent_foods = FoodItem.objects.all().order_by('-id')[:5]
         recent_users = CustomUser.objects.all().order_by('-date_joined')[:5]
         recent_ingredients = Ingredient.objects.all().order_by('-id')[:5]
+        recent_discounts = Discount.objects.all().order_by('-id')[:5]
 
         category_counts = []
         for val, label in CATEGORY_CHOICES:
@@ -571,6 +637,7 @@ class AdminDashboardView(LoginRequiredMixin, View):
             'recent_foods': recent_foods,
             'recent_users': recent_users,
             'recent_ingredients': recent_ingredients,
+            'recent_discounts': recent_discounts,
             'category_counts': category_counts,
         })
 
@@ -735,4 +802,22 @@ class AdminDiscountListView(LoginRequiredMixin, View):
         return render(request, self.template_name, {
             'discounts': discounts,
             'query': query,
+        })
+
+class DiscountDetailView(LoginRequiredMixin, View):
+    login_url = '/login/'
+
+    def get(self, request, pk):
+        if request.user.role not in ['vendor', 'admin']:
+            return redirect('home')
+        discount = get_object_or_404(Discount, pk=pk)
+        food_items = FoodItem.objects.filter(Discount=discount)
+        if request.user.role == 'vendor':
+            template = 'foodcomposition/discountDetail.html'
+        else:
+            template = 'foodcomposition/discountDetailAdmin.html'
+        return render(request, template, {
+            'discount': discount,
+            'food_items': food_items,
+            'user': request.user,
         })

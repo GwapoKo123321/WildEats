@@ -88,6 +88,14 @@
             <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
             Cafeterias
         </a>
+        <a class="nav-item" href="{% url 'admin-discount-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 12l-8 8-9-9V4h7l10 8z"></path>
+                <circle cx="7.5" cy="7.5" r="1"></circle>
+            </svg>
+            Discounts
+        </a>
         <div class="nav-section">Quick Links</div>
         <a class="nav-item" href="{% url 'food-list' %}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -112,6 +120,14 @@
                 <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
             </svg>
             Browse Cafeterias
+        </a>
+        <a class="nav-item" href="{% url 'discount-list' %}">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                 stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="7"></circle>
+                <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
+            </svg>
+            Browse Discount
         </a>
         <a class="nav-item" href="{% url 'edit-profile' %}">
             <svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="4"/><path d="M4 21v-1a8 8 0 0 1 16 0v1"/></svg>
@@ -157,6 +173,30 @@
                 <div class="table-card-title">All Food Items</div>
                 <span class="count-badge">{{ foods.count }} items</span>
             </div>
+                        <!-- Recent Food Items -->
+            <div class="table-card">
+                <div class="table-card-header">
+                    <div class="table-card-title">Recent Food Items</div>
+                    <a class="view-all" href="{% url 'admin-food-list' %}">View All</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr><th>Name</th><th>Category</th><th>Price</th></tr>
+                    </thead>
+                    <tbody>
+                        {% for food in recent_foods %}
+                        <tr>
+                            <td>{{ food.Name }}</td>
+                            <td>{{ food.get_Category_display }}</td>
+                            <td style="color:#8a1020; font-weight:600;">₱{{ food.Price }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="3" class="empty-state">No food items yet</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
             <table>
                 <thead>
                     <tr><th>#</th><th>Name</th><th>Category</th><th>Price</th><th>Portion</th><th>Cafeteria</th><th>Has Recipe</th><th>Has Nutrition</th><th></th></tr>

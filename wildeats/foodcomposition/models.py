@@ -115,31 +115,12 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.Name
 
-# class FoodItem(models.Model):
-#     Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE, null=True, blank=True)
-#     Name = models.CharField(max_length=100)
-#     Price = models.DecimalField(max_digits=10, decimal_places=2)
-#     PortionSize = models.CharField(max_length=50)
-#     Category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='lunch')
-#
-#     class Meta:
-#         constraints = [
-#             models.UniqueConstraint(fields=['Cafeteria', 'Name'], name='unique_food_per_cafeteria')
-#         ]
-#
-#     def clean(self):
-#         if self.Price is not None and self.Price <= 0:
-#             raise ValidationError("Price must be greater than zero.")
-#
-#     def __str__(self):
-#         return self.Name
-
 class FoodItem(models.Model):
     Cafeteria = models.ForeignKey('Cafeteria', on_delete=models.CASCADE, null=True, blank=True)
     Discount = models.ForeignKey('Discount', on_delete=models.SET_NULL, null=True, blank=True)
     Name = models.CharField(max_length=100)
     Price = models.DecimalField(max_digits=10, decimal_places=2)
-    PortionSize = models.CharField(max_length=50)
+    PortionSize = models.IntegerField(default=1)
     Category = models.CharField(max_length=20, choices=CATEGORY_CHOICES, default='lunch')
 
     class Meta:
@@ -147,9 +128,13 @@ class FoodItem(models.Model):
             models.UniqueConstraint(fields=['Cafeteria', 'Name'], name='unique_food_per_cafeteria')
         ]
 
-    def clean(self):
+    def clean_price(self):
         if self.Price is not None and self.Price <= 0:
             raise ValidationError("Price must be greater than zero.")
+
+    def clean_portionsize(self):
+        if self.PortionSize <= 0:
+            raise ValidationError("Capacity must be greater than zero.")
 
     def discounted_price(self):
         if self.Discount and self.Discount.is_active():
@@ -201,8 +186,14 @@ class Discount(models.Model):
     EndDate = models.DateField()
     Percentage = models.FloatField(help_text="Percentage between 1 and 100")
 
+    # def clean(self):
+    #     if self.Percentage < 1 or self.Percentage > 100:
+    #         raise ValidationError("Discount percentage must be between 1 and 100.")
+    #     if self.StartDate and self.EndDate and self.StartDate >= self.EndDate:
+    #         raise ValidationError("Start date must be before end date.")
+
     def clean(self):
-        if self.Percentage < 1 or self.Percentage > 100:
+        if self.Percentage is not None and (self.Percentage < 1 or self.Percentage > 100):
             raise ValidationError("Discount percentage must be between 1 and 100.")
         if self.StartDate and self.EndDate and self.StartDate >= self.EndDate:
             raise ValidationError("Start date must be before end date.")
