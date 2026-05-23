@@ -2,80 +2,248 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WildEats | Home</title>
+    <title>WildEats | Operations Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f4f7f6; }
-        nav { background: #2c3e50; padding: 15px; color: white; display: flex; gap: 20px; align-items: center; }
-        nav a { color: white; text-decoration: none; font-weight: bold; font-size: 14px; }
-        .logo { font-weight: bold; margin-right: 10px; }
-        .logout-btn { margin-left: auto; color: #e74c3c; }
-        .container { padding: 30px; }
-        .card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
-        th { background-color: #f8f9fa; color: #333; }
-        ul { padding-left: 20px; margin-top: 15px; }
-        li { margin-bottom: 12px; line-height: 1.5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; background: #fdfaf4; min-height: 100vh; }
+        .stripe { height: 10px; background: #6B0F1A; }
+        .nav { background: #fff; padding: 16px 5vw; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(107,15,26,0.05); position: relative; z-index: 100; }
+        .nav-logo { color: #6B0F1A; font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .nav-links { display: flex; align-items: center; gap: 16px; }
+
+        .notification-wrapper { position: relative; display: flex; align-items: center; }
+        .bell-btn { background: none; border: none; font-size: 22px; cursor: pointer; position: relative; padding: 4px; transition: transform 0.2s; }
+        .bell-btn:hover { transform: scale(1.1); }
+        .badge { position: absolute; top: -2px; right: -4px; background: #e74c3c; color: white; border-radius: 50%; font-size: 11px; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-weight: 700; border: 2px solid #fff; }
+
+        .notification-dropdown { display: none; position: absolute; top: 130%; right: 0; width: 360px; background: #fff; box-shadow: 0 10px 40px rgba(107,15,26,0.15); border-radius: 12px; border: 1px solid #f0e0a0; overflow: hidden; transform-origin: top right; }
+        .notif-header { padding: 16px; background: #fdfaf4; font-weight: 700; color: #6B0F1A; border-bottom: 1px solid #f0e0a0; font-size: 14px; display: flex; justify-content: space-between; align-items: center; }
+        .notif-body { max-height: 400px; overflow-y: auto; padding: 12px; }
+
+        .btn-nav, .btn-logout { padding: 8px 18px; border-radius: 30px; font-size: 13px; font-weight: 600; text-decoration: none; border: 1.5px solid transparent; transition: all 0.2s; }
+        .btn-nav { background: #fff; color: #6B0F1A; }
+        .btn-nav:hover { background: #6B0F1A; color: #FFD700; }
+        .btn-logout { background: #6B0F1A; color: #FFD700; cursor: pointer; font-family: 'Poppins', sans-serif; }
+        .btn-logout:hover { background: #8a1020; }
+
+        .dash-header { padding: 40px 5vw 20px; text-align: center; }
+        .dash-header h1 { color: #6B0F1A; font-size: clamp(24px, 4vw, 36px); font-weight: 700; margin-bottom: 8px; }
+        .dash-header p { color: #666; font-size: 14px; display: inline-block; background: #fff; padding: 6px 16px; border-radius: 20px; border: 1px solid #f0e0a0; }
+
+        .messages { text-align: center; margin-top: 10px; padding: 0; }
+        .messages li { display: inline-block; padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; list-style: none; margin: 0 5px; transition: opacity 0.5s ease; }
+        .messages .success { background-color: #e8f8f5; color: #16a085; border: 1px solid #1abc9c; }
+        .messages .warning, .messages .error { background-color: #fdf2e9; color: #d35400; border: 1px solid #e67e22; }
+
+        .features { display: flex; gap: 15px; justify-content: center; margin-top: 20px; margin-bottom: 40px; flex-wrap: wrap; padding: 0 5vw; }
+        .feature-card { background: #fff; border: 1px solid #f0e0a0; border-radius: 12px; padding: 24px; text-align: center; width: 220px; text-decoration: none; transition: all 0.2s; display: block; }
+        .feature-card:hover { border-color: #6B0F1A; transform: translateY(-3px); box-shadow: 0 6px 20px rgba(107,15,26,0.1); }
+        .feature-card .icon { font-size: 32px; margin-bottom: 12px; }
+        .feature-title { color: #6B0F1A; font-size: 14px; font-weight: 600; margin-bottom: 6px; }
+        .feature-desc { color: #aaa; font-size: 12px; line-height: 1.5; }
+
+        .data-container { max-width: 1200px; margin: 0 auto; padding: 0 5vw 60px; width: 100%; display: flex; flex-direction: column; gap: 32px; }
+        .data-card { background: #fff; border-radius: 12px; padding: 28px; box-shadow: 0 4px 20px rgba(107,15,26,0.06); border: 1px solid #f0e0a0; overflow-x: auto; }
+        .data-card h3 { color: #6B0F1A; font-size: 18px; font-weight: 700; margin-bottom: 20px; border-bottom: 2px solid #fdfaf4; padding-bottom: 12px; }
+
+        table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        th, td { text-align: left; padding: 14px 18px; border-bottom: 1px solid #fdfaf4; }
+        th { background-color: #6B0F1A; color: #FFD700; font-weight: 600; }
+        th:first-child { border-top-left-radius: 8px; }
+        th:last-child { border-top-right-radius: 8px; }
+        tr:hover td { background-color: #fdfaf4; }
+
+        ul.report-list { list-style: none; padding: 0; margin: 0; }
+        ul.report-list li { background: #fdfaf4; margin-bottom: 10px; padding: 16px; border-radius: 8px; border-left: 4px solid #6B0F1A; font-size: 13px; position: relative; transition: all 0.3s ease; }
+        .report-meta { color: #aaa; font-size: 11px; margin-top: 6px; display: block; }
+        .btn-dismiss { font-size: 14px; font-weight: bold; color: #ccc; text-decoration: none; transition: color 0.2s; cursor: pointer; }
+        .btn-dismiss:hover { color: #c0392b; }
+
+        .btn-manage { background: #6B0F1A; color: #FFD700; padding: 6px 12px; border-radius: 20px; text-decoration: none; font-size: 12px; font-weight: 600; }
+        .btn-manage:hover { background: #8a1020; }
     </style>
 </head>
 <body>
-    <nav>
-        <span class="logo">WildEats Operations</span>
-        <a href="{% url 'edit_profile' %}">Edit Profile</a>
-        <a href="{% url 'add_cafeteria' %}">Add New Record (Cafeteria)</a>
-        <a href="{% url 'add_report' %}">Add New Record (Report)</a>
-        <a href="{% url 'logout' %}" class="logout-btn">Log Off</a>
-    </nav>
+    <div class="stripe"></div>
+    <div class="nav">
+        <div class="nav-logo"><span style="font-size: 24px;">🍴</span> WildEats Operations</div>
+        <div class="nav-links">
 
-    <div class="container">
-        <h1>Welcome, {{ user.username }}</h1>
+            <div class="notification-wrapper">
+                <button class="bell-btn" onclick="toggleNotifs(event)">
+                    🔔
+                    {% if notifications|length > 0 %}
+                    <span class="badge" id="notifBadge">{{ notifications|length }}</span>
+                    {% endif %}
+                </button>
 
-        <div class="card">
-            <h3>Recent Activities</h3>
-            <p>Your session is active. You are managed under the Operations Functional Area.</p>
+                <div class="notification-dropdown" id="notifPanel">
+                    <div class="notif-header">
+                        <span>Alerts & Notifications</span>
+                        <span id="notifHeaderCount" style="font-size: 12px; font-weight: 500; color: #aaa;">{{ notifications|length }} Unread</span>
+                    </div>
+                    <div class="notif-body">
+                        <ul class="report-list" id="notifList">
+                            {% for n in notifications %}
+                            <li class="notif-item" style="border-left-color: #e74c3c;">
+                                <div style="float: right; display: flex; align-items: center; gap: 8px;">
+                                    <span style="font-size: 10px; font-weight: 600; background: #ffeaea; padding: 2px 6px; border-radius: 12px; color: #c0392b;">Unread</span>
+
+                                    <a href="#" data-url="{% url 'read_notification' n.id %}" onclick="dismissNotif(event, this)" class="btn-dismiss" title="Mark as Read">✕</a>
+                                </div>
+                                <strong style="color: #6B0F1A; font-size: 13px;">
+                                    Alert #{{ n.id }} - {% if n.report %}Report Logged{% elif n.inventory %}Low Stock Alert{% elif n.order %}Order Update{% endif %}
+                                </strong>
+                                <br><span style="color: #555; font-size: 12px; display: inline-block; margin-top: 6px;">
+                                    {% if n.report %}{{ n.report.report_type }} report generated.{% endif %}
+                                    {% if n.inventory %}{{ n.inventory.ingredient.name }} is running low!{% endif %}
+                                    {% if n.order %}Order #{{ n.order.id }} is {{ n.order.status }}.{% endif %}
+                                </span>
+                            </li>
+                            {% empty %}
+                            <li style="text-align: center; color: #aaa; border-left: none; background: transparent; padding: 30px 0;">All caught up!</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <a class="btn-nav" href="{% url 'edit_profile' %}">Edit Profile</a>
+            <button class="btn-logout" onclick="window.location.href='{% url 'logout' %}'">Log Off</button>
         </div>
+    </div>
 
-        <div class="card">
+    <div class="dash-header">
+        <h1>Welcome, {{ user.username }}</h1>
+        <p>✅ Session Active | Operations Functional Area</p>
+
+        {% if messages %}
+        <ul class="messages" id="systemMessages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+
+    <div class="features">
+        <a class="feature-card" href="{% url 'add_cafeteria' %}">
+            <div class="icon">🏬</div>
+            <div class="feature-title">Add Cafeteria</div>
+            <div class="feature-desc">Register a new campus dining location</div>
+        </a>
+        <a class="feature-card" href="{% url 'add_report' %}">
+            <div class="icon">📊</div>
+            <div class="feature-title">Generate Report</div>
+            <div class="feature-desc">Log new operations reports</div>
+        </a>
+        <a class="feature-card" href="{% url 'add_order' %}" style="border-color: #f39c12; background: #fdfae6;">
+            <div class="icon">📝</div>
+            <div class="feature-title" style="color: #d35400;">Add Order</div>
+            <div class="feature-desc">Input a customer transaction</div>
+        </a>
+    </div>
+
+    <div class="data-container">
+        <div class="data-card">
             <h3>Saved Cafeteria Records</h3>
             <table>
                 <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>Operating Hours</th>
-                        <th>Capacity</th>
-                    </tr>
+                    <tr><th>Name</th><th>Location</th><th>Hours</th><th>Capacity</th><th>Action</th></tr>
                 </thead>
                 <tbody>
                     {% for cafe in cafeterias %}
                     <tr>
-                        <td>{{ cafe.name }}</td>
+                        <td style="font-weight: 600; color: #6B0F1A;">{{ cafe.name }}</td>
                         <td>{{ cafe.location }}</td>
                         <td>{{ cafe.operating_hours }}</td>
-                        <td>{{ cafe.capacity }}</td>
+                        <td>{{ cafe.capacity }} pax</td>
+                        <td><a href="{% url 'manage_cafeteria' cafe.id %}" class="btn-manage">Manage Details</a></td>
                     </tr>
                     {% empty %}
-                    <tr>
-                        <td colspan="4">No cafeteria records found. Try adding a record from the navigation bar.</td>
-                    </tr>
+                    <tr><td colspan="5" style="text-align: center; padding: 30px; color: #aaa;">No cafeteria records found.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
 
-        <div class="card">
-            <h3>Saved System Reports</h3>
-            <ul>
+        <div class="data-card">
+            <h3>Recent System Reports</h3>
+            <ul class="report-list">
                 {% for r in reports %}
                 <li>
-                    <strong>{{ r.report_type }} Report</strong> — Generated on {{ r.date_generated|date:"Y-m-d H:i" }}<br>
-                    <span style="color: #555;">{{ r.report_summary }}</span>
+                    <strong style="color: #6B0F1A; font-size: 14px;">{{ r.report_type }} Report</strong>
+                    <br><span style="color: #555; line-height: 1.6; display: inline-block; margin-top: 4px;">{{ r.report_summary }}</span>
+                    <span class="report-meta">Generated on: {{ r.date_generated|date:"F d, Y H:i" }}</span>
                 </li>
                 {% empty %}
-                <li>No system reports generated yet. Try generating a report from the navigation bar.</li>
+                <li style="text-align: center; color: #aaa; border-left: none; background: transparent; padding: 20px;">No system reports generated yet.</li>
                 {% endfor %}
             </ul>
         </div>
     </div>
+
+    <script>
+
+        function toggleNotifs(event) {
+            event.stopPropagation();
+            var panel = document.getElementById('notifPanel');
+            var badge = document.getElementById('notifBadge');
+            var headerCount = document.getElementById('notifHeaderCount');
+
+            if (panel.style.display === 'block') {
+                panel.style.display = 'none';
+            } else {
+                panel.style.display = 'block';
+
+
+                if (badge) {
+                    fetch("{% url 'read_all_notifications' %}", {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+
+                            badge.remove();
+
+
+                            if (headerCount) headerCount.innerText = '0 Unread';
+
+
+                            document.querySelectorAll('.btn-dismiss').forEach(function(btn) {
+                                btn.parentElement.remove();
+                            });
+
+
+                        }
+                    })
+                    .catch(error => console.error("Error marking all as read:", error));
+                }
+            }
+        }
+
+
+        window.onclick = function(event) {
+            var panel = document.getElementById('notifPanel');
+            var bellBtn = document.querySelector('.bell-btn');
+            if (panel && panel.style.display === 'block' && event.target !== panel && !panel.contains(event.target) && event.target !== bellBtn) {
+                panel.style.display = 'none';
+            }
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                var messages = document.querySelectorAll('.messages li');
+                messages.forEach(function(msg) {
+                    msg.style.transition = "opacity 0.5s ease";
+                    msg.style.opacity = "0";
+                    setTimeout(function() { msg.remove(); }, 500);
+                });
+            }, 3500);
+        });
+    </script>
 </body>
 </html>
