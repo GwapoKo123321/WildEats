@@ -65,23 +65,40 @@
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr><th>Name</th><th>Unit</th><th>Threshold</th><th>Storage Condition</th><th>Expiry Date</th><th>Supplier</th><th>Recipe ID</th><th>Inventory ID</th><th>Notification ID</th></tr>
+                            <tr><th>Name</th><th>Unit</th><th>Threshold</th><th>Storage Condition</th><th>Expiry Date</th><th>Suppliers</th><th>Recipes</th><th>Notifications</th></tr>
                         </thead>
                         <tbody>
                             {% for ingredient in ingredients %}
                             <tr>
                                 <td>{{ ingredient.name }}</td>
-                                <td><span class="tag tag-blue">{{ ingredient.get_quantity_unit_display }}</span></td>
+                                <td><span class="tag tag-blue">{{ ingredient.quantity_unit }}</span></td>
                                 <td>{{ ingredient.threshold }}</td>
                                 <td>{{ ingredient.storage_condition }}</td>
                                 <td>{{ ingredient.expiry_date|date:"M d, Y" }}</td>
-                                <td>{{ ingredient.supplier.name }}</td>
-                                <td>{{ ingredient.recipe_id|default:"-" }}</td>
-                                <td>{{ ingredient.inventory_id|default:"-" }}</td>
-                                <td>{{ ingredient.notification_id|default:"-" }}</td>
+                                <td>
+                                    {% for supplier in ingredient.suppliers.all %}
+                                        {{ supplier.name }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% for recipe in ingredient.recipes.all %}
+                                        Recipe {{ recipe.id }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
+                                <td>
+                                    {% for notification in ingredient.notifications.all %}
+                                        {{ notification }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
                             </tr>
                             {% empty %}
-                            <tr><td colspan="9" class="empty-state">No ingredients recorded.</td></tr>
+                            <tr><td colspan="8" class="empty-state">No ingredients recorded.</td></tr>
                             {% endfor %}
                         </tbody>
                     </table>
@@ -96,17 +113,29 @@
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr><th>Cafeteria ID</th><th>Ingredient</th><th>Notification ID</th><th>Quantity Available</th><th>Expiration Date</th><th>Location</th></tr>
+                            <tr><th>Cafeteria</th><th>Ingredients</th><th>Quantity Available</th><th>Expiration Date</th><th>Location</th><th>Notifications</th></tr>
                         </thead>
                         <tbody>
                             {% for item in inventory_items %}
                             <tr>
-                                <td>{{ item.cafeteria_id }}</td>
-                                <td>{{ item.ingredient.name }}</td>
-                                <td>{{ item.notification_id|default:"-" }}</td>
+                                <td>{{ item.cafeteria|default:"-" }}</td>
+                                <td>
+                                    {% for ingredient in item.ingredients.all %}
+                                        {{ ingredient.name }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
                                 <td><span class="tag tag-green">{{ item.quantity_available }}</span></td>
                                 <td>{{ item.expiration_date|date:"M d, Y" }}</td>
                                 <td>{{ item.location }}</td>
+                                <td>
+                                    {% for notification in item.notifications.all %}
+                                        {{ notification }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
                             </tr>
                             {% empty %}
                             <tr><td colspan="6" class="empty-state">No inventory records available.</td></tr>
@@ -124,16 +153,22 @@
                 <div class="table-wrap">
                     <table>
                         <thead>
-                            <tr><th>Ingredient ID</th><th>Name</th><th>Contact Info</th><th>Rating</th><th>Delivery Frequency</th></tr>
+                            <tr><th>Name</th><th>Contact Info</th><th>Rating</th><th>Delivery Frequency</th><th>Ingredients Supplied</th></tr>
                         </thead>
                         <tbody>
                             {% for supplier in suppliers %}
                             <tr>
-                                <td>{{ supplier.ingredient_id|default:"-" }}</td>
                                 <td>{{ supplier.name }}</td>
                                 <td>{{ supplier.contact_info }}</td>
                                 <td><span class="tag tag-green">{{ supplier.rating }}/5</span></td>
-                                <td>{{ supplier.get_delivery_frequency_display }}</td>
+                                <td>{{ supplier.delivery_frequency }}</td>
+                                <td>
+                                    {% for ingredient in supplier.ingredients.all %}
+                                        {{ ingredient.name }}{% if not forloop.last %}, {% endif %}
+                                    {% empty %}
+                                        -
+                                    {% endfor %}
+                                </td>
                             </tr>
                             {% empty %}
                             <tr><td colspan="5" class="empty-state">No suppliers recorded.</td></tr>

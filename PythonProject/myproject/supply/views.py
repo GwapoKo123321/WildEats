@@ -8,9 +8,12 @@ from .forms import IngredientForm, InventoryForm, SupplierForm, UserProfileForm
 
 @login_required
 def index(request):
-    ingredients = Ingredient.objects.select_related('supplier').all().order_by('name')
-    inventory_items = Inventory.objects.select_related('ingredient').all().order_by('ingredient__name')
-    suppliers = Supplier.objects.all().order_by('name')
+    ingredients = Ingredient.objects.prefetch_related('suppliers', 'recipes', 'notifications').all().order_by('name')
+    inventory_items = Inventory.objects.select_related('cafeteria').prefetch_related(
+        'ingredients',
+        'notifications',
+    ).all().order_by('location', 'expiration_date')
+    suppliers = Supplier.objects.prefetch_related('ingredients').all().order_by('name')
 
     return render(request, 'supply/index.html', {
         'ingredients': ingredients,
